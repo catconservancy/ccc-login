@@ -1,13 +1,9 @@
-window.angularModuleName = 'CCC';
-
 (function () {
-    angular.module(window.angularModuleName, [
+    angular.module('CCC', [
         'ngResource',
         'ngSanitize',
         'ui.router',
-        'ui.bootstrap',
-        'LocalForageModule',
-        'ui.select'
+        'ui.bootstrap'
     ])
         .config(config)
         .run(run);
@@ -16,11 +12,12 @@ window.angularModuleName = 'CCC';
 
     function config() {
     	// TODO: config stuff
+    	console.log('in config');
     }
 
     run.$inject = ['$rootScope', '$log'];
 
     function run($rootScope, $log) {
-    	// TODO: run stuff
+    	$log.debug('in run');
     }
 }());

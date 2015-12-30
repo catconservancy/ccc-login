@@ -14,19 +14,21 @@
         <js>webjar:adminlte/2.3.2/plugins/slimScroll/jquery.slimscroll.min.js</js>
         <js>webjar:adminlte/2.3.2/plugins/fastclick/fastclick.js</js>
         <js>webjar:adminlte/2.3.2/dist/js/app.min.js</js>
-        <js>webjar:adminlte/2.3.2/dist/js/pages/dashboard.js</js>
-        <js>webjar:adminlte/2.3.2/dist/js/demo.js</js>
+        <!-- <js>webjar:adminlte/2.3.2/dist/js/pages/dashboard.js</js>
+        <js>webjar:adminlte/2.3.2/dist/js/demo.js</js> -->
         
-        <js>webjar:angularjs/1.4.7/angular.min.js</js>
+        <!-- <js>webjar:angularjs/1.4.7/angular.min.js</js> -->
+        <js>webjar:angularjs/1.4.7/angular.js</js>
         <js>webjar:angular-resource/1.4.7/angular-resource.min.js</js>
         <js>webjar:angular-sanitize/1.4.7/angular-sanitize.min.js</js>
-        <js>webjar:angular-ui-router/0.2.15/release/angular-ui-router.min.js</js>
+        <js>webjar:angular-ui-router/0.2.15/angular-ui-router.min.js</js>
         <js>webjar:angular-bootstrap/0.14.3/ui-bootstrap-tpls.min.js</js>
         
         <css>webjar:adminlte/2.3.2/dist/css/AdminLTE.min.css</css> 
  		<!-- AdminLTE Skins. Choose a skin from the css/skins
-      		folder instead of downloading all of them to reduce the load. -->
-        <css>webjar:adminlte/2.3.2/dist/css/skins/_all-skins.min.css</css>   
+      		folder instead of downloading all of them to reduce the load.
+        <css>webjar:adminlte/2.3.2/dist/css/skins/_all-skins.min.css</css>  -->
+        <css>webjar:adminlte/2.3.2/dist/css/skins/skin-purple.min.css</css> 
         <css>webjar:adminlte/2.3.2/plugins/iCheck/flat/blue.css</css>   
         <css>webjar:adminlte/2.3.2/plugins/morris/morris.css</css>   
         <css>webjar:adminlte/2.3.2/plugins/jvectormap/jquery-jvectormap-1.2.2.css</css>

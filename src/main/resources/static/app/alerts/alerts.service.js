@@ -1,5 +1,5 @@
 (function () {
-    angular.module(window.angularModuleName)
+    angular.module('CCC')
         .factory('AlertsService', AlertsService);
 
     AlertsService.$inject = ['$resource'];

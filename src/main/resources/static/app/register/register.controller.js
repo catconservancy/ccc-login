@@ -1,5 +1,5 @@
 (function () {
-    angular.module(window.angularModuleName)
+    angular.module('CCC')
         .controller('RegisterController', RegisterController);
 
     RegisterController.$inject = ['$state', 'RegisterService'];
