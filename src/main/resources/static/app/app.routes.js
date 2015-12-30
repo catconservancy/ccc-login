@@ -1,5 +1,5 @@
 (function () {
-    angular.module(window.angularModuleName)
+    angular.module('CCC')
         .config(config);
 
     config.$inject = [
@@ -10,22 +10,79 @@
 
         $locationProvider.html5Mode(true);
         
-        $urlRouterProvider.otherwise('/start');
+        $urlRouterProvider.otherwise('/dashboard');
         
         $stateProvider
-            
-            // HOME STATES AND NESTED VIEWS ========================================
-            .state('start', {
-                url: '/start',
-                templateUrl: 'app/dashboard/dashboard.html',
-                controller: 'DashboardController',
-                controllerAs: 'dashboard'
-            })
-            
-            // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-            .state('about', {
-                // we'll get to this in a bit       
-            });
+
+	        .state('dashboard', {
+	            url: '/dashboard',
+	            templateUrl: 'app/dashboard/dashboard.html',
+	            controller: 'DashboardController',
+	            controllerAs: 'dashboard'
+	        })
+	
+	        .state('importPhotos', {
+	            url: '/importPhotos',
+	            templateUrl: 'app/importPhotos/importPhotos.html',
+	            controller: 'ImportPhotosController',
+	            controllerAs: 'importPhotosCtrl'
+	        })
+	
+	        .state('viewPhotos', {
+	            url: '/viewPhotos',
+	            templateUrl: 'app/viewPhotos/viewPhotos.html',
+	            controller: 'ViewPhotosController',
+	            controllerAs: 'viewPhotosCtrl'
+	        })
+	
+	        .state('idPhotos', {
+	            url: '/idPhotos',
+	            templateUrl: 'app/idPhotos/idPhotos.html',
+	            controller: 'IdPhotosController',
+	            controllerAs: 'idPhotosCtrl'
+	        })
+	
+	        .state('deployments', {
+	            url: '/deployments',
+	            templateUrl: 'app/deployments/deployments.html',
+	            controller: 'DeploymentsController',
+	            controllerAs: 'deploymentsCtrl'
+	        })
+	
+	        .state('folderLocation', {
+	            url: '/folderLocation',
+	            templateUrl: 'app/folderLocation/folderLocation.html',
+	            controller: 'FolderLocationController',
+	            controllerAs: 'folderLocationCtrl'
+	        })
+	
+	        .state('species', {
+	            url: '/species',
+	            templateUrl: 'app/species/species.html',
+	            controller: 'SpeciesController',
+	            controllerAs: 'speciesCtrl'
+	        })
+	
+	        .state('detectionDetails', {
+	            url: '/detectionDetails',
+	            templateUrl: 'app/detectionDetails/detectionDetails.html',
+	            controller: 'DetectionDetailsController',
+	            controllerAs: 'detectionDetailsCtrl'
+	        })
+	
+	        .state('initialSetup', {
+	            url: '/initialSetup',
+	            templateUrl: 'app/initialSetup/initialSetup.html',
+	            controller: 'InitialSetupController',
+	            controllerAs: 'initialSetupCtrl'
+	        })
+	
+	        .state('cameraMonitoringLog', {
+	            url: '/cameraMonitoringLog',
+	            templateUrl: 'app/cameraMonitoringLog/cameraMonitoringLog.html',
+	            controller: 'CameraMonitoringLogController',
+	            controllerAs: 'cameraMonitoringLogCtrl'
+	        });
 
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     };
