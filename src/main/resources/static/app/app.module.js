@@ -3,7 +3,9 @@
         'ngResource',
         'ngSanitize',
         'ui.router',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'datatables',
+        'xeditable'
     ])
         .config(config)
         .run(run);

@@ -17,7 +17,7 @@
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
+          <h3 class="box-title">Species List</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -26,12 +26,61 @@
               <i class="fa fa-times"></i></button>
           </div>
         </div>
-        <div class="box-body">
-          TBD...
-        </div>
-        <!-- /.box-body -->
+		<div class="box-body">
+
+			<table datatable="ng" dt-options="dtOptions" class="table table-hover">
+		        <thead>
+		            <tr>
+		                <th>ID</th>
+		                <th>Common Name</th>
+                        <th>Latin Name</th>
+                        <th>Shortcut Key</th>
+                        <th>Edit</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr ng-repeat="species in speciesCtrl.species">
+		                <td>{{species.id}}</td>
+		                <td>
+                            <span editable-text="species.commonName" e-name="commonName" e-form="rowform" onbeforesave="speciesCtrl.checkCommonName($data, species.id)" e-required>
+                                {{ species.commonName || 'empty' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span editable-text="species.latinName" e-name="latinName" e-form="rowform" onbeforesave="speciesCtrl.checkLatinName($data, species.id)" e-required>
+                                {{ species.latinName || 'empty' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span editable-text="species.shortcutKey" e-name="shortcutKey" e-form="rowform" onbeforesave="speciesCtrl.checkShortcutKey($data, species.id)">
+                                {{ species.shortcutKey || 'empty' }}
+                            </span>
+                        </td>
+						<td style="white-space: nowrap">
+							<!-- form -->
+							<form editable-form name="rowform"
+								onbeforesave="speciesCtrl.saveSpecies($data, species.id)"
+								ng-show="rowform.$visible" class="form-buttons form-inline"
+								shown="inserted == species">
+								<button type="submit" ng-disabled="rowform.$waiting"
+									class="btn btn-primary">save</button>
+								<button type="button" ng-disabled="rowform.$waiting"
+									ng-click="rowform.$cancel()" class="btn btn-default">
+									cancel</button>
+							</form>
+							<div class="buttons" ng-show="!rowform.$visible">
+								<button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+								<button class="btn btn-danger" ng-click="speciesCtrl.removeSpecies($index)">del</button>
+							</div>
+						</td>
+					</tr>
+		        </tbody>
+		    </table>
+
+		</div>
+		<!-- /.box-body -->
         <div class="box-footer">
-          Footer
+          <button class="btn btn-default" ng-click="speciesCtrl.add()">Add Species</button>
         </div>
         <!-- /.box-footer-->
       </div>
