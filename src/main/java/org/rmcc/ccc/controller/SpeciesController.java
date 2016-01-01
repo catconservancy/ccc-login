@@ -43,8 +43,8 @@ public class SpeciesController {
 		return speciesRepository.save(species);
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE)
-	public void delete(@RequestBody Species species) {
-		speciesRepository.delete(species);
+	@RequestMapping(value = "/{speciesId}", method = RequestMethod.DELETE)
+	public void delete(@PathVariable Integer speciesId) {
+		speciesRepository.delete(speciesId);
 	}
 }

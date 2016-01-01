@@ -33,6 +33,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 		List<BaseModel> speciesList = csvFileReader.readCsvFile(new Species());
 		for (BaseModel species : speciesList) {
 			Species s = (Species) species;
+			s.setId(null);
 			speciesRepository.save(s);
 		}
 	}

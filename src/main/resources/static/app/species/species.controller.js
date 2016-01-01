@@ -12,6 +12,7 @@
         vm.checkShortcutKey = checkShortcutKey;
         vm.saveSpecies = saveSpecies;
         vm.removeSpecies = removeSpecies;
+        vm.inserted = null;
         vm.species = null;
         
         // DataTables configurable options
@@ -24,20 +25,24 @@
 		});
         
         function add() {
-        	vm.species.push({id: 0});
+        	vm.inserted = {id: 0};
+        	vm.species.push(vm.inserted);
         }
         
         function checkCommonName(data, id) {
+        	//TODO: validation impl
         	$log.debug('data', data);
         	$log.debug('id', id);
         }
         
         function checkLatinName(data, id) {
+        	//TODO: validation impl
         	$log.debug('data', data);
         	$log.debug('id', id);
         }
         
         function checkShortcutKey(data, id) {
+        	//TODO: validation impl
         	$log.debug('data', data);
         	$log.debug('id', id);
         }
@@ -66,12 +71,11 @@
         	}
         }
         
-        function removeSpecies(index, id) {
-        	vm.entry = Species.get({ id: id }, function() {
-        		vm.entry.$delete(function() {
-        			Species.query(function(data) {
-        				vm.species = data;
-        			});
+        function removeSpecies(id) {
+        	Species.delete({ id: id }, function() {
+        		$log.debug('Deleted from server');
+        		Species.query(function(data) {
+        			vm.species = data;
         		});
         	});
         }

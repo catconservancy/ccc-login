@@ -29,7 +29,7 @@ public class Species implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="SPECIES_SPECIESID_GENERATOR", sequenceName="SPECIES_ID_SEQ")
+	@SequenceGenerator(name="SPECIES_SPECIESID_GENERATOR", sequenceName="SPECIES_ID_SEQ", allocationSize=1, initialValue=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SPECIES_SPECIESID_GENERATOR")
 	@Column(name="species_id", unique=true, nullable=false)
 	private Integer id;

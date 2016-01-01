@@ -5,7 +5,8 @@
         'ui.router',
         'ui.bootstrap',
         'datatables',
-        'xeditable'
+        'xeditable',
+        'mwl.confirm'
     ])
         .config(config)
         .run(run);

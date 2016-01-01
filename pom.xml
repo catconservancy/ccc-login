@@ -209,6 +209,11 @@
 					    <artifactId>angular-xeditable</artifactId>
 					    <version>0.1.9</version>
 					</dependency>
+					<dependency>
+					    <groupId>org.webjars.bower</groupId>
+					    <artifactId>angular-bootstrap-confirm</artifactId>
+					    <version>0.7.0</version>
+					</dependency>
                     <dependency>
                         <groupId>org.webjars.npm</groupId>
                         <artifactId>angular-localforage</artifactId>
