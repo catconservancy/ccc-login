@@ -61,7 +61,7 @@
 							<form editable-form name="rowform"
 								onbeforesave="speciesCtrl.saveSpecies($data, species.id)"
 								ng-show="rowform.$visible" class="form-buttons form-inline"
-								shown="inserted == species">
+								shown="speciesCtrl.inserted == species">
 								<button type="submit" ng-disabled="rowform.$waiting"
 									class="btn btn-primary">save</button>
 								<button type="button" ng-disabled="rowform.$waiting"
@@ -69,8 +69,12 @@
 									cancel</button>
 							</form>
 							<div class="buttons" ng-show="!rowform.$visible">
-								<button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-								<button class="btn btn-danger" ng-click="speciesCtrl.removeSpecies($index)">del</button>
+								<button class="btn btn-primary" ng-click="rowform.$show()"><i class="fa fa-pencil-square-o"></i></button>
+								<button class="btn btn-danger" mwl-confirm data-title="Confirm" message="Are you <b>sure</b> you want to delete this species?"
+								        placement="top" on-confirm="speciesCtrl.removeSpecies(species.id)" confirm-button-type="danger"
+                                        cancel-button-type="default">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
 							</div>
 						</td>
 					</tr>
@@ -80,7 +84,7 @@
 		</div>
 		<!-- /.box-body -->
         <div class="box-footer">
-          <button class="btn btn-default" ng-click="speciesCtrl.add()">Add Species</button>
+          <button class="btn btn-default" ng-click="speciesCtrl.add()"><i class="fa fa-plus-square-o"></i> Add Species</button>
         </div>
         <!-- /.box-footer-->
       </div>
