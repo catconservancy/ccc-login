@@ -2,6 +2,7 @@ package org.rmcc.ccc.utils;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class CsvFileReader {
 		
 		Resource resource = resourceLoader.getResource("classpath:/data_load/" + model.getFileName());
 
-		FileReader fileReader = null;
+		InputStreamReader fileReader = null;
 		
 		CSVParser csvFileParser = null;
 		
@@ -34,10 +35,10 @@ public class CsvFileReader {
         try {
         	
         	//Create a new list of model objects to be filled by CSV file data 
-        	List<BaseModel> models = new ArrayList<>();
+        	List<BaseModel> models = new ArrayList<BaseModel>();
             
             //initialize FileReader object
-            fileReader = new FileReader(resource.getFile());
+            fileReader = new InputStreamReader(resource.getInputStream());
             
             //initialize CSVParser object
             csvFileParser = new CSVParser(fileReader, csvFileFormat);
