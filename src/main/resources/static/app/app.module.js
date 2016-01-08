@@ -6,7 +6,8 @@
         'ui.bootstrap',
         'datatables',
         'xeditable',
-        'mwl.confirm'
+        'mwl.confirm',
+        'msl.uploads'
     ])
         .config(config)
         .run(run);

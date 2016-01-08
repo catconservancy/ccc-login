@@ -25,7 +25,7 @@
 	            url: '/importPhotos',
 	            templateUrl: 'app/importPhotos/importPhotos.html',
 	            controller: 'ImportPhotosController',
-	            controllerAs: 'importPhotosCtrl'
+	            controllerAs: 'ipc'
 	        })
 	
 	        .state('viewPhotos', {
