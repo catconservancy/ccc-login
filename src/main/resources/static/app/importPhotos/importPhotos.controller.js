@@ -6,6 +6,7 @@
 
     function ImportPhotosController($scope, $timeout, $interval) {
     	$scope.files = [];
+    	$scope.fileSources = {};
 		$scope.uploads = [];
 
 		$scope.completed_uploads = {};
@@ -16,13 +17,26 @@
 
 		$scope.fileSelectionHandler = function (files) {
 			for (var i = 0; i < files.length; i++) {
-				$scope.files.push(files[i]);
-				$scope.uploads.push({
-					id: new Date().getTime() + files[i].name, // fake id
-					file_name: files[i].name
-				});
+				var file = files[i];
+				var imageType = /image.*/;
+				if (file.type.match(imageType)) {					
+					addSource(files[i]);
+					$scope.files.push(files[i]);
+					$scope.uploads.push({
+						id: new Date().getTime() + files[i].name, // fake id
+						file_name: files[i].name
+					});
+				}
 			}
 		};
+		
+		function addSource(file) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$scope.fileSources[file.name] = reader.result;
+			}
+			reader.readAsDataURL(file);		
+		}
 
 		$scope.startUploadFor = function (i) {
 			var upload = $scope.uploads[i];
