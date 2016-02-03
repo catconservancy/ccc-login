@@ -1,0 +1,26 @@
+server:
+  contextPath: /ccc
+  port: 8080
+
+spring:
+  profiles:
+    active: postgres
+  thymeleaf:
+    cache: false
+  mail:
+    host: smtp.gmail.com
+    port: 25
+    username: test
+    password: test
+
+security:
+  basic:
+    enabled: false
+# demo only:
+  user:
+    password: password
+    
+logging:
+  level: 
+    org.springframework.security: INFO
+    org.springframework.boot.actuate.audit.listener.AuditListener: DEBUG
