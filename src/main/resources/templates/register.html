@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base href="/ccc/"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Communities, Cameras, and Conservation Database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="icon" type="image/png" href="/ccc/img/ccc-logo-32.png"/>
+    
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+
+    <link rel="stylesheet" href="/ccc/css/lib.css"/>
+    <link rel="stylesheet" href="/ccc/css/ccc.css"/>
+</head>
+<body class="hold-transition register-page">
+<header>
+    <nav class="frame" role="navigation">
+        <div class="container-fluid">
+            <a href="http://www.catconservancy.org/" class="brand">
+            	RMCC Communities, Cameras, and Conservation Database
+            </a>
+        </div><!-- /.container -->
+    </nav><!--/.navbar-->
+</header>
+  
+<div class="register-box">
+  <div class="register-logo">
+	<img src="/ccc/img/ccc-full-logo-alt2.png" style="width:100%"/>
+  </div>
+
+  <div class="register-box-body">
+    <p class="login-box-msg">Register a new membership</p>
+    
+    <div id="registerSuccess" class="alert alert-success alert-dismissible" style="display:none">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i class="icon fa fa-check"></i> Success!</h4>
+      Your membership request has been successfully submitted.  You will receive email
+      notification when your access is granted. 
+    </div>
+    
+    <div id="registerFail" class="alert alert-danger alert-dismissible" style="display:none">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i class="icon fa fa-ban"></i> Failure!</h4>
+      <span id="failureMsg"> </span>
+    </div>
+    <div id="registerFail" class="alert alert-success alert-dismissible" style="display:none">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i class="icon fa fa-check"></i> Success!</h4>
+      Your membership request has been successfully submitted.  You will receive email
+      notification when your access is granted. 
+    </div>
+
+    <form id="registerForm" action="/ccc/api/users" method="post">
+      <div class="form-group has-feedback">
+        <input type="text" name="fullName" class="form-control" placeholder="Full name" />
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="email" name="email" class="form-control" placeholder="Email"/>
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" name="password" class="form-control" placeholder="Password"/>
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" name="confirmPassword" class="form-control" placeholder="Retype password"/>
+        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+
+    <a href="login" class="text-center">I already have a membership</a>
+  </div>
+  <!-- /.form-box -->
+</div>
+<!-- /.register-box -->
+
+<script src="/ccc/js/lib.js"></script>
+	<script>
+		(function ($) {
+		    $.fn.serializeFormJSON = function () {
+	
+		        var o = {};
+		        var a = this.serializeArray();
+		        $.each(a, function () {
+		            if (o[this.name]) {
+		                if (!o[this.name].push) {
+		                    o[this.name] = [o[this.name]];
+		                }
+		                o[this.name].push(this.value || '');
+		            } else {
+		                o[this.name] = this.value || '';
+		            }
+		        });
+		        return o;
+		    };
+		})(jQuery);
+		$("#registerForm").submit(function(e) {
+			var postData = JSON.stringify($(this).serializeFormJSON());
+			console.debug("postData", postData);
+			var formURL = $(this).attr("action");
+			$.ajax({
+				url : formURL,
+				type : "POST",
+				data : postData,
+				headers: { 
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader("X-XSRF-TOKEN", $.cookie("XSRF-TOKEN"));
+				},
+				success : function(data, textStatus, jqXHR) {
+					console.debug(data);
+					$("#registerFail").hide();
+					$("#registerSuccess").show();
+				},
+				error : function(jqXHR) {
+					var errors = jqXHR.responseJSON.errors;
+					console.debug(errors);
+					var errorMessage = '';
+			        $.each(errors, function () {
+			        	errorMessage += '<li>'+ this.field +': '+this.defaultMessage+'</li>';
+			        });
+			        errorMessage = '<ul>' + errorMessage + '</ul>';
+					console.debug(errorMessage);
+					$("#registerSuccess").hide();
+					$("#registerFail").show();
+					$("#failureMsg").html('<ul>' + errorMessage + '</ul>');
+				}
+			});
+			e.preventDefault(); //STOP default action
+			e.unbind(); //unbind. to stop multiple form submit.
+		});
+	</script>
+</body>
+</html>

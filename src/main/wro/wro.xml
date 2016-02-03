@@ -2,6 +2,7 @@
     <group name="lib">
         <js>webjar:jquery/2.1.4/jquery.min.js</js>
         <js>webjar:jquery-ui/1.11.4/jquery-ui.min.js</js>
+        <js>webjar:jquery-cookie/1.4.1-1/jquery.cookie.js</js>
         <js>webjar:bootstrap/3.3.5/js/bootstrap.min.js</js>        
         <js>webjar:adminlte/2.3.2/plugins/morris/morris.min.js</js>
         <js>webjar:adminlte/2.3.2/plugins/sparkline/jquery.sparkline.min.js</js>
@@ -47,7 +48,7 @@
         <css>webjar:angular-xeditable/0.1.9/css/xeditable.css</css>
     </group>
     <group name="ccc">
-        <css>/resources/static/less/importer.less</css>
+        <css>/resources/static/app/**.css</css>
         <js>/resources/static/app/app.module.js</js>
         <js>/resources/static/app/**.js</js>
     </group>
