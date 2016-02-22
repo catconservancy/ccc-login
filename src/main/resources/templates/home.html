@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
 	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+	<link rel="stylesheet" href="http://cgarvis.github.io/angular-toggle-switch/stylesheets/angular-toggle-switch.css"/>
 
     <link rel="stylesheet" href="/ccc/css/lib.css"/>
 
@@ -44,8 +45,9 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li ui-view="userNotifications" class="dropdown messages-menu">
-            
+          <li ng-controller="UserNotificationsController as userCtrl" 
+          	  ng-include="'app/users/userNotifications.html'" 
+          	  class="dropdown messages-menu">
           </li>
           <!-- Notifications: style can be found in dropdown.less -->
           <li class="dropdown notifications-menu">

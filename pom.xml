@@ -60,6 +60,11 @@
             <artifactId>commons-csv</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+		    <groupId>com.dropbox.core</groupId>
+		    <artifactId>dropbox-core-sdk</artifactId>
+		    <version>2.0-beta-5</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -269,6 +274,11 @@
                         <artifactId>ngtoast</artifactId>
                         <version>1.5.6</version>
                     </dependency>
+                    <dependency>
+					    <groupId>org.webjars.bower</groupId>
+					    <artifactId>angular-toggle-switch</artifactId>
+					    <version>1.3.0</version>
+					</dependency>
 				</dependencies>
 			</plugin>
 		</plugins>

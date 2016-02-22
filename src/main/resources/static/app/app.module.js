@@ -7,7 +7,8 @@
         'datatables',
         'xeditable',
         'mwl.confirm',
-        'msl.uploads'
+        'msl.uploads',
+        'toggle-switch'
     ])
         .config(config)
         .run(run);

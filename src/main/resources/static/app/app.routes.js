@@ -21,11 +21,11 @@
 	            controllerAs: 'dashboard'
 	        })
 	
-	        .state('userNotifications', {
-	            url: '/userNotifications',
-	            templateUrl: 'app/userNotifications/userNotifications.html',
-	            controller: 'UserNotificationsController',
-	            controllerAs: 'userNotificationsCtrl'
+	        .state('users', {
+	            url: '/users',
+	            templateUrl: 'app/users/users.html',
+	            controller: 'UsersController',
+	            controllerAs: 'userCtrl'
 	        })
 	
 	        .state('importPhotos', {
