@@ -4,7 +4,8 @@ server:
 
 spring:
   profiles:
-    active: postgres
+#    active: postgres
+    active: dev
   thymeleaf:
     cache: false
   mail:

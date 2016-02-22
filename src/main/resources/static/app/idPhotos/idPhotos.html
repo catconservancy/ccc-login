@@ -12,12 +12,12 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" id="idPhotos">
 
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
+          <h3 class="box-title">ID Photos</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -27,11 +27,67 @@
           </div>
         </div>
         <div class="box-body">
-          TBD...
+          <div class="container">
+            <!-- thumb navigation carousel -->
+            <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
+
+              <!-- thumb navigation carousel items -->
+              <ul class="list-inline">
+                <li ng-repeat="photo in idPhotosCtrl.photos">
+                  <a id="carousel-selector-{{$index}}" ng-class="{'selected': photo.selected}" ng-click="idPhotosCtrl.selectThumb($index)">
+                    <img src="{{photo.thumbSrc}}" class="img-responsive">
+                  </a>
+                </li>
+              </ul>
+
+            </div>
+            <!--/ thumb navigation carousel -->
+
+
+            <!-- main slider carousel -->
+            <div class="row">
+              <div class="col-md-12" id="slider">
+
+                <div class="col-md-12" id="carousel-bounding-box">
+                  <div id="myCarousel" class="carousel slide" data-interval="false">
+                    <!-- main slider carousel items -->
+                    <div class="carousel-inner">
+                      <div ng-repeat="photo in idPhotosCtrl.photos" ng-class="{'active':photo.selected}" class="item" data-slide-number="{{$index}}" >
+                        <img src="{{photo.src}}" class="img-responsive">
+                      </div>
+                    </div>
+                    <!-- main slider carousel nav controls -->
+                    <a class="carousel-control left" href="#myCarousel" data-slide="prev" ng-non-bindable>‹</a>
+                    <a class="carousel-control right" href="#myCarousel" data-slide="next" ng-non-bindable>›</a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!--/main slider carousel-->
+
+            <!-- species search bar -->
+            <div class="row">
+              <div class="col-md-12">
+                <ui-select autofocus="true" multiple ng-model="idPhotosCtrl.selectedPhoto.species" theme="select2" ng-disabled="disabled" style="width: 100%">
+                  <ui-select-match placeholder="Select species">{{$item.commonName}} &lt;{{$item.latinName}}&gt;</ui-select-match>
+                  <ui-select-choices repeat="species in idPhotosCtrl.speciesList | propsFilter: {commonName: $select.search, latinName: $select.search}">
+                    <div ng-bind-html="species.commonName | highlight: $select.search"></div>
+                    <small>
+                      commonName: {{species.commonName}}
+                      latinName: <span ng-bind-html="''+species.latinName | highlight: $select.search"></span>
+                    </small>
+                  </ui-select-choices>
+                </ui-select>
+                <!--<p>Selected: {{idPhotosCtrl.selectedPhoto.species}}</p>-->
+              </div>
+            </div>
+            <!--/species search bar -->
+
+          </div>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-          Footer
         </div>
         <!-- /.box-footer-->
       </div>
