@@ -29,8 +29,10 @@
         <js>webjar:datatables/1.10.9/js/jquery.dataTables.min.js</js>
         <js>webjar:angular-xeditable/0.1.9/js/xeditable.min.js</js>
         <js>webjar:angular-bootstrap-confirm/0.7.0/dist/angular-bootstrap-confirm.min.js</js>
+        <js>webjar:angular-ui-select/0.14.8/select.min.js</js>
         
         <js>/resources/static/js/angular-uploads.min.js</js>
+        <!--<js>/resources/static/js/ui-bootstrap-carousel.js</js>-->
         
         <css>webjar:adminlte/2.3.2/dist/css/AdminLTE.min.css</css> 
  		<!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -46,6 +48,7 @@
         <css>webjar:datatables/1.10.9/css/jquery.dataTables.min.css</css>   
         <css>webjar:angular-datatables/0.5.1/dist/plugins/bootstrap/datatables.bootstrap.min.css</css>   
         <css>webjar:angular-xeditable/0.1.9/css/xeditable.css</css>
+        <css>webjar:angular-ui-select/0.14.8/select.min.css</css>
     </group>
     <group name="ccc">
         <css>/resources/static/app/**.css</css>

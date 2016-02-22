@@ -7,7 +7,8 @@
         'datatables',
         'xeditable',
         'mwl.confirm',
-        'msl.uploads'
+        'msl.uploads',
+        'ui.select'
     ])
         .config(config)
         .run(run);
