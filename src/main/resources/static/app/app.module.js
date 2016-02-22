@@ -8,7 +8,7 @@
         'xeditable',
         'mwl.confirm',
         'msl.uploads',
-        'toggle-switch'
+        'toggle-switch',
         'ui.select'
     ])
         .config(config)
