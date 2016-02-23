@@ -27,7 +27,6 @@
           </div>
         </div>
         <div class="box-body">
-          <div class="container">
             <!-- thumb navigation carousel -->
             <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
 
@@ -52,7 +51,7 @@
                   <div id="myCarousel" class="carousel slide" data-interval="false">
                     <!-- main slider carousel items -->
                     <div class="carousel-inner">
-                      <div ng-repeat="photo in idPhotosCtrl.photos" ng-class="{'active':photo.selected}" class="item" data-slide-number="{{$index}}" >
+                      <div ng-repeat="photo in idPhotosCtrl.photos" ng-class="idPhotosCtrl.thumbClass(photo)" class="item" data-slide-number="{{$index}}" >
                         <img src="{{photo.src}}" class="img-responsive">
                       </div>
                     </div>
@@ -69,7 +68,7 @@
             <!-- species search bar -->
             <div class="row">
               <div class="col-md-12">
-                <ui-select autofocus="true" multiple ng-model="idPhotosCtrl.selectedPhoto.species" theme="select2" ng-disabled="disabled" style="width: 100%">
+                <ui-select autofocus="true" multiple ng-model="idPhotosCtrl.selectedPhoto.species" theme="select2" ng-disabled="disabled" style="width: 97%; margin:15px">
                   <ui-select-match placeholder="Select species">{{$item.commonName}} &lt;{{$item.latinName}}&gt;</ui-select-match>
                   <ui-select-choices repeat="species in idPhotosCtrl.speciesList | propsFilter: {commonName: $select.search, latinName: $select.search}">
                     <div ng-bind-html="species.commonName | highlight: $select.search"></div>
@@ -84,7 +83,6 @@
             </div>
             <!--/species search bar -->
 
-          </div>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">

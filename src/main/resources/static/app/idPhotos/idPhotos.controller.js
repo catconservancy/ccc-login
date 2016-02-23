@@ -11,7 +11,7 @@
         vm.speciesList = []
 
         vm.selectThumb = selectThumb;
-        vm.handleKeyup = handleKeyup;
+        vm.thumbClass = thumbClass;
 
         PhotosService.getMockedPhotos({},function(data) {
             vm.photos = data;
@@ -25,8 +25,12 @@
         });
 
         function selectThumb(index) {
-            setSelectedPhotoByIndex(index);
+            //setSelectedPhotoByIndex(index);
             $('#myCarousel').carousel(index);
+        }
+        
+        function thumbClass(photo) {
+        	return photo.selected ? 'active' : '';
         }
 
         function initializeCarousel() {
@@ -40,39 +44,27 @@
                 setSelectedPhotoByIndex(id);
             });
 
-            /*$(document).bind('keyup', function (e) {
+            $(document).bind('keyup', function (e) {
                 if (e.which == 39) {
-                    $('.carousel').carousel('next');
-                    e.preventDefault();
+                	$('#myCarousel').carousel('next');
                 }
                 else if (e.which == 37) {
-                    $('.carousel').carousel('prev');
-                    e.preventDefault();
+                	$('#myCarousel').carousel('prev');
                 }
-            });*/
-        }
-
-        // keyboard navigation
-        function  handleKeyup($event) {
-            if ($event.which == 39) {
-                $('.carousel').carousel('next');
-                $event.preventDefault();
-            }
-            else if (e.which == 37) {
-                $('.carousel').carousel('prev');
-                $event.preventDefault();
-            }
+            });
         }
 
         function setSelectedPhotoByIndex(index) {
-            for (i = 0; i < vm.photos.length; i++) {
-                if (i === index) {
-                    vm.selectedPhoto = vm.photos[i];
-                    vm.photos[i].selected = true;
-                } else {
-                    vm.photos[i].selected = false;
-                }
-            }
+        	$scope.$apply(function() { 
+	            for (i = 0; i < vm.photos.length; i++) {
+	                if (i === index) {
+	                    vm.selectedPhoto = vm.photos[i];
+	                    vm.photos[i].selected = true;
+	                } else {
+	                    vm.photos[i].selected = false;
+	                }
+	            }
+        	});
         }
 
     }
