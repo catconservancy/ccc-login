@@ -21,6 +21,7 @@ import com.dropbox.core.v2.files.DownloadErrorException;
 import com.dropbox.core.v2.files.ListFolderContinueErrorException;
 import com.dropbox.core.v2.files.ListFolderErrorException;
 import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.LookupError;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
 
@@ -63,7 +64,7 @@ public class DropboxService {
             } catch (ListFolderErrorException ex) {
                 if (ex.errorValue.isPath()) {
                 	LOGGER.error("Dropbox error", ex);
-//                    if (checkPathError(response, path, ex.errorValue.getPathValue())) return;
+                    if (checkPathError(path, ex.errorValue.getPathValue())) return null;
                 }
                 throw ex;
             }
@@ -85,7 +86,7 @@ public class DropboxService {
                 catch (ListFolderContinueErrorException ex) {
                     if (ex.errorValue.isPath()) {
                     	LOGGER.error("Dropbox error", ex);
-//                        if (checkPathError(response, path, ex.errorValue.getPathValue())) return;
+                        if (checkPathError(path, ex.errorValue.getPathValue())) break;
                     }
                     throw ex;
                 }
@@ -109,6 +110,16 @@ public class DropboxService {
 	public InputStream getInputStreamByPath(String path) throws DownloadErrorException, DbxException, IOException {
 		return client.files.download(path).getInputStream();
 	}
+
+    private boolean checkPathError(String path, LookupError le) {
+        switch (le.tag()) {
+            case NOT_FOUND:
+            case NOT_FOLDER:
+            	LOGGER.error("Path doesn't exist on Dropbox:");
+                return true;
+        }
+        return false;
+    }
 
 
 }
