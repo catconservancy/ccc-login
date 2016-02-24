@@ -16,8 +16,11 @@
 					<h4>{{user.fullName}}</h4>
 					<small>{{user.email}}
 					</small>
+					<div class="pull-right">
+						<input id="enabledSwitch" type="checkbox" class="/*toggle-switch*/" ng-model="user.enabled" ng-change="userCtrl.saveUser(user)">
+						<label for="enabledSwitch">{{user.enabled}}</label>
+					</div>
 				</a>
-				<toggle-switch ng-model="user.enabled" on-label="enabled" off-label="disabled"><toggle-switch>
 			</li>
 			<!-- end message -->
 		</ul>

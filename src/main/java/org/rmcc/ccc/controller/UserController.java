@@ -1,12 +1,5 @@
 package org.rmcc.ccc.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.validation.Valid;
-
 import org.rmcc.ccc.annotations.Loggable;
 import org.rmcc.ccc.model.User;
 import org.rmcc.ccc.model.UserCreateForm;
@@ -21,12 +14,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -58,6 +52,15 @@ public class UserController {
         return (List<User>) userRepository.findAll();
     }
 
+    @RequestMapping(method = RequestMethod.PUT)
+    public User update(@RequestBody User user) {
+        User dbUser = userRepository.findOne(user.getId());
+        if (!dbUser.isEnabled() && user.isEnabled()) {
+            sendEmail(user);
+        }
+        return userRepository.save(user);
+    }
+
 //    @PreAuthorize("hasAuthority('ADMIN')")
 	@Loggable
 	@RequestMapping(method = RequestMethod.POST)
@@ -80,7 +83,22 @@ public class UserController {
         }
     }
 
-	private void sendEmail(UserCreateForm user) {
+    private void sendEmail(User user) {
+        MimeMessage mail = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+            helper.setTo("aaron.g.jones@gmail.com");
+            helper.setReplyTo("aaron.g.jones@gmail.com");
+            helper.setFrom("aaron.g.jones@gmail.com");
+            helper.setSubject("CCC User Created");
+            helper.setText("A new user has registered and requested access to CCC Databse: " + user.getFullName() + ": " + user.getEmail());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } finally {}
+        javaMailSender.send(mail);
+    }
+
+    private void sendEmail(UserCreateForm user) {
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
