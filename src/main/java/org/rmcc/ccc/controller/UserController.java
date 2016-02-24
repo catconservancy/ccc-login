@@ -1,5 +1,12 @@
 package org.rmcc.ccc.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.validation.Valid;
+
 import org.rmcc.ccc.annotations.Loggable;
 import org.rmcc.ccc.model.User;
 import org.rmcc.ccc.model.UserCreateForm;
@@ -14,19 +21,24 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
+	//TODO: should be an app email sender address TBD
+	private static final String EMAIL_SENDER = "aaron.g.jones@gmail.com";
+	//TODO: should be a list of admin users or TBD
+	private static final String ADMIN_EMAIL = "aaron.g.jones@gmail.com"; 
 	
 	private UserRepository userRepository;
     private JavaMailSender javaMailSender;
@@ -52,14 +64,25 @@ public class UserController {
         return (List<User>) userRepository.findAll();
     }
 
+//  @PreAuthorize("hasAuthority('ADMIN')")
+	@Loggable
     @RequestMapping(method = RequestMethod.PUT)
-    public User update(@RequestBody User user) {
+	@ResponseBody
+    public User updateEnabled(@RequestBody User user) {
         User dbUser = userRepository.findOne(user.getId());
         if (!dbUser.isEnabled() && user.isEnabled()) {
-            sendEmail(user);
+        	dbUser.setEnabled(user.isEnabled());
+        	sendUserActivatedEmail(dbUser);
         }
-        return userRepository.save(user);
+        return userRepository.save(dbUser);
     }
+
+//  @PreAuthorize("hasAuthority('ADMIN')")
+	@Loggable
+	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+	public void delete(@PathVariable Long userId) {
+		userRepository.delete(userId);
+	}
 
 //    @PreAuthorize("hasAuthority('ADMIN')")
 	@Loggable
@@ -72,7 +95,7 @@ public class UserController {
         	throw new MethodArgumentNotValidException(null, bindingResult);
         }
         try {
-            sendEmail(form);
+        	sendUserCreationEmail(form);
             return userService.create(form);
         } catch (DataIntegrityViolationException e) {
             // probably email already exists - very rare case when multiple admins are adding same user
@@ -83,30 +106,32 @@ public class UserController {
         }
     }
 
-    private void sendEmail(User user) {
+	// send a user activated email to user
+    private void sendUserActivatedEmail(User user) {
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-            helper.setTo("aaron.g.jones@gmail.com");
-            helper.setReplyTo("aaron.g.jones@gmail.com");
-            helper.setFrom("aaron.g.jones@gmail.com");
-            helper.setSubject("CCC User Created");
-            helper.setText("A new user has registered and requested access to CCC Databse: " + user.getFullName() + ": " + user.getEmail());
+            helper.setTo(user.getEmail());
+            helper.setReplyTo(ADMIN_EMAIL);
+            helper.setFrom(ADMIN_EMAIL);
+            helper.setSubject("CCC User Access Granted");
+            helper.setText("Your access request has been granted.  You may now login to the application.");
         } catch (MessagingException e) {
             e.printStackTrace();
         } finally {}
         javaMailSender.send(mail);
     }
 
-    private void sendEmail(UserCreateForm user) {
+    // send a user creation email to admin
+    private void sendUserCreationEmail(UserCreateForm user) {
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-            helper.setTo("aaron.g.jones@gmail.com");
-            helper.setReplyTo("aaron.g.jones@gmail.com");
-            helper.setFrom("aaron.g.jones@gmail.com");
+            helper.setTo(ADMIN_EMAIL);
+            helper.setReplyTo(ADMIN_EMAIL);
+            helper.setFrom(EMAIL_SENDER);
             helper.setSubject("CCC User Created");
-            helper.setText("A new user has registered and requested access to CCC Databse: " + user.getFullName() + ": " + user.getEmail());
+            helper.setText("A new user has registered and requested access to the CCC Databse: " + user.getFullName() + ": " + user.getEmail());
         } catch (MessagingException e) {
             e.printStackTrace();
         } finally {}
