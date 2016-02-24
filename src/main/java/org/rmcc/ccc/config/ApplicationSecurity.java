@@ -39,7 +39,10 @@ class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 		http
         .authorizeRequests()
 			.antMatchers("/img/**",
-				"/register",
+                "/css/**",
+                "/fonts/**",
+                "/js/**",
+                "/register",
 				"/api/users").permitAll()
             .anyRequest().authenticated()
             .and()
