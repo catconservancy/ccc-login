@@ -33,6 +33,10 @@
         
         <js>/resources/static/js/angular-uploads.min.js</js>
         
+        <css>/resources/static/css/bootstrap.min.css</css>
+        <css>/resources/static/css/font-awesome.min.css</css>
+        <css>/resources/static/css/ionicons.min.css</css>
+        
         <css>webjar:adminlte/2.3.2/dist/css/AdminLTE.min.css</css> 
  		<!-- AdminLTE Skins. Choose a skin from the css/skins
       		folder instead of downloading all of them to reduce the load.

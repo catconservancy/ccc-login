@@ -13,20 +13,20 @@
             var photos =  [
                 {
                     id: 1,
-                    thumbSrc: 'http://placehold.it/80x60&amp;text=one',
-                    src: 'http://placehold.it/1200x480&amp;text=one',
+                    thumbSrc: 'http://localhost:8080/ccc/img/one-thumb.png',
+                    src: 'http://localhost:8080/ccc/img/one.png',
                     species: []
                 },
                 {
                     id: 2,
-                    thumbSrc: 'http://placehold.it/80x60&amp;text=two',
-                    src: 'http://placehold.it/1200x480&amp;text=two',
+                    thumbSrc: 'http://localhost:8080/ccc/img/two-thumb.png',
+                    src: 'http://localhost:8080/ccc/img/two.png',
                     species: []
                 },
                 {
                     id: 3,
-                    thumbSrc: 'http://placehold.it/80x60&amp;text=three',
-                    src: 'http://placehold.it/1200x480&amp;text=three',
+                    thumbSrc: 'http://localhost:8080/ccc/img/three-thumb.png',
+                    src: 'http://localhost:8080/ccc/img/three.png',
                     species: []
                 }
             ];
