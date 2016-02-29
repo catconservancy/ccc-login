@@ -20,6 +20,28 @@
           <h3 class="box-title">ID Photos</h3>
 
           <div class="box-tools pull-right">
+
+			<div class="btn-group" id="myDropdown">
+				<button type="button" class="btn btn-box-tool" data-toggle="dropdown" title="Filters">
+					<i class="fa fa-filter"></i>
+				</button>
+				<ul class="dropdown-menu">
+					<li class="header">Apply Photo Search Filters</li>
+					<!-- <li>
+						<ui-select ng-model="idPhotosCtrl.deployment.selected" on-select="idPhotosCtrl.deploymentSelected($item)" theme="select2" style="width: 300px;">
+							<ui-select-match placeholder="Select a deployment location">{{$select.selected.name}}</ui-select-match>
+						    <ui-select-choices repeat="deployment in idPhotosCtrl.deployments | filter: $select.search">
+						      <span ng-bind-html="deployment.name | highlight: $select.search"></span>
+						    </ui-select-choices>
+						</ui-select>
+					</li> -->
+					<li>
+						<div id="tree"></div>
+					</li>
+					<li class="footer"></li>
+				</ul>
+			</div>
+          
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
               <i class="fa fa-minus"></i></button>
             <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">

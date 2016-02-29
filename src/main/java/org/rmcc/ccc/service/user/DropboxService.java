@@ -6,6 +6,10 @@ import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.*;
 import com.dropbox.core.v2.users.FullAccount;
+
+import org.rmcc.ccc.model.CccMetadata;
+import org.rmcc.ccc.model.DropboxFile;
+import org.rmcc.ccc.model.DropboxFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,7 +47,41 @@ public class DropboxService {
 //        DbxFiles.FileMetadata metadata = client.files.uploadBuilder("/test.txt").run(in);
 	}
 	
-	public List<Metadata> getFolderContentsByPath(String path) throws DbxException {
+	public List<DropboxFolder> getFoldersByPath(String path) throws DbxException, IOException {
+		
+		List<DropboxFolder> folders = new ArrayList<DropboxFolder>();
+		
+		for (Metadata metadata : getFolderContentsByPath(path)) {
+			CccMetadata m = (CccMetadata) metadata;
+			if (m.isDir()) {
+				DropboxFolder f = new DropboxFolder();
+				f.setFiles(getFilesByPath(m.getPathLower()));
+				f.setFolders(getFoldersByPath(m.getPathLower()));
+				LOGGER.info("files", f.getFiles());
+				LOGGER.info("folders", f.getFolders());
+				folders.add(f);
+			}
+		}
+		return folders;
+	}
+	
+	private List<DropboxFile> getFilesByPath(String path) throws DbxException, IOException {
+		
+		List<DropboxFile> files = new ArrayList<DropboxFile>();
+		
+		for (Metadata metadata : getFolderContentsByPath(path)) {
+			CccMetadata m = (CccMetadata) metadata;
+			if (!m.isDir()) {
+				DropboxFile f = new DropboxFile();
+				f.setName(m.getName());
+				f.setPath(m.getPathLower());
+				files.add(f);
+			}
+		}
+		return files;
+	}
+
+	public List<Metadata> getFolderContentsByPath(String path) throws DbxException, IOException {
 		
 		List<Metadata> encodedPaths = new ArrayList<Metadata>();
 		
@@ -92,9 +130,9 @@ public class DropboxService {
         }
         
         for (Metadata child : children.values()) {
-        	Map<String,String> fileMap = new HashMap<String,String>();
-        	fileMap.put(DbxRequestUtil.encodeUrlParam(child.getPathLower()), child.getName());
-        	encodedPaths.add(child);
+        	boolean isDir = (child instanceof FolderMetadata);
+    		CccMetadata cccMetadata = new CccMetadata(child, isDir);
+			encodedPaths.add(cccMetadata);
         }
         
 		return encodedPaths;
@@ -102,6 +140,10 @@ public class DropboxService {
 	
 	public InputStream getInputStreamByPath(String path) throws DownloadErrorException, DbxException, IOException {
 		return client.files.download(path).getInputStream();
+	}
+	
+	public InputStream getThumbnailInputStreamByPath(String path) throws DownloadErrorException, DbxException, IOException {
+		return client.files.getThumbnail(path).getInputStream();
 	}
 
     private boolean checkPathError(String path, LookupError le) {

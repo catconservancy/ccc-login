@@ -15,3 +15,7 @@
 #idPhotos .selectize-control > .selectize-dropdown {
     top: 36px;
 }
+
+#myDropdown {
+	width: 280px;
+}

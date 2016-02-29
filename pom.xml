@@ -288,6 +288,11 @@
                         <artifactId>ngtoast</artifactId>
                         <version>1.5.6</version>
                     </dependency>
+					<dependency>
+						<groupId>org.webjars.bower</groupId>
+						<artifactId>bootstrap-treeview</artifactId>
+						<version>1.2.0</version>
+					</dependency>
 				</dependencies>
 			</plugin>
 		</plugins>

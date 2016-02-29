@@ -2,13 +2,15 @@
     angular.module('CCC')
         .controller('IdPhotosController', IdPhotosController);
 
-    IdPhotosController.$inject = ['$scope', 'PhotosService', 'Species'];
+    IdPhotosController.$inject = ['$log', '$scope', 'PhotosService', 'Species', 'Dropbox'];
 
-    function IdPhotosController($scope, PhotosService, Species) {
+    function IdPhotosController($log, $scope, PhotosService, Species, Dropbox) {
         var vm = this;
         vm.photos = [];
         vm.selectedPhoto = {};
-        vm.speciesList = []
+        vm.speciesList = [];
+        vm.fileList = [];
+        vm.treeData = [];
 
         vm.selectThumb = selectThumb;
         vm.thumbClass = thumbClass;
@@ -20,12 +22,29 @@
             $scope.$on('$viewContentLoaded', initializeCarousel);
         });
 
+        Dropbox.query({},function(data) {
+        	for (i = 0; i < data.length; i++) {
+        		if (data[i].dir) {
+        			vm.treeData.push({
+        				text: data[i].name,
+        				path: data[i].pathLower,
+        				state: {expanded: false},
+        				nodes: [{}]
+        			});
+        		} else {
+        			vm.fileList.push(data[i]);
+        		}
+        	}
+        	$log.debug("vm.fileList", vm.fileList);
+        	
+        	initializeFilters(); 
+        });
+
         Species.query(function(data) {
             vm.speciesList = data;
         });
 
         function selectThumb(index) {
-            //setSelectedPhotoByIndex(index);
             $('#myCarousel').carousel(index);
         }
         
@@ -52,6 +71,45 @@
                 	$('#myCarousel').carousel('prev');
                 }
             });
+            
+            initializeFilters();
+        }
+        
+        function initializeFilters() {
+	    	$('#tree').treeview({data: vm.treeData});
+	    	$('#myDropdown .dropdown-menu').on({
+	    		"click":function(e){
+	    	      e.stopPropagation();
+	    	    }
+	    	});
+	    	$('#tree').on('nodeExpanded', function(event, expandedNode) {
+	    		$log.debug("vm.treeData", vm.treeData);
+	    		$log.debug("nodeExpanded", expandedNode);
+	    		$log.debug("vm.treeData[expandedNode.parentId]", vm.treeData[expandedNode.parentId]);
+	    		$log.debug("vm.treeData[expandedNode.nodeId]", vm.treeData[expandedNode.nodeId]);
+
+    	        Dropbox.query({path: expandedNode.path},function(data) {
+    	        	fetchedNodes = [];
+    	        	vm.fileList = [];
+    	        	for (i = 0; i < data.length; i++) {
+    	        		if (data[i].dir) {
+    	        			fetchedNodes.push({
+    	        				text: data[i].name,
+    	        				path: data[i].pathLower,
+    	        				state: {expanded: false},
+    	        				nodes: [{}]
+    	        			});
+    	        		} else {
+    	        			vm.fileList.push(data[i]);
+    	        		}
+    	        	}
+    	        	vm.treeData[expandedNode.nodeId].state = {expanded: true};
+    	        	vm.treeData[expandedNode.nodeId].nodes = fetchedNodes;
+    	        	$log.debug("vm.fileList", vm.fileList);
+    	        	
+    	        	initializeFilters(); 
+    	        });
+    		});
         }
 
         function setSelectedPhotoByIndex(index) {
