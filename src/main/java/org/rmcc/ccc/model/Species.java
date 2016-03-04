@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="species")
 @NamedQuery(name="Species.findAll", query="SELECT s FROM Species s")
-public class Species implements Serializable, BaseModel {
+public class git add .Species implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id

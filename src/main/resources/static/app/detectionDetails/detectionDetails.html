@@ -27,11 +27,58 @@
           </div>
         </div>
         <div class="box-body">
-          TBD...
+
+          <table datatable="ng" dt-options="dtOptions" class="table table-hover">
+            <thead>
+            <tr>
+              <th>Species</th>
+              <th>Detail</th>
+              <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="detectionDetail in detectionDetailsCtrl.detectionDetails">
+              <td>
+                <a href="#" editable-select="detectionDetail.species" e-name="species" e-form="rowform"
+                   onbeforesave="detectionDetailsCtrl.checkSpecies(detectionDetail, $data)"
+                   e-ng-options="s.id as s.commonName for s in detectionDetailsCtrl.species">
+
+                  {{ detectionDetailsCtrl.showSpecies(detectionDetail) }}
+                </a>
+              </td>
+              <td>
+                  <span editable-text="detectionDetail.detailText" e-name="detailText" e-form="rowform" onbeforesave="detectionDetailsCtrl.checkDetail($data, detectionDetail.id)">
+                      {{ detectionDetail.detailText || 'empty' }}
+                  </span>
+              </td>
+              <td style="white-space: nowrap">
+                <!-- form -->
+                <form editable-form name="rowform"
+                      onbeforesave="detectionDetailsCtrl.saveDetectionDetail($data, detectionDetail.id)"
+                      ng-show="rowform.$visible" class="form-buttons form-inline"
+                      shown="detectionDetail.inserted == detectionDetail">
+                  <button type="submit" ng-disabled="rowform.$waiting"
+                          class="btn btn-primary">save</button>
+                  <button type="button" ng-disabled="rowform.$waiting"
+                          ng-click="rowform.$cancel()" class="btn btn-default">
+                    cancel</button>
+                </form>
+                <div class="buttons" ng-show="!rowform.$visible">
+                  <button class="btn btn-primary" ng-click="rowform.$show()"><i class="fa fa-pencil-square-o"></i></button>
+                  <button class="btn btn-danger" mwl-confirm data-title="Confirm" message="Are you <b>sure</b> you want to delete this detection detail?"
+                          placement="top" on-confirm="detectionDetailsCtrl.removeDetectionDetail(detectionDetail.id)" confirm-button-type="danger"
+                          cancel-button-type="default">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-          Footer
+          <button class="btn btn-default" ng-click="detectionDetailsCtrl.add()"><i class="fa fa-plus-square-o"></i> Add Detection Detail</button>
         </div>
         <!-- /.box-footer-->
       </div>

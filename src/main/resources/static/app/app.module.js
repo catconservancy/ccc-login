@@ -20,9 +20,13 @@
     	console.log('in config');
     }
 
-    run.$inject = ['$rootScope', '$log'];
+    run.$inject = ['$rootScope', '$log', '$filter'];
 
-    function run($rootScope, $log) {
+    function run($rootScope, $log, $filter) {
     	$log.debug('in run');
+
+        $rootScope.getObjectById = function(array,id) {
+            return $filter('filter')(array, function (d) {return d.id === id;})[0];
+        }
     }
 }());
