@@ -48,8 +48,12 @@
         }
 
         function showSpecies(detectionDetail) {
-            var selected = $filter('filter')(vm.species, {value: detectionDetail.species});
-            return (detectionDetail.species && selected.length) ? selected[0].commonName : 'Not set';
+        	if (detectionDetail && detectionDetail.species) {
+	        	var selected = $rootScope.getObjectById(vm.species, detectionDetail.species.id);
+	            return selected.commonName;
+        	} else {
+        		return 'Not set';
+        	}
         };
 
         function saveDetectionDetail(data, id) {

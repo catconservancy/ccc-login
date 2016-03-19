@@ -16,6 +16,14 @@
     top: 36px;
 }
 
-#myDropdown {
-	width: 280px;
+#filterDropdown {
+	width: 750px;
+}
+
+#filterDropdown .btn {
+	float: right;
+}
+
+#filterDropdown a {
+	cursor: pointer;
 }

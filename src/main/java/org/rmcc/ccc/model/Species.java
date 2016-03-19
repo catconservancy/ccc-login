@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.csv.CSVRecord;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -25,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="species")
 @NamedQuery(name="Species.findAll", query="SELECT s FROM Species s")
-public class git add .Species implements Serializable, BaseModel {
+public class Species implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -53,6 +54,7 @@ public class git add .Species implements Serializable, BaseModel {
 
 	//bi-directional many-to-one association to DetectionDetails
 	@OneToMany(mappedBy="species")
+	@JsonIgnore
 	private List<DetectionDetail> detectionDetails;
 
 	public Species() {

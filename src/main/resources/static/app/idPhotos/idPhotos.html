@@ -21,12 +21,29 @@
 
           <div class="box-tools pull-right">
 
-			<div class="btn-group" id="myDropdown">
+			<div class="btn-group" id="filterDropdown">
 				<button type="button" class="btn btn-box-tool" data-toggle="dropdown" title="Filters">
 					<i class="fa fa-filter"></i>
 				</button>
 				<ul class="dropdown-menu">
 					<li class="header">Apply Photo Search Filters</li>
+					<li>
+						<span ng-repeat="link in idPhotosCtrl.breadCrumbList">
+							<a ng-click="idPhotosCtrl.selectFolder(link)">
+								{{link.text}}
+							</a>
+							<span ng-show="!$last">></span>
+						</span>						
+					</li>
+					<li>
+						<div class="row">
+						  <div class="col-xs-3" ng-repeat="folder in idPhotosCtrl.treeData">
+						  	<a ng-click="idPhotosCtrl.selectFolder(folder)">
+						  		{{folder.text}}
+						  	</a>
+						  </div>
+						</div>
+					</li>
 					<!-- <li>
 						<ui-select ng-model="idPhotosCtrl.deployment.selected" on-select="idPhotosCtrl.deploymentSelected($item)" theme="select2" style="width: 300px;">
 							<ui-select-match placeholder="Select a deployment location">{{$select.selected.name}}</ui-select-match>
@@ -34,10 +51,10 @@
 						      <span ng-bind-html="deployment.name | highlight: $select.search"></span>
 						    </ui-select-choices>
 						</ui-select>
-					</li> -->
+					</li>
 					<li>
 						<div id="tree"></div>
-					</li>
+					</li> -->
 					<li class="footer"></li>
 				</ul>
 			</div>
