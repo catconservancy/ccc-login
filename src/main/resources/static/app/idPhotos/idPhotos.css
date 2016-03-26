@@ -27,3 +27,7 @@
 #filterDropdown a {
 	cursor: pointer;
 }
+
+#filterDropdown a {
+	margin-bottom: 10px;
+}

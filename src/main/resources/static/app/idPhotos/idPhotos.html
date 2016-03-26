@@ -23,38 +23,29 @@
 
 			<div class="btn-group" id="filterDropdown">
 				<button type="button" class="btn btn-box-tool" data-toggle="dropdown" title="Filters">
-					<i class="fa fa-filter"></i>
+					Apply Photo Search Filters <i class="fa fa-filter"></i>
 				</button>
 				<ul class="dropdown-menu">
-					<li class="header">Apply Photo Search Filters</li>
 					<li>
-						<span ng-repeat="link in idPhotosCtrl.breadCrumbList">
-							<a ng-click="idPhotosCtrl.selectFolder(link)">
-								{{link.text}}
-							</a>
-							<span ng-show="!$last">></span>
-						</span>						
-					</li>
-					<li>
-						<div class="row">
+						<fieldset><legend>Deployment Location Folders</legend>
+						  <div class="col-xs-12" style="padding: 0px 0px 5px 5px;" ng-show="idPhotosCtrl.breadCrumbList.length">
+						    Current Selection: 
+						    <span ng-repeat="link in idPhotosCtrl.breadCrumbList">
+						      <span ng-show="$index > 0">
+								<a ng-click="idPhotosCtrl.selectFolder(link)">
+									{{link.text}}
+								</a>
+								<span ng-show="!$last">></span>
+							  </span>
+							</span>
+						  </div>
 						  <div class="col-xs-3" ng-repeat="folder in idPhotosCtrl.treeData">
 						  	<a ng-click="idPhotosCtrl.selectFolder(folder)">
-						  		{{folder.text}}
+						  		<i class="fa fa-folder-o"></i> {{folder.text}}
 						  	</a>
 						  </div>
-						</div>
+						</fieldset>
 					</li>
-					<!-- <li>
-						<ui-select ng-model="idPhotosCtrl.deployment.selected" on-select="idPhotosCtrl.deploymentSelected($item)" theme="select2" style="width: 300px;">
-							<ui-select-match placeholder="Select a deployment location">{{$select.selected.name}}</ui-select-match>
-						    <ui-select-choices repeat="deployment in idPhotosCtrl.deployments | filter: $select.search">
-						      <span ng-bind-html="deployment.name | highlight: $select.search"></span>
-						    </ui-select-choices>
-						</ui-select>
-					</li>
-					<li>
-						<div id="tree"></div>
-					</li> -->
 					<li class="footer"></li>
 				</ul>
 			</div>
@@ -65,7 +56,10 @@
               <i class="fa fa-times"></i></button>
           </div>
         </div>
-        <div class="box-body">
+        <div class="box-body" ng-show="!idPhotosCtrl.photos.length">
+        	No photos found for the selected Search Filters.
+        </div>
+        <div class="box-body" ng-show="idPhotosCtrl.photos.length">
             <!-- thumb navigation carousel -->
             <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
 
