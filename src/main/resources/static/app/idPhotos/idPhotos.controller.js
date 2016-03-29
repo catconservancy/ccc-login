@@ -2,15 +2,16 @@
     angular.module('CCC')
         .controller('IdPhotosController', IdPhotosController);
 
-    IdPhotosController.$inject = ['$log', '$scope', 'Species', 'Dropbox'];
+    IdPhotosController.$inject = ['$log', '$scope', 'Species', 'DetectionDetails', 'Dropbox'];
 
-    function IdPhotosController($log, $scope, Species, Dropbox) {
+    function IdPhotosController($log, $scope, Species, DetectionDetails, Dropbox) {
         var vm = this;
         vm.photos = [];
         vm.selectedPhoto = {};
         vm.selectedFolder = {};
         vm.breadCrumbList = [];
         vm.speciesList = [];
+        vm.detectionDetailsList = [];
         vm.fileList = [];
         vm.treeData = [];
 
@@ -18,6 +19,7 @@
         vm.thumbClass = thumbClass;
         vm.selectFolder = selectFolder;
         vm.splitFolder = splitFolder;
+        vm.onSelectSpeciesCallback = onSelectSpeciesCallback;
 
         Dropbox.query({},function(data) {
         	for (i = 0; i < data.length; i++) {
@@ -83,6 +85,8 @@
             	
                 vm.photos[0].selected = true;
                 vm.selectedPhoto = vm.photos[0];
+                if (!vm.selectedPhoto.detection)
+                	vm.selectedPhoto.detection = {}; 
 	        });
         }
         
@@ -138,6 +142,16 @@
 	                }
 	            }
         	});
+        }
+        
+        function onSelectSpeciesCallback(item, model) {
+        	console.log("item",item);
+        	console.log("model",model);
+
+            DetectionDetails.findBySpeciesId({id: item.id}, function(data) {
+                vm.detectionDetailsList = data;
+                console.log("vm.detectionDetailsList", data);
+            });
         }
 
     }

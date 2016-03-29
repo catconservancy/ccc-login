@@ -100,9 +100,11 @@
 
             <!-- species search bar -->
             <div class="row">
-              <div class="col-md-12">
-                <ui-select autofocus="true" multiple ng-model="idPhotosCtrl.selectedPhoto.species" theme="select2" ng-disabled="disabled" style="width: 97%; margin:15px">
-                  <ui-select-match placeholder="Select species">{{$item.commonName}} &lt;{{$item.latinName}}&gt;</ui-select-match>
+              <div class="col-md-3">
+                <ui-select id="speciesSelect" autofocus="true" ng-model="idPhotosCtrl.selectedPhoto.detection.species" 
+                			theme="select2" ng-disabled="disabled" style="width: 97%; margin:15px"
+                			on-select="idPhotosCtrl.onSelectSpeciesCallback($item, $model)" >
+                  <ui-select-match placeholder="Select species">{{$select.selected.commonName}} &lt;{{$select.selected.latinName}}&gt;</ui-select-match>
                   <ui-select-choices repeat="species in idPhotosCtrl.speciesList | propsFilter: {commonName: $select.search, latinName: $select.search}">
                     <div ng-bind-html="species.commonName | highlight: $select.search"></div>
                     <small>
@@ -111,7 +113,21 @@
                     </small>
                   </ui-select-choices>
                 </ui-select>
-                <!--<p>Selected: {{idPhotosCtrl.selectedPhoto.species}}</p>-->
+              </div>
+              <div class="col-md-3">
+                <ui-select id="detectionSelect" autofocus="false" ng-model="idPhotosCtrl.selectedPhoto.detection.detectionDetail" 
+                			theme="select2" ng-disabled="disabled" style="width: 97%; margin:15px">
+                  <ui-select-match placeholder="Select detection details">{{$select.selected.detailText}}</ui-select-match>
+                  <ui-select-choices repeat="detectionDetail in idPhotosCtrl.detectionDetailsList | propsFilter: {detailText: $select.search}">
+                    <div ng-bind-html="detectionDetail.detailText | highlight: $select.search"></div>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+              <div class="col-md-1">
+				<input type="number" name="individuals" ng-model="idPhotosCtrl.selectedPhoto.detection.individuals" min="0" max="99" required>
+              </div>
+              <div class="col-md-5">
+                <input type="text" name="comments" ng-model="idPhotosCtrl.selectedPhoto.detection.comments" ng-trim="false">
               </div>
             </div>
             <!--/species search bar -->

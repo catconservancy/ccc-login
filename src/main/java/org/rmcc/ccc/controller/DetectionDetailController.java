@@ -27,6 +27,11 @@ public class DetectionDetailController {
 	DetectionDetail findById(@PathVariable Integer detectionId) {
 		return detectionDetailRepository.findOne(detectionId);
 	}
+	
+	@RequestMapping(value = "/species/{speciesId}", method = RequestMethod.GET)
+	List<DetectionDetail> findBySpeciesId(@PathVariable Integer speciesId) {
+		return detectionDetailRepository.findBySpeciesId(speciesId);
+	}
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public DetectionDetail update(@RequestBody DetectionDetail detectionDetail) {
