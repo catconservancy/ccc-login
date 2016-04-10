@@ -2,9 +2,9 @@
     angular.module('CCC')
         .controller('IdPhotosController', IdPhotosController);
 
-    IdPhotosController.$inject = ['$log', '$scope', 'Species', 'DetectionDetails', 'Dropbox'];
+    IdPhotosController.$inject = ['$log', '$scope', 'Species', 'DetectionDetails', 'Detection', 'Dropbox'];
 
-    function IdPhotosController($log, $scope, Species, DetectionDetails, Dropbox) {
+    function IdPhotosController($log, $scope, Species, DetectionDetails, Detection, Dropbox) {
         var vm = this;
         vm.photos = [];
         vm.selectedPhoto = {};
@@ -19,6 +19,9 @@
         vm.thumbClass = thumbClass;
         vm.selectFolder = selectFolder;
         vm.splitFolder = splitFolder;
+        vm.saveDetection = saveDetection;
+        vm.removeDetection = removeDetection;
+        vm.addDetection = addDetection;
         vm.onSelectSpeciesCallback = onSelectSpeciesCallback;
 
         Dropbox.query({},function(data) {
@@ -81,12 +84,13 @@
             			vm.fileList.push(data[i]);
             		}
             	}
-            	$log.debug("vm.fileList", vm.fileList);
             	
-                vm.photos[0].selected = true;
-                vm.selectedPhoto = vm.photos[0];
-                if (!vm.selectedPhoto.detection)
-                	vm.selectedPhoto.detection = {}; 
+            	if (vm.photos.length) {
+	                vm.photos[0].selected = true;
+	                vm.selectedPhoto = vm.photos[0];
+	                if (!vm.selectedPhoto.detections)
+	                	vm.selectedPhoto.detections = [{}];
+            	}
 	        });
         }
         
@@ -137,6 +141,8 @@
 	                if (i === index) {
 	                    vm.selectedPhoto = vm.photos[i];
 	                    vm.photos[i].selected = true;
+	                    if (!vm.selectedPhoto.detections)
+	                    	vm.selectedPhoto.detections = [{}]; 
 	                } else {
 	                    vm.photos[i].selected = false;
 	                }
@@ -144,13 +150,43 @@
         	});
         }
         
-        function onSelectSpeciesCallback(item, model) {
-        	console.log("item",item);
-        	console.log("model",model);
+        function saveDetection(detection) {
+        	$log.debug("called saveDetection",detection);
+        	if (!detection.id) {
+                return Detection.save(detection, function(data) {
+                    $log.debug('save success', data);
+                    detection = data;
+                });
+        	} else {
+        		vm.entry = Detection.get({ id: detection.id }, function() {
+        			$log.debug("existing detection", detection);
+//        			vm.entry.commonName = data.commonName;
+//        			vm.entry.latinName = data.latinName;
+//        			vm.entry.shortcutKey = data.shortcutKey;
+//        			vm.entry.$update(function(species) {
+//        				$log.debug('update success');
+//        				Species.query(function(data) {
+//        					vm.species = data;
+//        				});
+//        			});
+        		});
+        	}
+        }
+        
+        function removeDetection(detection) {
+        	$log.debug("called removeDetection",detection);
+        }
+        
+        function addDetection() {
+        	$log.debug("called addDetection");
+        	vm.selectedPhoto.detections.push({});
+        }
+        
+        function onSelectSpeciesCallback(item) {
 
             DetectionDetails.findBySpeciesId({id: item.id}, function(data) {
-                vm.detectionDetailsList = data;
-                console.log("vm.detectionDetailsList", data);
+            	item.detectionDetailsList = data;
+                console.log("vm.selectedPhoto.detectionDetailsList", data);
             });
         }
 

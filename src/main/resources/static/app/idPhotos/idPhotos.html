@@ -99,10 +99,16 @@
             <!--/main slider carousel-->
 
             <!-- species search bar -->
-            <div class="row">
+            <div class="row" ng-show="idPhotosCtrl.photos.length" style="margin-top:15px">
+              <div class="col-md-3"><label for="speciesSelect" style="margin-left:15px">Species</label></div>
+              <div class="col-md-3"><label for="detectionSelect" style="margin-left:15px">Detail</label></div>
+              <div class="col-md-1"><label for="individuals" style="margin-left:15px">Individuals</label></div>
+              <div class="col-md-5"><label for="comments" style="margin-left:15px">Comments</label></div>
+            </div>
+            <div class="row" ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections" style="margin-top:5px">
               <div class="col-md-3">
-                <ui-select id="speciesSelect" autofocus="true" ng-model="idPhotosCtrl.selectedPhoto.detection.species" 
-                			theme="select2" ng-disabled="disabled" style="width: 97%; margin:15px"
+                <ui-select id="speciesSelect" autofocus="true" ng-model="detection.species" 
+                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:15px"
                 			on-select="idPhotosCtrl.onSelectSpeciesCallback($item, $model)" >
                   <ui-select-match placeholder="Select species">{{$select.selected.commonName}} &lt;{{$select.selected.latinName}}&gt;</ui-select-match>
                   <ui-select-choices repeat="species in idPhotosCtrl.speciesList | propsFilter: {commonName: $select.search, latinName: $select.search}">
@@ -115,19 +121,28 @@
                 </ui-select>
               </div>
               <div class="col-md-3">
-                <ui-select id="detectionSelect" autofocus="false" ng-model="idPhotosCtrl.selectedPhoto.detection.detectionDetail" 
-                			theme="select2" ng-disabled="disabled" style="width: 97%; margin:15px">
+                <ui-select id="detectionSelect" autofocus="false" ng-model="detection.detectionDetail" 
+                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:15px">
                   <ui-select-match placeholder="Select detection details">{{$select.selected.detailText}}</ui-select-match>
-                  <ui-select-choices repeat="detectionDetail in idPhotosCtrl.detectionDetailsList | propsFilter: {detailText: $select.search}">
+                  <ui-select-choices repeat="detectionDetail in detection.species.detectionDetailsList | propsFilter: {detailText: $select.search}">
                     <div ng-bind-html="detectionDetail.detailText | highlight: $select.search"></div>
                   </ui-select-choices>
                 </ui-select>
               </div>
               <div class="col-md-1">
-				<input type="number" name="individuals" ng-model="idPhotosCtrl.selectedPhoto.detection.individuals" min="0" max="99" required>
+				<input type="number" style="width: 97%; margin-left:15px" name="individuals" ng-model="detection.individuals" min="0" max="99" required>
               </div>
-              <div class="col-md-5">
-                <input type="text" name="comments" ng-model="idPhotosCtrl.selectedPhoto.detection.comments" ng-trim="false">
+              <div class="col-md-4">
+                <input type="textarea" style="width: 97%; margin-left:15px" name="comments" ng-model="detection.comments" ng-trim="false">
+              </div>
+              <div class="col-md-1" style="margin-top:-5px">
+              
+				<button class="btn btn-primary" ng-click="idPhotosCtrl.saveDetection(detection)"><i class="fa fa-save"></i></button>
+				<button class="btn btn-danger" mwl-confirm data-title="Confirm" message="Are you <b>sure</b> you want to delete this detection?"
+				        placement="top" on-confirm="idPhotosCtrl.removeDetection(detection)" confirm-button-type="danger"
+		                cancel-button-type="default">
+		        	<i class="fa fa-trash-o"></i>
+		        </button>
               </div>
             </div>
             <!--/species search bar -->
@@ -135,6 +150,7 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
+          <button class="btn btn-default" ng-click="idPhotosCtrl.addDetection()" ng-show="idPhotosCtrl.photos.length"><i class="fa fa-plus-square-o"></i> Add Detection</button>
         </div>
         <!-- /.box-footer-->
       </div>

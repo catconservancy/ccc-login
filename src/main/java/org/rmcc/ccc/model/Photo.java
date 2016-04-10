@@ -31,6 +31,9 @@ public class Photo implements Serializable {
 	@Column(name="file_path", length=255)
 	private String filePath;
 
+	@Column(name="dropbox_path", length=4000)
+	private String dropboxPath;
+
 	@Column(name="highlight")
 	private Boolean highlight;
 
@@ -74,6 +77,14 @@ public class Photo implements Serializable {
 
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
+	}
+
+	public String getDropboxPath() {
+		return dropboxPath;
+	}
+
+	public void setDropboxPath(String dropboxPath) {
+		this.dropboxPath = dropboxPath;
 	}
 
 	public Boolean getHighlight() {
