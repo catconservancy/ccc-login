@@ -1,14 +1,19 @@
 package org.rmcc.ccc.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.rmcc.ccc.model.CccMetadata;
+import org.rmcc.ccc.model.DetectionDetail;
 import org.rmcc.ccc.model.Photo;
 import org.rmcc.ccc.repository.PhotoRepository;
 import org.rmcc.ccc.service.user.DropboxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,8 +40,31 @@ public class PhotoController {
 	}	
 
 	@RequestMapping(method = RequestMethod.GET)
-    public List<Photo> findAll() {
-        return (List<Photo>) photoRepository.findAll();
+    public List<Photo> findAll(@RequestParam Map<String,String> params) throws DbxException, IOException {
+		List<Photo> photos = new ArrayList<Photo>();
+		
+		// TODO: move this logic to a PhotService
+		
+		List<Metadata> dropboxMetadata = new ArrayList<Metadata>();
+		if (params.get("path") != null) {
+			dropboxMetadata = dropboxService.getFolderContentsByPath(params.get("path"));
+		} else {		
+			dropboxMetadata = dropboxService.getFolderContentsByPath(UNCATALOGED_ROOT);
+		}
+		
+		for (Metadata m : dropboxMetadata) {
+			CccMetadata metadata = (CccMetadata) m;
+			Optional<Photo> optPhoto = photoRepository.findOneByDropboxPath(m.getPathLower());
+			Photo photo = optPhoto.isPresent() ? optPhoto.get() : new Photo();
+			photo.setMetadata(metadata);
+			photo.setDropboxPath(metadata.getPathLower());
+			if (!metadata.isDir() && !optPhoto.isPresent()) {
+				photo = photoRepository.save(photo);
+			}
+			photos.add(photo);
+		}
+		
+        return photos;
     }
 	
 	@RequestMapping(value = "/{photoId}", method = RequestMethod.GET)
@@ -44,11 +72,14 @@ public class PhotoController {
 		return photoRepository.findOne(photoId);
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
-    public List<Metadata> findAll(@RequestParam Map<String,String> params) throws DbxException, IOException {
-		if (params.get("path") != null) {
-			return (List<Metadata>) dropboxService.getFolderContentsByPath(params.get("path"));
-		}		
-		return (List<Metadata>) dropboxService.getFolderContentsByPath(UNCATALOGED_ROOT);
-    }
+	@RequestMapping(method = RequestMethod.PUT)
+	public Photo update(@RequestBody Photo photo) {
+		return photoRepository.save(photo);
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public Photo save(@RequestBody Photo photo) {
+		photo.setId(null);
+		return photoRepository.save(photo);
+	}
 }

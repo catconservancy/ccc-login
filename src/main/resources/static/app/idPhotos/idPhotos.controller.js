@@ -2,9 +2,9 @@
     angular.module('CCC')
         .controller('IdPhotosController', IdPhotosController);
 
-    IdPhotosController.$inject = ['$log', '$scope', 'Species', 'DetectionDetails', 'Detection', 'Dropbox'];
+    IdPhotosController.$inject = ['$log', '$scope', 'Species', 'DetectionDetails', 'Detection', 'PhotosService'];
 
-    function IdPhotosController($log, $scope, Species, DetectionDetails, Detection, Dropbox) {
+    function IdPhotosController($log, $scope, Species, DetectionDetails, Detection, PhotosService) {
         var vm = this;
         vm.photos = [];
         vm.selectedPhoto = {};
@@ -24,17 +24,17 @@
         vm.addDetection = addDetection;
         vm.onSelectSpeciesCallback = onSelectSpeciesCallback;
 
-        Dropbox.query({},function(data) {
+        PhotosService.query({},function(data) {
         	for (i = 0; i < data.length; i++) {
-        		if (data[i].dir) {
+        		if (data[i].metadata.dir) {
         			vm.treeData.push({
-        				text: data[i].name,
-        				path: data[i].pathLower,
+        				text: data[i].metadata.name,
+        				path: data[i].metadata.pathLower,
         				state: {expanded: false},
         				nodes: [{}]
         			});
         		} else {
-        			vm.fileList.push(data[i]);
+        			vm.fileList.push(data[i].metadata);
         		}
         	}
         	$log.debug("vm.fileList", vm.fileList);
@@ -64,24 +64,24 @@
         	splitFolder();
     		vm.fileList = [];
             vm.treeData = [];
-        	Dropbox.query({path: folder.path},function(data) {
+        	PhotosService.query({path: folder.path},function(data) {
         		vm.photos = [];
             	for (i = 0; i < data.length; i++) {
-            		if (data[i].dir) {
+            		if (data[i].metadata.dir) {
             			vm.treeData.push({
-            				text: data[i].name,
-            				path: data[i].pathLower,
+            				text: data[i].metadata.name,
+            				path: data[i].metadata.pathLower,
             				state: {expanded: false},
             				nodes: [{}]
             			});
             		} else {
             			vm.photos.push({
                             id: 1,
-                            thumbSrc: 'http://localhost:8080/ccc/api/dropbox/thumb?path='+data[i].pathLower,
-                            src: 'http://localhost:8080/ccc/api/dropbox/image?path='+data[i].pathLower,
+                            thumbSrc: 'http://localhost:8080/ccc/api/dropbox/thumb?path='+data[i].metadata.pathLower,
+                            src: 'http://localhost:8080/ccc/api/dropbox/image?path='+data[i].metadata.pathLower,
                             species: []
                         });
-            			vm.fileList.push(data[i]);
+            			vm.fileList.push(data[i].metadata);
             		}
             	}
             	
@@ -151,26 +151,31 @@
         }
         
         function saveDetection(detection) {
-        	$log.debug("called saveDetection",detection);
-        	if (!detection.id) {
-                return Detection.save(detection, function(data) {
-                    $log.debug('save success', data);
-                    detection = data;
-                });
-        	} else {
-        		vm.entry = Detection.get({ id: detection.id }, function() {
-        			$log.debug("existing detection", detection);
-//        			vm.entry.commonName = data.commonName;
-//        			vm.entry.latinName = data.latinName;
-//        			vm.entry.shortcutKey = data.shortcutKey;
-//        			vm.entry.$update(function(species) {
-//        				$log.debug('update success');
-//        				Species.query(function(data) {
-//        					vm.species = data;
-//        				});
-//        			});
-        		});
-        	}
+//        	$log.debug("called saveDetection",detection);
+//        	vm.selectedPhoto.detections.push(detection);
+        	PhotosService.save(vm.selectedPhoto, function(data) {
+        		vm.selectedPhoto = data;
+        	});
+//        	detection.photo = vm.selectedPhoto;
+//        	if (!detection.id) {
+//                return Detection.save(detection, function(data) {
+//                    $log.debug('save success', data);
+//                    detection = data;
+//                });
+//        	} else {
+//        		vm.entry = Detection.get({ id: detection.id }, function() {
+//        			$log.debug("existing detection", detection);
+////        			vm.entry.commonName = data.commonName;
+////        			vm.entry.latinName = data.latinName;
+////        			vm.entry.shortcutKey = data.shortcutKey;
+////        			vm.entry.$update(function(species) {
+////        				$log.debug('update success');
+////        				Species.query(function(data) {
+////        					vm.species = data;
+////        				});
+////        			});
+//        		});
+//        	}
         }
         
         function removeDetection(detection) {

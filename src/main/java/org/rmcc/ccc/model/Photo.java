@@ -2,6 +2,10 @@ package org.rmcc.ccc.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.dropbox.core.v2.files.Metadata;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -40,8 +44,8 @@ public class Photo implements Serializable {
 	@Column(name="image_date")
 	private Timestamp imageDate;
 
-	@Column(name="species", length=255)
-	private String species;
+//	@Column(name="species", length=255)
+//	private String species;
 
 	//bi-directional many-to-one association to Deployment
 	@ManyToOne
@@ -51,6 +55,9 @@ public class Photo implements Serializable {
 	//bi-directional many-to-one association to Detection
 	@OneToMany(mappedBy="photo")
 	private List<Detection> detections;
+	
+	@Transient
+	private Metadata metadata;
 
 	public Photo() {
 	}
@@ -103,13 +110,13 @@ public class Photo implements Serializable {
 		this.imageDate = imageDate;
 	}
 
-	public String getSpecies() {
-		return this.species;
-	}
-
-	public void setSpecies(String species) {
-		this.species = species;
-	}
+//	public String getSpecies() {
+//		return this.species;
+//	}
+//
+//	public void setSpecies(String species) {
+//		this.species = species;
+//	}
 
 	public Deployment getDeployment() {
 		return this.deployment;
@@ -133,6 +140,14 @@ public class Photo implements Serializable {
 
 	public void setDetections(List<Detection> detections) {
 		this.detections = detections;
+	}
+
+	public Metadata getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(Metadata metadata) {
+		this.metadata = metadata;
 	}
 
 }
