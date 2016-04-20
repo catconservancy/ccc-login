@@ -4,7 +4,9 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.dropbox.core.v2.files.Metadata;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -50,10 +52,12 @@ public class Photo implements Serializable {
 	//bi-directional many-to-one association to Deployment
 	@ManyToOne
 	@JoinColumn(name="deployment_id")
+	@JsonManagedReference(value="photo-deployment")
 	private Deployment deployment;
 
 	//bi-directional many-to-one association to Detection
-	@OneToMany(mappedBy="photo")
+	@OneToMany(mappedBy="photo", cascade = {CascadeType.PERSIST})
+	@JsonBackReference(value="photo-detection")
 	private List<Detection> detections;
 	
 	@Transient

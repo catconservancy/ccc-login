@@ -46,15 +46,19 @@ public class Species implements Serializable, BaseModel {
 
 	//bi-directional many-to-one association to CameraMonitor
 	@OneToMany(mappedBy="species")
+	@JsonIgnore
 	private List<CameraMonitor> cameraMonitors;
 
 	//bi-directional many-to-one association to Detection
 	@OneToMany(mappedBy="species")
+	@JsonIgnore
+	@JsonBackReference(value="detection-species")
 	private List<Detection> detections;
 
 	//bi-directional many-to-one association to DetectionDetails
 	@OneToMany(mappedBy="species")
 	@JsonIgnore
+	@JsonBackReference(value="species-detail")
 	private List<DetectionDetail> detectionDetails;
 
 	public Species() {

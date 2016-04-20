@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the "Detections" database table.
@@ -30,21 +34,25 @@ public class Detection implements Serializable {
 
 	//bi-directional many-to-one association to IndividualID
 	@OneToMany(mappedBy="detection")
+	@JsonBackReference(value="detection-indiv")
 	private List<IndividualID> IndividualIds;
 
 	//bi-directional many-to-one association to Species
 	@ManyToOne
 	@JoinColumn(name="species_id")
+	@JsonManagedReference(value="detection-species")
 	private Species species;
 
 	//bi-directional many-to-one association to DetectionDetails
 	@ManyToOne
 	@JoinColumn(name="detail_id")
+	@JsonManagedReference(value="detection-detail")
 	private DetectionDetail detectionDetail;
 
 	//bi-directional many-to-one association to Photo
 	@ManyToOne
 	@JoinColumn(name="image_id")
+	@JsonManagedReference(value="photo-detection")
 	private Photo photo;
 
 	public Detection() {

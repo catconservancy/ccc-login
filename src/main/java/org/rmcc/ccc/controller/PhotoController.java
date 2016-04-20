@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.rmcc.ccc.model.CccMetadata;
+import org.rmcc.ccc.model.Detection;
 import org.rmcc.ccc.model.DetectionDetail;
 import org.rmcc.ccc.model.Photo;
 import org.rmcc.ccc.repository.PhotoRepository;
@@ -80,6 +81,9 @@ public class PhotoController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Photo save(@RequestBody Photo photo) {
 		photo.setId(null);
+		for (Detection d: photo.getDetections()) {
+			d.setPhoto(photo);
+		}
 		return photoRepository.save(photo);
 	}
 }

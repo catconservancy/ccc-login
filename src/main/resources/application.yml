@@ -13,6 +13,8 @@ spring:
     port: 25
     username: test
     password: test
+  jpa:
+    show-sql: true
 
 security:
   basic:

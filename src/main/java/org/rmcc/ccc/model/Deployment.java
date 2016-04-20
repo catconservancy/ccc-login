@@ -2,6 +2,9 @@ package org.rmcc.ccc.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -93,6 +96,7 @@ public class Deployment implements Serializable {
 
 	//bi-directional many-to-one association to CameraMonitor
 	@OneToMany(mappedBy="deployment")
+	@JsonBackReference
 	private List<CameraMonitor> cameraMonitors;
 
 	//bi-directional many-to-one association to StudyArea
@@ -102,6 +106,7 @@ public class Deployment implements Serializable {
 
 	//bi-directional many-to-one association to Photo
 	@OneToMany(mappedBy="deployment")
+	@JsonBackReference(value="photo-deployment")
 	private List<Photo> photos;
 
 	public Deployment() {

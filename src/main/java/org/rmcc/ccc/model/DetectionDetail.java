@@ -3,6 +3,7 @@ package org.rmcc.ccc.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.List;
@@ -33,10 +34,12 @@ public class DetectionDetail implements Serializable {
 	//bi-directional many-to-one association to Species
 	@ManyToOne
 	@JoinColumn(name="species_id")
+	@JsonManagedReference(value="species-detail")
 	private Species species;
 
 	//bi-directional many-to-one association to Detection
 	@OneToMany(mappedBy="detectionDetail")
+	@JsonBackReference(value="detection-detail")
 	private List<Detection> detections;
 
 	public DetectionDetail() {

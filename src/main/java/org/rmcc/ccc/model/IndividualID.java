@@ -3,6 +3,8 @@ package org.rmcc.ccc.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the "IndividualIDs" database table.
@@ -26,6 +28,7 @@ public class IndividualID implements Serializable {
 	//bi-directional many-to-one association to Detection
 	@ManyToOne
 	@JoinColumn(name="detection_id")
+	@JsonManagedReference(value="detection-indiv")
 	private Detection detection;
 
 	public IndividualID() {
