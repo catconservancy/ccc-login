@@ -1,65 +1,74 @@
 package org.rmcc.ccc.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import com.dropbox.core.v2.files.Metadata;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.dropbox.core.v2.files.Metadata;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * The persistent class for the "Photos" database table.
  * 
  */
 @Entity
-@Table(name="photos")
-@NamedQuery(name="Photo.findAll", query="SELECT p FROM Photo p")
+@Table(name = "photos")
+@NamedQuery(name = "Photo.findAll", query = "SELECT p FROM Photo p")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Photo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PHOTOS_IMAGEID_GENERATOR", sequenceName="PHOTOS_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PHOTOS_IMAGEID_GENERATOR")
-	@Column(name="id", unique=true, nullable=false)
+	@SequenceGenerator(name = "PHOTOS_IMAGEID_GENERATOR", sequenceName = "PHOTOS_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PHOTOS_IMAGEID_GENERATOR")
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 
-	@Column(name="direction_of_travel", length=255)
+	@Column(name = "direction_of_travel", length = 255)
 	private String directionOfTravel;
 
-	@Column(name="file_name", length=255)
+	@Column(name = "file_name", length = 255)
 	private String fileName;
 
-	@Column(name="file_path", length=255)
+	@Column(name = "file_path", length = 255)
 	private String filePath;
 
-	@Column(name="dropbox_path", length=4000)
+	@Column(name = "dropbox_path", length = 4000)
 	private String dropboxPath;
 
-	@Column(name="highlight")
+	@Column(name = "highlight")
 	private Boolean highlight;
 
-	@Column(name="image_date")
+	@Column(name = "image_date")
 	private Timestamp imageDate;
 
-//	@Column(name="species", length=255)
-//	private String species;
+	// @Column(name="species", length=255)
+	// private String species;
 
-	//bi-directional many-to-one association to Deployment
+	// bi-directional many-to-one association to Deployment
 	@ManyToOne
-	@JoinColumn(name="deployment_id")
-	@JsonManagedReference(value="photo-deployment")
+	@JoinColumn(name = "deployment_id")
 	private Deployment deployment;
 
-	//bi-directional many-to-one association to Detection
-	@OneToMany(mappedBy="photo", cascade = {CascadeType.PERSIST})
-	@JsonBackReference(value="photo-detection")
+	// bi-directional many-to-one association to Detection
+	@OneToMany(mappedBy = "photo", cascade = { CascadeType.PERSIST })
 	private List<Detection> detections;
-	
+
 	@Transient
 	private Metadata metadata;
 
@@ -114,13 +123,13 @@ public class Photo implements Serializable {
 		this.imageDate = imageDate;
 	}
 
-//	public String getSpecies() {
-//		return this.species;
-//	}
-//
-//	public void setSpecies(String species) {
-//		this.species = species;
-//	}
+	// public String getSpecies() {
+	// return this.species;
+	// }
+	//
+	// public void setSpecies(String species) {
+	// this.species = species;
+	// }
 
 	public Deployment getDeployment() {
 		return this.deployment;
@@ -152,6 +161,21 @@ public class Photo implements Serializable {
 
 	public void setMetadata(Metadata metadata) {
 		this.metadata = metadata;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (id == null || obj == null || getClass() != obj.getClass())
+			return false;
+		Photo that = (Photo) obj;
+		return id.equals(that.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id == null ? 0 : id.hashCode();
 	}
 
 }

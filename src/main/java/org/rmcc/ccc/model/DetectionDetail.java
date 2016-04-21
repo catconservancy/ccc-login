@@ -4,7 +4,9 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ import java.util.List;
 @Entity
 @Table(name="detection_details")
 @NamedQuery(name="DetectionDetail.findAll", query="SELECT d FROM DetectionDetail d")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DetectionDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -34,12 +37,10 @@ public class DetectionDetail implements Serializable {
 	//bi-directional many-to-one association to Species
 	@ManyToOne
 	@JoinColumn(name="species_id")
-	@JsonManagedReference(value="species-detail")
 	private Species species;
 
 	//bi-directional many-to-one association to Detection
 	@OneToMany(mappedBy="detectionDetail")
-	@JsonBackReference(value="detection-detail")
 	private List<Detection> detections;
 
 	public DetectionDetail() {

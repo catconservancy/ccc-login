@@ -1,12 +1,23 @@
 package org.rmcc.ccc.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 /**
@@ -16,6 +27,7 @@ import java.util.List;
 @Entity
 @Table(name="deployments")
 @NamedQuery(name="Deployment.findAll", query="SELECT d FROM Deployment d")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Deployment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -96,7 +108,6 @@ public class Deployment implements Serializable {
 
 	//bi-directional many-to-one association to CameraMonitor
 	@OneToMany(mappedBy="deployment")
-	@JsonBackReference
 	private List<CameraMonitor> cameraMonitors;
 
 	//bi-directional many-to-one association to StudyArea
@@ -106,7 +117,6 @@ public class Deployment implements Serializable {
 
 	//bi-directional many-to-one association to Photo
 	@OneToMany(mappedBy="deployment")
-	@JsonBackReference(value="photo-deployment")
 	private List<Photo> photos;
 
 	public Deployment() {

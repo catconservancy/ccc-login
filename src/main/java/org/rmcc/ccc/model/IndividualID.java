@@ -28,7 +28,6 @@ public class IndividualID implements Serializable {
 	//bi-directional many-to-one association to Detection
 	@ManyToOne
 	@JoinColumn(name="detection_id")
-	@JsonManagedReference(value="detection-indiv")
 	private Detection detection;
 
 	public IndividualID() {

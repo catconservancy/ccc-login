@@ -19,7 +19,7 @@
         vm.thumbClass = thumbClass;
         vm.selectFolder = selectFolder;
         vm.splitFolder = splitFolder;
-        vm.saveDetection = saveDetection;
+        vm.saveSelectedPhoto = saveSelectedPhoto;
         vm.removeDetection = removeDetection;
         vm.addDetection = addDetection;
         vm.onSelectSpeciesCallback = onSelectSpeciesCallback;
@@ -75,12 +75,7 @@
             				nodes: [{}]
             			});
             		} else {
-            			vm.photos.push({
-                            id: 1,
-                            thumbSrc: 'http://localhost:8080/ccc/api/dropbox/thumb?path='+data[i].metadata.pathLower,
-                            src: 'http://localhost:8080/ccc/api/dropbox/image?path='+data[i].metadata.pathLower,
-                            species: []
-                        });
+            			vm.photos.push(data[i]);
             			vm.fileList.push(data[i].metadata);
             		}
             	}
@@ -150,32 +145,34 @@
         	});
         }
         
-        function saveDetection(detection) {
-//        	$log.debug("called saveDetection",detection);
-//        	vm.selectedPhoto.detections.push(detection);
-        	PhotosService.save(vm.selectedPhoto, function(data) {
-        		vm.selectedPhoto = data;
-        	});
-//        	detection.photo = vm.selectedPhoto;
-//        	if (!detection.id) {
-//                return Detection.save(detection, function(data) {
-//                    $log.debug('save success', data);
-//                    detection = data;
-//                });
-//        	} else {
-//        		vm.entry = Detection.get({ id: detection.id }, function() {
-//        			$log.debug("existing detection", detection);
-////        			vm.entry.commonName = data.commonName;
-////        			vm.entry.latinName = data.latinName;
-////        			vm.entry.shortcutKey = data.shortcutKey;
-////        			vm.entry.$update(function(species) {
-////        				$log.debug('update success');
-////        				Species.query(function(data) {
-////        					vm.species = data;
-////        				});
-////        			});
-//        		});
-//        	}
+        function saveSelectedPhoto() {
+//        	PhotosService.save(vm.selectedPhoto, function(data) {
+//        		vm.selectedPhoto = data;
+//        	});
+        	$log.debug("called saveSelectedPhoto");
+        	if (!vm.selectedPhoto.id) {
+                return PhotosService.save(vm.selectedPhoto, function(data) {
+                    $log.debug('save success', data);
+                    vm.selectedPhoto = data;
+                });
+        	} else {
+        		vm.entry = PhotosService.get({ id: vm.selectedPhoto.id }, function() {
+        			$log.debug("existing photo", vm.selectedPhoto);
+        			$log.debug("vm.entry", vm.entry);
+        			vm.entry.id = vm.selectedPhoto.id;
+        			vm.entry.detections = vm.selectedPhoto.detections;
+        			vm.entry.selected = vm.selectedPhoto.selected;
+        			vm.entry.species = vm.selectedPhoto.species;
+        			vm.entry.src = vm.selectedPhoto.src;
+        			vm.entry.thumbSrc = vm.selectedPhoto.thumbSrc;
+        			vm.entry.$update(function(photo) {
+        				$log.debug('update success');
+//        				PhotosService.query(function(data) {
+//        					vm.selectedPhoto = data;
+//        				});
+        			});
+        		});
+        	}
         }
         
         function removeDetection(detection) {

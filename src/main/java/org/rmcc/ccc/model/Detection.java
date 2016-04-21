@@ -3,11 +3,20 @@ package org.rmcc.ccc.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 /**
@@ -17,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name="detections")
 @NamedQuery(name="Detection.findAll", query="SELECT d FROM Detection d")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Detection implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -34,25 +44,21 @@ public class Detection implements Serializable {
 
 	//bi-directional many-to-one association to IndividualID
 	@OneToMany(mappedBy="detection")
-	@JsonBackReference(value="detection-indiv")
 	private List<IndividualID> IndividualIds;
 
 	//bi-directional many-to-one association to Species
 	@ManyToOne
 	@JoinColumn(name="species_id")
-	@JsonManagedReference(value="detection-species")
 	private Species species;
 
 	//bi-directional many-to-one association to DetectionDetails
 	@ManyToOne
 	@JoinColumn(name="detail_id")
-	@JsonManagedReference(value="detection-detail")
 	private DetectionDetail detectionDetail;
 
 	//bi-directional many-to-one association to Photo
 	@ManyToOne
 	@JoinColumn(name="image_id")
-	@JsonManagedReference(value="photo-detection")
 	private Photo photo;
 
 	public Detection() {

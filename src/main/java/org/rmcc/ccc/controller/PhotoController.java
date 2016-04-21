@@ -59,7 +59,7 @@ public class PhotoController {
 			Photo photo = optPhoto.isPresent() ? optPhoto.get() : new Photo();
 			photo.setMetadata(metadata);
 			photo.setDropboxPath(metadata.getPathLower());
-			if (!metadata.isDir() && !optPhoto.isPresent()) {
+			if (!metadata.isDir()) {
 				photo = photoRepository.save(photo);
 			}
 			photos.add(photo);
@@ -75,14 +75,21 @@ public class PhotoController {
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public Photo update(@RequestBody Photo photo) {
-		return photoRepository.save(photo);
+		return savePhoto(photo);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public Photo save(@RequestBody Photo photo) {
 		photo.setId(null);
+		return savePhoto(photo);
+	}
+	
+	private Photo savePhoto(Photo photo) {
 		for (Detection d: photo.getDetections()) {
 			d.setPhoto(photo);
+			if (d.getDetectionDetail() != null) {
+				d.getDetectionDetail().addDetection(d);
+			}
 		}
 		return photoRepository.save(photo);
 	}
