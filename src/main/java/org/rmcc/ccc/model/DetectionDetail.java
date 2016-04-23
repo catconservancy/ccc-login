@@ -40,7 +40,7 @@ public class DetectionDetail implements Serializable {
 	private Species species;
 
 	//bi-directional many-to-one association to Detection
-	@OneToMany(mappedBy="detectionDetail")
+	@OneToMany(mappedBy="detectionDetail", cascade = CascadeType.ALL)
 	private List<Detection> detections;
 
 	public DetectionDetail() {

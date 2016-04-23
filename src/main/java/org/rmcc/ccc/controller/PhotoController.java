@@ -41,7 +41,8 @@ public class PhotoController {
 	}	
 
 	@RequestMapping(method = RequestMethod.GET)
-    public List<Photo> findAll(@RequestParam Map<String,String> params) throws DbxException, IOException {
+
+	public List<Photo> findAll(@RequestParam Map<String,String> params) throws DbxException, IOException {
 		List<Photo> photos = new ArrayList<Photo>();
 		
 		// TODO: move this logic to a PhotService

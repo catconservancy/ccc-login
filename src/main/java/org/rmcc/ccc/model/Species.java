@@ -3,6 +3,7 @@ package org.rmcc.ccc.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,17 +46,17 @@ public class Species implements Serializable, BaseModel {
 	private String shortcutKey;
 
 	//bi-directional many-to-one association to CameraMonitor
-	@OneToMany(mappedBy="species")
+	@OneToMany(mappedBy="species", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<CameraMonitor> cameraMonitors;
 
 	//bi-directional many-to-one association to Detection
-	@OneToMany(mappedBy="species")
+	@OneToMany(mappedBy="species", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Detection> detections;
 
 	//bi-directional many-to-one association to DetectionDetails
-	@OneToMany(mappedBy="species")
+	@OneToMany(mappedBy="species", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<DetectionDetail> detectionDetails;
 

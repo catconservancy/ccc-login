@@ -18,7 +18,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "postgres"})
 public class ApplicationStartup implements ApplicationListener<ContextRefreshedEvent> {
 	
 	private CsvFileReader csvFileReader;

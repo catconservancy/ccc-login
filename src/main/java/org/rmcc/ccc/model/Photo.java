@@ -66,7 +66,7 @@ public class Photo implements Serializable {
 	private Deployment deployment;
 
 	// bi-directional many-to-one association to Detection
-	@OneToMany(mappedBy = "photo", cascade = { CascadeType.PERSIST })
+	@OneToMany(mappedBy = "photo", cascade = CascadeType.ALL)
 	private List<Detection> detections;
 
 	@Transient
