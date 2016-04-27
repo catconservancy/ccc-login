@@ -62,6 +62,8 @@ public class PhotoController {
 			photo.setDropboxPath(metadata.getPathLower());
 			if (!metadata.isDir()) {
 				photo = photoRepository.save(photo);
+			} else {
+				//TODO: add logic to populate create deployment and set on photo.
 			}
 			photos.add(photo);
 		}
