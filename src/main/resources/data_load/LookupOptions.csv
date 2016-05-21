@@ -50,10 +50,10 @@ Rarely,humanVisitation
 <50m,distanceToRoad
 50m- 1/4 km,distanceToRoad
 >1/4 km,distanceToRoad
->1/4 km,roadType
->1/4 km,roadType
->1/4 km,roadType
->1/4 km,roadType
+4-wheel,roadType
+Gravel,roadType
+Paved,roadType
+Highway,roadType
 North,azimuth
 Northeast,azimuth
 East,azimuth

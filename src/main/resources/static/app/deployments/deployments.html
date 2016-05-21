@@ -53,7 +53,7 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label>OR</label>
-		                <button class="btn btn-default form-control" ng-click="deploymentsCtrl.add()"><i class="fa fa-plus-square-o"></i> Add Deployment Location</button>
+		                <button class="btn btn-primary form-control" ng-click="deploymentsCtrl.add()"><i class="fa fa-plus-square-o"></i> Add Deployment Location</button>
 		            </div>
 		        </div>
 			</div>
@@ -149,7 +149,7 @@
 						<ui-select id="timeOfDaySelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.timeOfDay" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.timeOfDay | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.timeOfDay | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -161,7 +161,7 @@
 						<ui-select id="dominantSubstrateSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.dominantSubstrate" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.dominantSubstrate | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.dominantSubstrate | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -173,7 +173,7 @@
 						<ui-select id="trailTypeSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.trailType" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.trailType | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.trailType | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -185,7 +185,7 @@
 						<ui-select id="positionOnSlopeSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.positionOnSlope" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.positionOnSlope | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.positionOnSlope | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -197,7 +197,7 @@
 						<ui-select id="habitatRuggednessSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.habitatRuggedness" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.habitatRuggedness | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.habitatRuggedness | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -211,7 +211,7 @@
 						<ui-select id="topographicFeatureSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.topographicFeature" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.topographicFeature | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.topographicFeature | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -223,7 +223,7 @@
 						<ui-select id="vegetationTypeSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.vegetationType" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.vegetationType | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.vegetationType | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -235,7 +235,7 @@
 						<ui-select id="rangelandUseSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.rangelandUse" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.rangelandUse | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.rangelandUse | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -247,7 +247,7 @@
 						<ui-select id="humanVisitationSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.humanVisitation" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.humanVisitation | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.humanVisitation | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -259,7 +259,7 @@
 						<ui-select id="distanceToHumanHabitatSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.distanceToHumanHabitat" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.distanceToHumanHabitat | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.distanceToHumanHabitat | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -273,7 +273,7 @@
 						<ui-select id="distanceToRoadSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.distanceToRoad" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.distanceToRoad | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.distanceToRoad | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -285,7 +285,7 @@
 						<ui-select id="roadTypeSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.roadType" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.roadType | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.roadType | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -297,7 +297,7 @@
 						<ui-select id="azimuthSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.azimuth" 
 	                			theme="bootstrap" style="width: 100%">
 		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
-		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.azimuth | propsFilter: {label: $select.search}">
+		                  <ui-select-choices repeat="option.label as option in deploymentsCtrl.lookupLists.azimuth | propsFilter: {label: $select.search}">
 		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
@@ -313,7 +313,11 @@
 			</div>
 		</div>
 		<!-- /.box-body -->
-		<div class="box-footer">Footer</div>
+		<div class="box-footer">
+			<div class="pull-right">
+				<button type="submit" class="btn btn-primary" ng-click="deploymentsCtrl.save()">save</button>
+			</div>
+		</div>
 		<!-- /.box-footer-->
 	</div>
 	<!-- /.box -->

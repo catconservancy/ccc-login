@@ -40,8 +40,10 @@
         vm.add = add;
         vm.onSelectDeploymentCallback = onSelectDeploymentCallback;
         vm.onSelectStudyAreaCallback = onSelectStudyAreaCallback;
+        vm.onSelectLookupOptionCallback = onSelectLookupOptionCallback;
         vm.startDateOpen = startDateOpen;
         vm.endDateOpen = endDateOpen;
+        vm.save = save;
         
         Deployments.query(function(data) {
         	vm.deployments = data
@@ -64,6 +66,10 @@
         function onSelectStudyAreaCallback(item) {
         	vm.selectedDeployment.studyArea = item;
         }
+        
+        function onSelectLookupOptionCallback(item) {
+        	vm.selectedDeployment[item.listCode] = item.label;
+        }
 
         function startDateOpen() {
         	vm.startDatePopup.opened = true;
@@ -71,6 +77,10 @@
 
         function endDateOpen() {
         	vm.endDatePopup.opened = true;
+        };
+
+        function save() {
+        	console.debug("TODO: Save deployment", vm.selectedDeployment);
         };
         
         function add() {
