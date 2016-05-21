@@ -82,12 +82,19 @@
         }
 
         function removeDetectionDetail(id) {
-            DetectionDetails.delete({ id: id }, function() {
-                $log.debug('Deleted from server');
-                DetectionDetails.query(function(data) {
-                    vm.detectionDetails = data;
-                });
-            });
+        	if (id === 0) {
+        		for( i= vm.detectionDetails.length-1; i>=0; i--) {
+        		    if( vm.detectionDetails[i].id == "0") 
+        		    	vm.detectionDetails.splice(i,1);
+        		}
+        	} else {
+	            DetectionDetails.delete({ id: id }, function() {
+	                $log.debug('Deleted from server');
+	                DetectionDetails.query(function(data) {
+	                    vm.detectionDetails = data;
+	                });
+	            });
+        	}
         }
     }
 }());

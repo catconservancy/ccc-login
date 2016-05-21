@@ -56,6 +56,13 @@
 	            controllerAs: 'deploymentsCtrl'
 	        })
 	
+	        .state('studyAreas', {
+	            url: '/studyAreas',
+	            templateUrl: 'app/studyAreas/studyAreas.html',
+	            controller: 'StudyAreasController',
+	            controllerAs: 'studyAreaCtrl'
+	        })
+	
 	        .state('folderLocation', {
 	            url: '/folderLocation',
 	            templateUrl: 'app/folderLocation/folderLocation.html',

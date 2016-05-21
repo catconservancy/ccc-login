@@ -72,12 +72,19 @@
         }
         
         function removeSpecies(id) {
-        	Species.delete({ id: id }, function() {
-        		$log.debug('Deleted from server');
-        		Species.query(function(data) {
-        			vm.species = data;
-        		});
-        	});
+        	if (id === 0) {
+        		for( i= vm.species.length-1; i>=0; i--) {
+        		    if( vm.species[i].id == "0") 
+        		    	vm.species.splice(i,1);
+        		}
+        	} else {
+	        	Species.delete({ id: id }, function() {
+	        		$log.debug('Deleted from server');
+	        		Species.query(function(data) {
+	        			vm.species = data;
+	        		});
+	        	});
+        	}
         }
     }
 }());

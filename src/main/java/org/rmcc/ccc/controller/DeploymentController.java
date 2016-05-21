@@ -27,8 +27,8 @@ public class DeploymentController {
         return (List<Deployment>) deploymentRepository.findAll();
     }
 	
-	@RequestMapping(value = "/{carmeraMonitorId}", method = RequestMethod.GET)
-	Deployment findById(@PathVariable Integer carmeraMonitorId) {
-		return deploymentRepository.findOne(carmeraMonitorId);
+	@RequestMapping(value = "/{deploymentId}", method = RequestMethod.GET)
+	Deployment findById(@PathVariable Integer deploymentId) {
+		return deploymentRepository.findOne(deploymentId);
 	}
 }
