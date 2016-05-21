@@ -1,0 +1,64 @@
+label,list_code
+Early Morning,timeOfDay
+Morning,timeOfDay
+Midday,timeOfDay
+Afternoon,timeOfDay
+Late Afternoon,timeOfDay
+Night,timeOfDay
+Rocky,dominantSubstrate
+Gravelly,dominantSubstrate
+Sandy,dominantSubstrate
+Litter,dominantSubstrate
+Well Defined,trailType
+Moderately well defined,trailType
+Poorly defined or hard to see,trailType
+Lower,positionOnSlope
+Middle,positionOnSlope
+Upper,positionOnSlope
+Cliff,habitatRuggedness
+Broken,habitatRuggedness
+Very Broken,habitatRuggedness
+Rolling,habitatRuggedness
+Flat or Valley Floor,habitatRuggedness
+Cliff,topographicFeature
+Ridgeline,topographicFeature
+Hill-slope,topographicFeature
+Valley floor,topographicFeature
+Game-trail,topographicFeature
+Scree/boulders,topographicFeature
+Saddle,topographicFeature
+Stream bed,topographicFeature
+Barren,vegetationType
+Grassland,vegetationType
+Shrubland,vegetationType
+Woodland,vegetationType
+Cropland/ Fallow field,vegetationType
+Mixed woodland-shrub,vegetationType
+other,vegetationType
+Summer,rangelandUse
+Winter,rangelandUse
+Year-round user,rangelandUse
+No use,rangelandUse
+Daily,humanVisitation
+Weekly,humanVisitation
+Several times weekly,humanVisitation
+Monthly,humanVisitation
+Rarely,humanVisitation
+<50m,distanceToHumanHabitat
+50m- 1/4 km,distanceToHumanHabitat
+>1/4 km,distanceToHumanHabitat
+<50m,distanceToRoad
+50m- 1/4 km,distanceToRoad
+>1/4 km,distanceToRoad
+>1/4 km,roadType
+>1/4 km,roadType
+>1/4 km,roadType
+>1/4 km,roadType
+North,azimuth
+Northeast,azimuth
+East,azimuth
+Southeast,azimuth
+South,azimuth
+Southwest,azimuth
+West,azimuth
+Northwest,azimuth

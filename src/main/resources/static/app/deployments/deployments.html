@@ -18,7 +18,7 @@
 	<!-- Default box -->
 	<div class="box">
 		<div class="box-header with-border">
-			<h3 class="box-title">Title</h3>
+			<h3 class="box-title">Deployment Location</h3>
 
 			<div class="box-tools pull-right">
 				<button type="button" class="btn btn-box-tool"
@@ -32,58 +32,283 @@
 			</div>
 		</div>
 		<div class="box-body">
-			<div class="row" ng-if="!deploymentsCtrl.selectedDeployment">
-				<div class="col-sm-2">
-					<label>Select a Deployment Location</label>
+			<div class="row" ng-if="deploymentsCtrl.deployments">
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Selected Deployment Location</label>
+						<ui-select id="deploymentsSelect" autofocus="true" ng-model="deploymentsCtrl.deployments" 
+	                			theme="bootstrap" ng-disabled="disabled"
+	                			on-select="deploymentsCtrl.onSelectDeploymentCallback($item, $model)" >
+		                  <ui-select-match placeholder="Select a Deployment Location">{{$select.selected.studyArea.name}} &lt;{{$select.selected.locationID}}&gt;</ui-select-match>
+		                  <ui-select-choices repeat="deployment in deploymentsCtrl.deployments | propsFilter: {locationID: $select.search}">
+		                    <div ng-bind-html="deployment.studyArea.name | highlight: $select.search"></div>
+		                    <small>
+		                      Study Area: {{deployment.studyArea.name}}
+		                      Location ID: <span ng-bind-html="''+deployment.locationID | highlight: $select.search"></span>
+		                    </small>
+		                  </ui-select-choices>
+		                </ui-select>
+		            </div>
 				</div>
 				<div class="col-sm-2">
-					<ui-select id="deploymentsSelect" autofocus="true" ng-model="deploymentsCtrl.deployments" 
-                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:15px"
-                			on-select="deploymentsCtrl.onSelectDeploymentCallback($item, $model)" >
-	                  <ui-select-match placeholder="Select a Deployment Location">{{$select.selected.commonName}} &lt;{{$select.selected.latinName}}&gt;</ui-select-match>
-	                  <ui-select-choices repeat="species in idPhotosCtrl.speciesList | propsFilter: {commonName: $select.search, latinName: $select.search}">
-	                    <div ng-bind-html="species.commonName | highlight: $select.search"></div>
-	                    <small>
-	                      commonName: {{species.commonName}}
-	                      latinName: <span ng-bind-html="''+species.latinName | highlight: $select.search"></span>
-	                    </small>
-	                  </ui-select-choices>
-	                </ui-select>
-				</div>
-				<div class="col-sm-2">
-					<label>Select a Deployment Location</label>
-				</div>
-				<div class="col-sm-2">
-					<label>Select a Deployment Location</label>
-				</div>				
+					<div class="form-group">
+						<label>OR</label>
+		                <button class="btn btn-default form-control" ng-click="deploymentsCtrl.add()"><i class="fa fa-plus-square-o"></i> Add Deployment Location</button>
+		            </div>
+		        </div>
 			</div>
-			<div class="row" ng-if="deploymentsCtrl.selectedDeployment">
+		</div>
+	</div>
+	<div class="box" ng-if="deploymentsCtrl.selectedDeployment">
+		<div class="box-body">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Study Area</label>
+						<ui-select id="studyAreasSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.studyArea" 
+	                			theme="bootstrap" style="width: 100%" 
+	                			on-select="deploymentsCtrl.onSelectStudyAreaCallback($item, $model)" >
+		                  <ui-select-match placeholder="Select a Study Area">{{$select.selected.name}}</ui-select-match>
+		                  <ui-select-choices repeat="sa in deploymentsCtrl.studyAreas | propsFilter: {name: $select.search}">
+		                    <div ng-bind-html="sa.name | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+		            </div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Location ID</label>
+						<input type="text" name="locationID" ng-model="deploymentsCtrl.selectedDeployment.locationID" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
+				</div>
 				<div class="col-sm-2">
-					<label>Study Area</label>
+					<div class="form-group">
+						<label>Ownership</label>
+						<input type="text" name="ownership" ng-model="deploymentsCtrl.selectedDeployment.ownership" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Start Date</label>
+						<p class="input-group">
+				          <input type="text" class="form-control" uib-datepicker-popup="'MM/dd/yyyy'" ng-model="deploymentsCtrl.selectedDeployment.startDate" is-open="deploymentsCtrl.startDataPopup.opened" datepicker-options="deploymentsCtrl.dateOptions" ng-required="false" close-text="Close" />
+				          <span class="input-group-btn">
+				            <button type="button" class="btn btn-default" ng-click="deploymentsCtrl.startDateOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
+				          </span>
+				        </p>
+				    </div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>End Date</label>
+						<p class="input-group">
+				          <input type="text" class="form-control" uib-datepicker-popup="'MM/dd/yyyy'" ng-model="deploymentsCtrl.selectedDeployment.endDate" is-open="deploymentsCtrl.endDataPopup.opened" datepicker-options="deploymentsCtrl.dateOptions" ng-required="false" close-text="Close" />
+				          <span class="input-group-btn">
+				            <button type="button" class="btn btn-default" ng-click="deploymentsCtrl.endDateOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
+				          </span>
+				        </p>
+				    </div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>UTM Easting</label>
+						<input type="text" name="utmE" ng-model="deploymentsCtrl.selectedDeployment.utmE" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>UTM Northing</label>
+						<input type="text" name="utmN" ng-model="deploymentsCtrl.selectedDeployment.utmN" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>UTM Zone</label>
+						<input type="text" name="utmZone" ng-model="deploymentsCtrl.selectedDeployment.utmZone" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>UTM Datum</label>
+						<input type="text" name="utmDatum" ng-model="deploymentsCtrl.selectedDeployment.utmDatum" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Time Of Day</label>
+						<ui-select id="timeOfDaySelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.timeOfDay" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.timeOfDay | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Dominant Substrate</label>
+						<ui-select id="dominantSubstrateSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.dominantSubstrate" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.dominantSubstrate | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Trail Type</label>
+						<ui-select id="trailTypeSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.trailType" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.trailType | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Position On Slope</label>
+						<ui-select id="positionOnSlopeSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.positionOnSlope" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.positionOnSlope | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Habitat Ruggedness</label>
+						<ui-select id="habitatRuggednessSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.habitatRuggedness" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.habitatRuggedness | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Topographic Feature</label>
+						<ui-select id="topographicFeatureSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.topographicFeature" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.topographicFeature | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Vegetation Type</label>
+						<ui-select id="vegetationTypeSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.vegetationType" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.vegetationType | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Rangeland Use</label>
+						<ui-select id="rangelandUseSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.rangelandUse" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.rangelandUse | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Human Visitation</label>
+						<ui-select id="humanVisitationSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.humanVisitation" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.humanVisitation | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Distance to Human Habitat</label>
+						<ui-select id="distanceToHumanHabitatSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.distanceToHumanHabitat" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.distanceToHumanHabitat | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Distance To Road</label>
+						<ui-select id="distanceToRoadSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.distanceToRoad" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.distanceToRoad | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Road Type</label>
+						<ui-select id="roadTypeSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.roadType" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.roadType | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
 				</div>
 				<div class="col-sm-1">
-					<label>Location ID</label>
+					<div class="form-group">
+						<label>Azimuth</label>
+						<ui-select id="azimuthSelect" autofocus="false" ng-model="deploymentsCtrl.selectedDeployment.azimuth" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option in deploymentsCtrl.lookupLists.azimuth | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
+					</div>
 				</div>
-				<div class="col-sm-1">
-					<label>Ownership</label>
-				</div>
-				<div class="col-sm-1">
-					<label>UTM Easting</label>
-				</div>
-				<div class="col-sm-1">
-					<label>UTM Northing</label>
-				</div>
-				<div class="col-sm-1">
-					<label>UTM Zone</label>
-				</div>
-				<div class="col-sm-1">
-					<label>UTM Datum</label>
-				</div>
-				<div class="col-sm-1">
-					<label>Start Date</label>
-				</div>
-				<div class="col-sm-1">
-					<label>End Date</label>
+				<div class="col-sm-5">
+					<div class="form-group">
+						<label>Notes</label>
+						<input type="text" name="notes" ng-model="deploymentsCtrl.selectedDeployment.notes" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
 				</div>
 			</div>
 		</div>

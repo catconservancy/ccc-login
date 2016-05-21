@@ -1,10 +1,10 @@
 (function () {
     angular.module('CCC')
-        .factory('DeploymentsService', DeploymentsService);
+        .factory('Deployments', Deployments);
 
-    DeploymentsService.$inject = ['$resource'];
+    Deployments.$inject = ['$resource'];
 
-    function DeploymentsService($resource) {
+    function Deployments($resource) {
         return $resource('/ccc/api/deployment/:id', { id: '@_id' }, {
         	update: {
         		method: 'PUT'

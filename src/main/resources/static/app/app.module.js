@@ -8,7 +8,8 @@
         'xeditable',
         'mwl.confirm',
         'msl.uploads',
-        'ui.select'
+        'ui.select',
+        'ui.bootstrap'
     ])
         .config(config)
         .run(run);

@@ -29,6 +29,9 @@ public class DeploymentController {
 	
 	@RequestMapping(value = "/{deploymentId}", method = RequestMethod.GET)
 	Deployment findById(@PathVariable Integer deploymentId) {
+		if (deploymentId == 0) {
+			return new Deployment();
+		}
 		return deploymentRepository.findOne(deploymentId);
 	}
 }

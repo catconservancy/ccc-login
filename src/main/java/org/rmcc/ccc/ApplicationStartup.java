@@ -3,10 +3,12 @@ package org.rmcc.ccc;
 import java.util.List;
 
 import org.rmcc.ccc.model.BaseModel;
+import org.rmcc.ccc.model.LookupOption;
 import org.rmcc.ccc.model.Role;
 import org.rmcc.ccc.model.Species;
 import org.rmcc.ccc.model.User;
 import org.rmcc.ccc.model.UserCreateForm;
+import org.rmcc.ccc.repository.LookupOptionRepository;
 import org.rmcc.ccc.repository.SpeciesRepository;
 import org.rmcc.ccc.repository.UserRepository;
 import org.rmcc.ccc.service.user.UserService;
@@ -23,15 +25,18 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 	
 	private CsvFileReader csvFileReader;
 	private SpeciesRepository speciesRepository;
+	private LookupOptionRepository lookupOptionRepository;
 	private UserService userService;
 
 	@Autowired
 	public ApplicationStartup(CsvFileReader csvFileReader, 
 			SpeciesRepository speciesRepository, 
+			LookupOptionRepository lookupOptionRepository,
 			UserService userService) {
 		super();
 		this.csvFileReader = csvFileReader;
 		this.speciesRepository = speciesRepository;
+		this.lookupOptionRepository = lookupOptionRepository;
 		this.userService = userService;
 	}
 
@@ -44,6 +49,13 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 			Species s = (Species) species;
 			s.setId(null);
 			speciesRepository.save(s);
+		}
+		
+		List<BaseModel> lookupOptionList = csvFileReader.readCsvFile(new LookupOption());
+		for (BaseModel lookupOption : lookupOptionList) {
+			LookupOption o = (LookupOption) lookupOption;
+			o.setId(null);
+			lookupOptionRepository.save(o);
 		}
 		
 		List<BaseModel> userList = csvFileReader.readCsvFile(new User());
