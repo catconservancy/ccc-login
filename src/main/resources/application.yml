@@ -27,3 +27,7 @@ logging:
   level: 
     org.springframework.security: INFO
     org.springframework.boot.actuate.audit.listener.AuditListener: DEBUG
+
+ccc: 
+  dropbox:
+    accessToken: 8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5EhbWhDw5jA83Yw3RKkjCz0D

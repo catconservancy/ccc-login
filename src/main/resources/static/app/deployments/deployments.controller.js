@@ -2,9 +2,9 @@
     angular.module('CCC')
         .controller('DeploymentsController', DeploymentsController);
 
-    DeploymentsController.$inject = ['StudyAreas', 'Deployments', 'LookupOption'];
+    DeploymentsController.$inject = ['$log', 'StudyAreas', 'Deployments', 'LookupOption'];
 
-    function DeploymentsController(StudyAreas, Deployments, LookupOption) {
+    function DeploymentsController($log, StudyAreas, Deployments, LookupOption) {
         var vm = this;
         vm.inserted = {};
         vm.selectedDeployment = null;
@@ -80,7 +80,52 @@
         };
 
         function save() {
-        	console.debug("TODO: Save deployment", vm.selectedDeployment);
+            if (!vm.selectedDeployment.id || vm.selectedDeployment.id === 0) {
+                return Deployments.save(vm.selectedDeployment, function(deployment) {
+                    $log.debug('save success');
+                    vm.selectedDeployment = deployment;
+                    Deployments.query(function(data) {
+                        vm.deployments = data;
+                    });
+                });
+            } else {
+                vm.entry = Deployments.get({ id: vm.selectedDeployment.id }, function() {
+                    vm.entry.azimuth = vm.selectedDeployment.azimuth;
+                    vm.entry.distanceToHumanHabitat = vm.selectedDeployment.distanceToHumanHabitat;
+                    vm.entry.distanceToRoad = vm.selectedDeployment.distanceToRoad;
+                    vm.entry.dominantSubstrate = vm.selectedDeployment.dominantSubstrate;
+                    vm.entry.endDate = vm.selectedDeployment.endDate;
+                    vm.entry.habitatRuggedness = vm.selectedDeployment.habitatRuggedness;
+                    vm.entry.humanHabitatType = vm.selectedDeployment.humanHabitatType;
+                    vm.entry.humanVisitation = vm.selectedDeployment.humanVisitation;
+                    vm.entry.locationID = vm.selectedDeployment.locationID;
+                    vm.entry.notes = vm.selectedDeployment.notes;
+                    vm.entry.ownership = vm.selectedDeployment.ownership;
+                    vm.entry.positionOnSlope = vm.selectedDeployment.positionOnSlope;
+                    vm.entry.rangelandUse = vm.selectedDeployment.rangelandUse;
+                    vm.entry.roadType = vm.selectedDeployment.roadType;
+                    vm.entry.startDate = vm.selectedDeployment.startDate;
+                    vm.entry.timeOfDay = vm.selectedDeployment.timeOfDay;
+                    vm.entry.topographicFeature = vm.selectedDeployment.topographicFeature;
+                    vm.entry.trailType = vm.selectedDeployment.trailType;
+                    vm.entry.utmDatum = vm.selectedDeployment.utmDatum;
+                    vm.entry.utmE = vm.selectedDeployment.utmE;
+                    vm.entry.utmN = vm.selectedDeployment.utmN;
+                    vm.entry.utmZone = vm.selectedDeployment.utmZone;
+                    vm.entry.vegetationType = vm.selectedDeployment.vegetationType;
+                    vm.entry.cameraMonitors = vm.selectedDeployment.cameraMonitors;
+                    vm.entry.studyArea = vm.selectedDeployment.studyArea;
+                    vm.entry.photos = vm.selectedDeployment.photos;
+                    
+                    vm.entry.$update(function(deployment) {
+                        $log.debug('update success');
+                        vm.selectedDeployment = deployment
+                        Deployments.query(function(data) {
+                            vm.deployments = data;
+                        });
+                    });
+                });
+            }
         };
         
         function add() {

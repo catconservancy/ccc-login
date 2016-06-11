@@ -381,5 +381,9 @@ public class Deployment implements Serializable {
 	public void setStudyArea(StudyArea studyArea) {
 		this.studyArea = studyArea;
 	}
+	
+	public String getStudayAreaName() {
+		return this.studyArea != null ? this.studyArea.getName() : null;
+	}
 
 }

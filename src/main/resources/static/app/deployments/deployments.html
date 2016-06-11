@@ -36,11 +36,11 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<label>Selected Deployment Location</label>
-						<ui-select id="deploymentsSelect" autofocus="true" ng-model="deploymentsCtrl.deployments" 
+						<ui-select id="deploymentsSelect" autofocus="true" ng-model="deploymentsCtrl.selectedDeployment" 
 	                			theme="bootstrap" ng-disabled="disabled"
 	                			on-select="deploymentsCtrl.onSelectDeploymentCallback($item, $model)" >
-		                  <ui-select-match placeholder="Select a Deployment Location">{{$select.selected.studyArea.name}} &lt;{{$select.selected.locationID}}&gt;</ui-select-match>
-		                  <ui-select-choices repeat="deployment in deploymentsCtrl.deployments | propsFilter: {locationID: $select.search}">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.studyArea.name}}: {{$select.selected.locationID}}</ui-select-match>
+		                  <ui-select-choices repeat="deployment in deploymentsCtrl.deployments | propsFilter: {studyAreaName: $select.search, locationID: $select.search}">
 		                    <div ng-bind-html="deployment.studyArea.name | highlight: $select.search"></div>
 		                    <small>
 		                      Study Area: {{deployment.studyArea.name}}
