@@ -44,31 +44,36 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 	@Override
 	public void onApplicationEvent(final ContextRefreshedEvent event) {
 		
-		List<BaseModel> speciesList = csvFileReader.readCsvFile(new Species());
-		for (BaseModel species : speciesList) {
-			Species s = (Species) species;
-			s.setId(null);
-			speciesRepository.save(s);
-		}
-		
-		List<BaseModel> lookupOptionList = csvFileReader.readCsvFile(new LookupOption());
-		for (BaseModel lookupOption : lookupOptionList) {
-			LookupOption o = (LookupOption) lookupOption;
-			o.setId(null);
-			lookupOptionRepository.save(o);
-		}
-		
-		List<BaseModel> userList = csvFileReader.readCsvFile(new User());
-		for (BaseModel user : userList) {
-			User u = (User) user;
-			UserCreateForm uf = new UserCreateForm();
-			uf.setEmail(u.getEmail());
-			uf.setFullName(u.getFullName());
-			uf.setPassword(u.getPasswordHash());
-			uf.setPasswordRepeated(u.getPasswordHash());
-			uf.setActive(true);
-			uf.setRole(Role.ADMIN);
-			userService.create(uf);
+		try {
+			List<BaseModel> speciesList = csvFileReader.readCsvFile(new Species());
+			for (BaseModel species : speciesList) {
+				Species s = (Species) species;
+				s.setId(null);
+				speciesRepository.save(s);
+			}
+			
+			List<BaseModel> lookupOptionList = csvFileReader.readCsvFile(new LookupOption());
+			for (BaseModel lookupOption : lookupOptionList) {
+				LookupOption o = (LookupOption) lookupOption;
+				o.setId(null);
+				lookupOptionRepository.save(o);
+			}
+			
+			List<BaseModel> userList = csvFileReader.readCsvFile(new User());
+			for (BaseModel user : userList) {
+				User u = (User) user;
+				UserCreateForm uf = new UserCreateForm();
+				uf.setEmail(u.getEmail());
+				uf.setFullName(u.getFullName());
+				uf.setPassword(u.getPasswordHash());
+				uf.setPasswordRepeated(u.getPasswordHash());
+				uf.setActive(true);
+				uf.setRole(Role.ADMIN);
+				userService.create(uf);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

@@ -17,6 +17,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
@@ -27,7 +28,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name="deployments")
 @NamedQuery(name="Deployment.findAll", query="SELECT d FROM Deployment d")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Deployment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -108,6 +109,7 @@ public class Deployment implements Serializable {
 
 	//bi-directional many-to-one association to CameraMonitor
 	@OneToMany(mappedBy="deployment")
+	@JsonIgnore
 	private List<CameraMonitor> cameraMonitors;
 
 	//bi-directional many-to-one association to StudyArea
@@ -117,6 +119,7 @@ public class Deployment implements Serializable {
 
 	//bi-directional many-to-one association to Photo
 	@OneToMany(mappedBy="deployment")
+	@JsonIgnore
 	private List<Photo> photos;
 
 	public Deployment() {

@@ -2,22 +2,20 @@
     angular.module('CCC')
         .controller('DeploymentsController', DeploymentsController);
 
-    DeploymentsController.$inject = ['$log', 'StudyAreas', 'Deployments', 'LookupOption'];
+    DeploymentsController.$inject = ['$log', '$scope', 'StudyAreas', 'Deployments', 'LookupOption'];
 
-    function DeploymentsController($log, StudyAreas, Deployments, LookupOption) {
+    function DeploymentsController($log, $scope, StudyAreas, Deployments, LookupOption) {
         var vm = this;
         vm.inserted = {};
         vm.selectedDeployment = null;
+        vm.successText = null;
         vm.deployments = [];
         vm.studyAreas = [];       
         vm.timeOfDayOptions = [];
         vm.startDatePopup = { opened: false };
         vm.endDatePopup = { opened: false }; 
         vm.dateOptions = {
-//          dateDisabled: disabled,
 		    formatYear: 'yy',
-//    		maxDate: new Date(2020, 5, 22),
-//    		minDate: new Date(),
 		    startingDay: 1
         };
         vm.lookups = [
@@ -61,6 +59,7 @@
         
         function onSelectDeploymentCallback(item) {
         	vm.selectedDeployment = item;
+            vm.successText = null;
         }
         
         function onSelectStudyAreaCallback(item) {
@@ -82,6 +81,7 @@
         function save() {
             if (!vm.selectedDeployment.id || vm.selectedDeployment.id === 0) {
                 return Deployments.save(vm.selectedDeployment, function(deployment) {
+                	vm.successText = 'You have successfully created deployment location (' +deployment.studyArea.name+':'+deployment.locationID+').';
                     $log.debug('save success');
                     vm.selectedDeployment = deployment;
                     Deployments.query(function(data) {
@@ -119,6 +119,7 @@
                     
                     vm.entry.$update(function(deployment) {
                         $log.debug('update success');
+                    	vm.successText = 'You have successfully updated deployment location (' +deployment.studyArea.name+':'+deployment.locationID+').';
                         vm.selectedDeployment = deployment
                         Deployments.query(function(data) {
                             vm.deployments = data;
@@ -130,6 +131,7 @@
         
         function add() {
         	Deployments.get({ id: 0 }, function(data) {
+                vm.successText = null;
         		vm.inserted = data;
         		vm.inserted.startDate = new Date();
         		vm.inserted.endDate = new Date();

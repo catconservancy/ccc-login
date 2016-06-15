@@ -61,6 +61,11 @@
 	</div>
 	<div class="box" ng-if="deploymentsCtrl.selectedDeployment">
 		<div class="box-body">
+            <div class="alert alert-success alert-dismissible" ng-show="deploymentsCtrl.successText">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                {{deploymentsCtrl.successText}}
+			</div>
 			<div class="row">
 				<div class="col-sm-3">
 					<div class="form-group">
@@ -93,7 +98,14 @@
 					<div class="form-group">
 						<label>Start Date</label>
 						<p class="input-group">
-				          <input type="text" class="form-control" uib-datepicker-popup="'MM/dd/yyyy'" ng-model="deploymentsCtrl.selectedDeployment.startDate" is-open="deploymentsCtrl.startDataPopup.opened" datepicker-options="deploymentsCtrl.dateOptions" ng-required="false" close-text="Close" />
+				          <input type="text" 
+				          		 class="form-control" 
+				          		 uib-datepicker-popup="MM/dd/yyyy" 
+				          		 ng-model="deploymentsCtrl.selectedDeployment.startDate" 
+				          		 is-open="deploymentsCtrl.startDatePopup.opened" 
+				          		 datepicker-options="deploymentsCtrl.dateOptions" 
+				          		 ng-required="false" 
+				          		 close-text="Close" />
 				          <span class="input-group-btn">
 				            <button type="button" class="btn btn-default" ng-click="deploymentsCtrl.startDateOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
 				          </span>
@@ -104,7 +116,13 @@
 					<div class="form-group">
 						<label>End Date</label>
 						<p class="input-group">
-				          <input type="text" class="form-control" uib-datepicker-popup="'MM/dd/yyyy'" ng-model="deploymentsCtrl.selectedDeployment.endDate" is-open="deploymentsCtrl.endDataPopup.opened" datepicker-options="deploymentsCtrl.dateOptions" ng-required="false" close-text="Close" />
+				          <input type="text" class="form-control" 
+				          		 uib-datepicker-popup="MM/dd/yyyy" 
+				          		 ng-model="deploymentsCtrl.selectedDeployment.endDate" 
+				          		 is-open="deploymentsCtrl.endDatePopup.opened" 
+				          		 datepicker-options="deploymentsCtrl.dateOptions" 
+				          		 ng-required="false" 
+				          		 close-text="Close" />
 				          <span class="input-group-btn">
 				            <button type="button" class="btn btn-default" ng-click="deploymentsCtrl.endDateOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
 				          </span>

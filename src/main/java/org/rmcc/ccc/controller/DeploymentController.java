@@ -24,7 +24,8 @@ public class DeploymentController {
 
 	@RequestMapping(method = RequestMethod.GET)
     public List<Deployment> findAll() {
-        return (List<Deployment>) deploymentRepository.findAll();
+		List<Deployment> deployments = (List<Deployment>) deploymentRepository.findAll();
+        return deployments;
     }
 	
 	@RequestMapping(value = "/{deploymentId}", method = RequestMethod.GET)

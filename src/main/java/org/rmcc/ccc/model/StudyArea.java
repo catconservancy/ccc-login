@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Entity implementation class for Entity: StudyArea
  *
@@ -33,10 +35,12 @@ public class StudyArea implements Serializable {
 
 	//bi-directional many-to-one association to CameraMonitor
 	@OneToMany(mappedBy="studyArea")
+	@JsonIgnore
 	private List<CameraMonitor> cameraMonitors;
 
 	//bi-directional many-to-one association to Deployment
 	@OneToMany(mappedBy="studyArea")
+	@JsonIgnore
 	private List<Deployment> deployments;
 
 	public StudyArea() {
