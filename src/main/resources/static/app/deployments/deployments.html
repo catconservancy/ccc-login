@@ -33,9 +33,9 @@
 		</div>
 		<div class="box-body">
 			<div class="row" ng-if="deploymentsCtrl.deployments">
-				<div class="col-sm-3">
+				<div class="col-sm-3" ng-show="deploymentsCtrl.deployments.length > 0">
 					<div class="form-group">
-						<label>Selected Deployment Location</label>
+						<label>Select Deployment Location</label>
 						<ui-select id="deploymentsSelect" autofocus="true" ng-model="deploymentsCtrl.selectedDeployment" 
 	                			theme="bootstrap" ng-disabled="disabled"
 	                			on-select="deploymentsCtrl.onSelectDeploymentCallback($item, $model)" >
@@ -52,7 +52,7 @@
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						<label>OR</label>
+						<label ng-show="deploymentsCtrl.deployments.length > 0">OR</label>
 		                <button class="btn btn-primary form-control" ng-click="deploymentsCtrl.add()"><i class="fa fa-plus-square-o"></i> Add Deployment Location</button>
 		            </div>
 		        </div>

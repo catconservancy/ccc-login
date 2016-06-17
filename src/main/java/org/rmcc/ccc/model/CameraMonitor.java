@@ -48,6 +48,9 @@ public class CameraMonitor implements Serializable {
 	@Column(name="check_time")
 	private Timestamp checkTime;
 
+	@Column(name="setLetter", length=1)
+	private String setLetter;
+
 	@Column(name="comments", length=255)
 	private String comments;
 
@@ -137,6 +140,14 @@ public class CameraMonitor implements Serializable {
 
 	public void setCheckTime(Timestamp checkTime) {
 		this.checkTime = checkTime;
+	}
+
+	public String getSetLetter() {
+		return setLetter;
+	}
+
+	public void setSetLetter(String setLetter) {
+		this.setLetter = setLetter;
 	}
 
 	public String getComments() {
