@@ -95,7 +95,7 @@
 	            url: '/cameraMonitoringLog',
 	            templateUrl: 'app/cameraMonitoringLog/cameraMonitoringLog.html',
 	            controller: 'CameraMonitoringLogController',
-	            controllerAs: 'cameraMonitoringLogCtrl'
+	            controllerAs: 'cameraLogCtrl'
 	        });
 
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

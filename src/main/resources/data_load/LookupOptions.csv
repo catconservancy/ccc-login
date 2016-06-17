@@ -62,3 +62,14 @@ South,azimuth
 Southwest,azimuth
 West,azimuth
 Northwest,azimuth
+30s,cameraDelaySetting
+1m,cameraDelaySetting
+15m,cameraDelaySetting
+30m,cameraDelaySetting
+Call,lureInfo
+Scent,lureInfo
+Visual,lureInfo
+track,wildlifeSign
+scat,wildlifeSign
+kill,wildlifeSign
+scrape,wildlifeSign

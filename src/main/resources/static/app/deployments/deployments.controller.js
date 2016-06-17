@@ -44,7 +44,7 @@
         vm.save = save;
         
         Deployments.query(function(data) {
-        	vm.deployments = data
+        	vm.deployments = data;
         });
 
         StudyAreas.query(function(data) {
