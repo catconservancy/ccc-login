@@ -65,9 +65,9 @@
         function checkDateOpen() {
         	vm.checkDatePopup.opened = true;
         }
-
+        
         function checkTimeChanged() {
-        	console.log('check time changed to ', vm.selectedLogEntry.checkTime);
+        	console.log('check time changed to ', vm.selectedLogEntry.checkDate);
         }
 
         function save() {

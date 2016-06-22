@@ -63,7 +63,7 @@
 		        </div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						<label ng-show="cameraLogCtrl.logEntries.length > 0">OR</label>
+						<label>{{cameraLogCtrl.logEntries.length > 0 ? 'OR' : ''}}</label>
 		                <button class="btn btn-primary form-control" ng-click="cameraLogCtrl.add()"><i class="fa fa-plus-square-o"></i> Add New Log Entry</button>
 		            </div>
 		        </div>
@@ -78,16 +78,9 @@
                 {{cameraLogCtrl.successText}}
 			</div>
 			<div class="row">
-				<div class="col-sm-1">
-					<div class="form-group">
-						<label>Set Letter</label>
-						<input type="text" name="setLetter" ng-model="cameraLogCtrl.selectedLogEntry.setLetter" 
-						       style="width: 100%" class="form-control" ng-trim="false"/>
-					</div>
-				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						<label>Check Date</label>
+						<label>Check Date and Time</label>
 						<p class="input-group">
 				          <input type="text" 
 				          		 class="form-control" 
@@ -95,6 +88,7 @@
 				          		 ng-model="cameraLogCtrl.selectedLogEntry.checkDate" 
 				          		 is-open="cameraLogCtrl.checkDatePopup.opened" 
 				          		 datepicker-options="cameraLogCtrl.dateOptions" 
+				          		 ng-change="cameraLogCtrl.checkDateChange()"
 				          		 ng-required="false" 
 				          		 close-text="Close" />
 				          <span class="input-group-btn">
@@ -103,13 +97,29 @@
 				        </p>
 		            </div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-1">
 					<div class="form-group">
-						<label>Check Time</label>
+						<label>Set Letter</label>
+						<input type="text" name="setLetter" ng-model="cameraLogCtrl.selectedLogEntry.setLetter" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
+				</div>
+				<div class="col-sm-3">
+				</div>
+				<div class="col-sm-3">
+				</div>
+				<div class="col-sm-3">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
 						<p class="input-group">
-							<uib-timepicker ng-model="cameraLogCtrl.selectedLogEntry.checkTime" ng-change="cameraLogCtrl.checkTimeChanged()" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
+							<uib-timepicker ng-model="cameraLogCtrl.selectedLogEntry.checkDate" ng-change="cameraLogCtrl.checkTimeChanged()" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
 						</p>
 					</div>
+				</div>
+				<div class="col-sm-4">
 				</div>
 				<div class="col-sm-3">
 				</div>
