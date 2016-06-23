@@ -105,10 +105,18 @@
 					</div>
 				</div>
 				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Camera ID</label>
+						<input type="text" name="cameraId" ng-model="cameraLogCtrl.selectedLogEntry.cameraId" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
 				</div>
-				<div class="col-sm-3">
-				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label>Researcher Names</label>
+						<input type="text" name="researcherNames" ng-model="cameraLogCtrl.selectedLogEntry.researcherNames" 
+						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
 				</div>
 			</div>
 			<div class="row">
@@ -119,11 +127,47 @@
 						</p>
 					</div>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>No. of Pics</label>
+						<input type="number" class="form-control" name="numPics" ng-model="cameraLogCtrl.selectedLogEntry.numPics" min="0" max="99" required>
+					</div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>No. of Videos</label>
+						<input type="number" class="form-control" name="numVideos" ng-model="cameraLogCtrl.selectedLogEntry.numVideos" min="0" max="99" required>
+					</div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label>
+							New <br/>Camera ID<br/>
+							<input type="checkbox" name="newCameraId" ng-model="cameraLogCtrl.selectedLogEntry.newCameraId">
+						</label>
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label>
+							New <br/>Batteries<br/>
+							<input type="checkbox" name="newBatteries" ng-model="cameraLogCtrl.selectedLogEntry.newBatteries">
+						</label>
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label>New <br/>Card<br/>
+							<input type="checkbox" name="newCard" ng-model="cameraLogCtrl.selectedLogEntry.newCard"/>
+						</label>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Camera <br/>Date/Time Correct<br/>
+							<input type="checkbox" name="cameraDateTimeCorrect" ng-model="cameraLogCtrl.selectedLogEntry.cameraDateTimeCorrect"/>
+						</label>
+					</div>
 				</div>
 			</div>
 		</div>

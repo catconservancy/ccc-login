@@ -63,14 +63,20 @@ public class CameraMonitor implements Serializable {
 	@Column(name="new_camera_id")
 	private Boolean newCameraId;
 
+	@Column(name="camera_id")
+	private String cameraId;
+
 	@Column(name="new_card")
 	private Boolean newCard;
 
 	@Column(name="num_pics")
 	private Integer numPics;
 
-	@Column(name="reasercher_names", length=255)
-	private String reasercherNames;
+	@Column(name="num_videos")
+	private Integer numVideos;
+
+	@Column(name="reseaercher_names", length=255)
+	private String researcherNames;
 
 	@Column(name="weather_temp_f")
 	private Integer weatherTempF;
@@ -182,6 +188,22 @@ public class CameraMonitor implements Serializable {
 		this.newCameraId = newCameraId;
 	}
 
+	public String getCameraId() {
+		return cameraId;
+	}
+
+	public void setCameraId(String cameraId) {
+		this.cameraId = cameraId;
+	}
+
+	public String getResearcherNames() {
+		return researcherNames;
+	}
+
+	public void setResearcherNames(String researcherNames) {
+		this.researcherNames = researcherNames;
+	}
+
 	public Boolean getNewCard() {
 		return newCard;
 	}
@@ -198,12 +220,12 @@ public class CameraMonitor implements Serializable {
 		this.numPics = numPics;
 	}
 
-	public String getReasercherNames() {
-		return reasercherNames;
+	public Integer getNumVideos() {
+		return numVideos;
 	}
 
-	public void setReasercherNames(String reasercherNames) {
-		this.reasercherNames = reasercherNames;
+	public void setNumVideos(Integer numVideos) {
+		this.numVideos = numVideos;
 	}
 
 	public Integer getWeatherTempF() {
