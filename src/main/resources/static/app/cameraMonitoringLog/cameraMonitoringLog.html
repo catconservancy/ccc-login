@@ -16,16 +16,6 @@
 
       <!-- Default box -->
       <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Camera Monitoring</h3>
-
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
-          </div>
-        </div>
 		<div class="box-body">
 			<div class="row" ng-if="cameraLogCtrl.deployments">
 				<div class="col-sm-3">
@@ -38,7 +28,6 @@
 		                  <ui-select-choices repeat="deployment in cameraLogCtrl.deployments | propsFilter: {studyAreaName: $select.search, locationID: $select.search}">
 		                    <div ng-bind-html="deployment.studyArea.name | highlight: $select.search"></div>
 		                    <small>
-		                      Study Area: {{deployment.studyArea.name}}
 		                      Location ID: <span ng-bind-html="''+deployment.locationID | highlight: $select.search"></span>
 		                    </small>
 		                  </ui-select-choices>
@@ -78,6 +67,11 @@
                 {{cameraLogCtrl.successText}}
 			</div>
 			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="box-header with-border" style="margin-top: 0px;">Monitoring Details</h3>
+				</div>
+			</div>
+			<div class="row">
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label>Check Date and Time</label>
@@ -104,11 +98,19 @@
 						       style="width: 100%" class="form-control" ng-trim="false"/>
 					</div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<div class="form-group">
 						<label>Camera ID</label>
 						<input type="text" name="cameraId" ng-model="cameraLogCtrl.selectedLogEntry.cameraId" 
 						       style="width: 100%" class="form-control" ng-trim="false"/>
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label>
+							New <br/>Camera ID<br/>
+							<input type="checkbox" name="newCameraId" ng-model="cameraLogCtrl.selectedLogEntry.newCameraId">
+						</label>
 					</div>
 				</div>
 				<div class="col-sm-6">
@@ -128,27 +130,19 @@
 					</div>
 				</div>
 				<div class="col-sm-2">
-					<div class="form-group">
+					<div class="form-group" style="margin-top: 0px;">
 						<label>No. of Pics</label>
 						<input type="number" class="form-control" name="numPics" ng-model="cameraLogCtrl.selectedLogEntry.numPics" min="0" max="99" required>
 					</div>
 				</div>
 				<div class="col-sm-2">
-					<div class="form-group">
+					<div class="form-group" style="margin-top: 0px;">
 						<label>No. of Videos</label>
 						<input type="number" class="form-control" name="numVideos" ng-model="cameraLogCtrl.selectedLogEntry.numVideos" min="0" max="99" required>
 					</div>
 				</div>
 				<div class="col-sm-1">
-					<div class="form-group">
-						<label>
-							New <br/>Camera ID<br/>
-							<input type="checkbox" name="newCameraId" ng-model="cameraLogCtrl.selectedLogEntry.newCameraId">
-						</label>
-					</div>
-				</div>
-				<div class="col-sm-1">
-					<div class="form-group">
+					<div class="form-group" style="margin-top: 0px;">
 						<label>
 							New <br/>Batteries<br/>
 							<input type="checkbox" name="newBatteries" ng-model="cameraLogCtrl.selectedLogEntry.newBatteries">
@@ -162,11 +156,36 @@
 						</label>
 					</div>
 				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="box-header with-border" style="margin-top: 0px;">Camera Settings</h3>
+				</div>
+			</div>
+			<div class="row">
 				<div class="col-sm-2">
 					<div class="form-group">
-						<label>Camera <br/>Date/Time Correct<br/>
+						<label>Camera Date/Time Correct
 							<input type="checkbox" name="cameraDateTimeCorrect" ng-model="cameraLogCtrl.selectedLogEntry.cameraDateTimeCorrect"/>
 						</label>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Delay</label>
+						<input type="text" name="cameraDelaySetting" ng-model="cameraLogCtrl.selectedLogEntry.cameraDelaySetting"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>No. of Pics per Burst</label>
+						<input type="number" class="form-control" name="numPicsPerBurst" ng-model="cameraLogCtrl.selectedLogEntry.numPicsPerBurst" min="0" max="99" required>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Video Length</label>
+						<input type="text" name="videoLength" ng-model="cameraLogCtrl.selectedLogEntry.videoLength"/>
 					</div>
 				</div>
 			</div>

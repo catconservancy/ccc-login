@@ -72,8 +72,14 @@ public class CameraMonitor implements Serializable {
 	@Column(name="num_pics")
 	private Integer numPics;
 
+	@Column(name="num_pics_per_burst")
+	private Integer numPicsPerBurst;
+
 	@Column(name="num_videos")
 	private Integer numVideos;
+
+	@Column(name="video_length", length=255)
+	private String videoLength;
 
 	@Column(name="reseaercher_names", length=255)
 	private String researcherNames;
@@ -220,12 +226,28 @@ public class CameraMonitor implements Serializable {
 		this.numPics = numPics;
 	}
 
+	public Integer getNumPicsPerBurst() {
+		return numPicsPerBurst;
+	}
+
+	public void setNumPicsPerBurst(Integer numPicsPerBurst) {
+		this.numPicsPerBurst = numPicsPerBurst;
+	}
+
 	public Integer getNumVideos() {
 		return numVideos;
 	}
 
 	public void setNumVideos(Integer numVideos) {
 		this.numVideos = numVideos;
+	}
+
+	public String getVideoLength() {
+		return videoLength;
+	}
+
+	public void setVideoLength(String videoLength) {
+		this.videoLength = videoLength;
 	}
 
 	public Integer getWeatherTempF() {
