@@ -123,7 +123,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-2">
-					<div class="form-group">
+					<div class="form-group" style="margin-top: -10px;">
 						<p class="input-group">
 							<uib-timepicker ng-model="cameraLogCtrl.selectedLogEntry.checkDate" ng-change="cameraLogCtrl.checkTimeChanged()" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
 						</p>
@@ -158,22 +158,69 @@
 				</div>
 			</div>
 			<div class="row">
+				<div class="col-sm-3">
+					<label>Lure Info</label>
+					<ui-select id="lureInfoSelect" autofocus="false" ng-model="cameraLogCtrl.selectedLogEntry.lureInfo" 
+                			theme="bootstrap" style="width: 100%">
+	                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+	                  <ui-select-choices repeat="option.label as option in cameraLogCtrl.lookupLists.lureInfo | propsFilter: {label: $select.search}">
+	                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+	                  </ui-select-choices>
+	                </ui-select>
+				</div>
+				<div class="col-sm-3">
+					<label>Wildlife Sign</label>
+					<ui-select id="wildlifeSignSelect" autofocus="false" ng-model="cameraLogCtrl.selectedLogEntry.wildlifeSign" 
+                			theme="bootstrap" style="width: 100%">
+	                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+	                  <ui-select-choices repeat="option.label as option in cameraLogCtrl.lookupLists.wildlifeSign | propsFilter: {label: $select.search}">
+	                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+	                  </ui-select-choices>
+	                </ui-select>
+				</div>
+				<div class="col-sm-3">
+					<label>Wildlife Seen</label>
+	                <ui-select id="speciesSelect" multiple autofocus="true" ng-model="cameraLogCtrl.selectedLogEntry.species" 
+	                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:15px"
+	                			on-select="cameraLogCtrl.onSelectSpeciesCallback($item, $model)" >
+	                  <ui-select-match placeholder="Select species">{{$item.commonName}} &lt;{{$item.latinName}}&gt;</ui-select-match>
+	                  <ui-select-choices repeat="species in cameraLogCtrl.species | propsFilter: {commonName: $select.search, latinName: $select.search}">
+	                    <div ng-bind-html="species.commonName | highlight: $select.search"></div>
+	                    <small>
+	                      commonName: {{species.commonName}}
+	                      latinName: <span ng-bind-html="''+species.latinName | highlight: $select.search"></span>
+	                    </small>
+	                  </ui-select-choices>
+	                </ui-select>
+				</div>
+				<div class="col-sm-2">
+					<label>Weather Temp (F)</label>
+					<input type="number" class="form-control" name="weatherTempF" ng-model="cameraLogCtrl.selectedLogEntry.weatherTempF" min="-50" max="120" style="width:50%" required>
+				</div>
+			</div>
+			<div class="row" style="padding-top: 15px;">
+				<div class="col-sm-9">
+					<label>Comments</label>
+					<input type="textarea" name="comments" ng-model="cameraLogCtrl.selectedLogEntry.comments" 
+					       style="width: 100%" class="form-control" ng-trim="false"/>
+				</div>
+			</div>
+			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="box-header with-border" style="margin-top: 0px;">Camera Settings</h3>
+					<h3 class="box-header with-border" style="margin-top: 15px;">Camera Settings</h3>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-2">
 					<div class="form-group">
-						<label>Camera Date/Time Correct
-							<input type="checkbox" name="cameraDateTimeCorrect" ng-model="cameraLogCtrl.selectedLogEntry.cameraDateTimeCorrect"/>
-						</label>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label>Delay</label>
-						<input type="text" name="cameraDelaySetting" ng-model="cameraLogCtrl.selectedLogEntry.cameraDelaySetting"/>
+						<label>Camera Delay Setting</label>
+						<ui-select id="cameraDelaySettingSelect" autofocus="false" ng-model="cameraLogCtrl.selectedLogEntry.cameraDelaySetting" 
+	                			theme="bootstrap" style="width: 100%">
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.label}}</ui-select-match>
+		                  <ui-select-choices repeat="option.label as option in cameraLogCtrl.lookupLists.cameraDelaySetting | propsFilter: {label: $select.search}">
+		                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+		                  </ui-select-choices>
+		                </ui-select>
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -188,12 +235,22 @@
 						<input type="text" name="videoLength" ng-model="cameraLogCtrl.selectedLogEntry.videoLength"/>
 					</div>
 				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>
+							<input type="checkbox" name="cameraDateTimeCorrect" ng-model="cameraLogCtrl.selectedLogEntry.cameraDateTimeCorrect"/>
+							Camera Date/Time Correct
+						</label>
+					</div>
+				</div>
 			</div>
 		</div>
         <!-- /.box-body -->
-        <div class="box-footer">
-          Footer
-        </div>
+		<div class="box-footer">
+			<div class="pull-right">
+				<button type="submit" class="btn btn-primary" ng-click="cameraLogCtrl.save()">save</button>
+			</div>
+		</div>
         <!-- /.box-footer-->
       </div>
       <!-- /.box -->

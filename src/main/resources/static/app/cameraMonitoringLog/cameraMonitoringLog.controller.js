@@ -27,6 +27,7 @@
         vm.onSelectDeploymentCallback = onSelectDeploymentCallback;
         vm.onSelectLogEntryCallback = onSelectLogEntryCallback;
         vm.onSelectLookupOptionCallback = onSelectLookupOptionCallback;
+        vm.onSelectSpeciesCallback = onSelectSpeciesCallback;
         vm.checkDateOpen = checkDateOpen;
         vm.checkTimeChanged = checkTimeChanged;
         vm.add = add;
@@ -60,6 +61,10 @@
         
         function onSelectLookupOptionCallback(item) {
         	vm.selectedLogEntry[item.listCode] = item.label;
+        }
+        
+        function onSelectSpeciesCallback(item) {
+        	console.debug("onSelectSpeciesCallback",item);
         }
 
         function checkDateOpen() {
