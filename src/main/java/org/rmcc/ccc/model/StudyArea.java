@@ -33,11 +33,6 @@ public class StudyArea implements Serializable {
 	@Column(name="name", length=255)
 	private String name;
 
-	//bi-directional many-to-one association to CameraMonitor
-	@OneToMany(mappedBy="studyArea")
-	@JsonIgnore
-	private List<CameraMonitor> cameraMonitors;
-
 	//bi-directional many-to-one association to Deployment
 	@OneToMany(mappedBy="studyArea")
 	@JsonIgnore
@@ -59,12 +54,6 @@ public class StudyArea implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-	public List<CameraMonitor> getCameraMonitors() {
-		return cameraMonitors;
-	}
-	public void setCameraMonitors(List<CameraMonitor> cameraMonitors) {
-		this.cameraMonitors = cameraMonitors;
 	}
 	public List<Deployment> getDeployments() {
 		return deployments;

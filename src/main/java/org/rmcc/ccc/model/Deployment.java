@@ -301,28 +301,6 @@ public class Deployment implements Serializable {
 		this.vegetationType = vegetationType;
 	}
 
-	public List<CameraMonitor> getCameraMonitors1() {
-		return this.cameraMonitors;
-	}
-
-	public void setCameraMonitors1(List<CameraMonitor> cameraMonitors1) {
-		this.cameraMonitors = cameraMonitors1;
-	}
-
-	public CameraMonitor addCameraMonitors1(CameraMonitor cameraMonitors1) {
-		getCameraMonitors1().add(cameraMonitors1);
-		cameraMonitors1.setDeployment(this);
-
-		return cameraMonitors1;
-	}
-
-	public CameraMonitor removeCameraMonitors1(CameraMonitor cameraMonitors1) {
-		getCameraMonitors1().remove(cameraMonitors1);
-		cameraMonitors1.setDeployment(null);
-
-		return cameraMonitors1;
-	}
-
 	public List<Photo> getPhotos() {
 		return this.photos;
 	}

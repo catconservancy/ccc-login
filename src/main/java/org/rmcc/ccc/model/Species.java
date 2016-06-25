@@ -45,11 +45,6 @@ public class Species implements Serializable, BaseModel {
 	@Column(name="shortcut_key", length=1)
 	private String shortcutKey;
 
-	//bi-directional many-to-one association to CameraMonitor
-	@OneToMany(mappedBy="species", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private List<CameraMonitor> cameraMonitors;
-
 	//bi-directional many-to-one association to Detection
 	@OneToMany(mappedBy="species", cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -100,28 +95,6 @@ public class Species implements Serializable, BaseModel {
 
 	public void setShortcutKey(String shortcutKey) {
 		this.shortcutKey = shortcutKey;
-	}
-
-	public List<CameraMonitor> getCameraMonitors() {
-		return this.cameraMonitors;
-	}
-
-	public void setCameraMonitors(List<CameraMonitor> cameraMonitors) {
-		this.cameraMonitors = cameraMonitors;
-	}
-
-	public CameraMonitor addCameraMonitor(CameraMonitor cameraMonitor) {
-		getCameraMonitors().add(cameraMonitor);
-		cameraMonitor.setSpecies(this);
-
-		return cameraMonitor;
-	}
-
-	public CameraMonitor removeCameraMonitor(CameraMonitor cameraMonitor) {
-		getCameraMonitors().remove(cameraMonitor);
-		cameraMonitor.setSpecies(null);
-
-		return cameraMonitor;
 	}
 
 	public List<Detection> getDetections() {

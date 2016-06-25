@@ -40,12 +40,9 @@
 						<ui-select id="logSelect" autofocus="true" ng-model="cameraLogCtrl.selectedLogEntry" 
 	                			theme="bootstrap" ng-disabled="disabled"
 	                			on-select="cameraLogCtrl.onSelectLogEntryCallback($item, $model)" >
-		                  <ui-select-match placeholder="Select one...">{{$select.selected.studyArea.name}}: {{$select.selected.locationID}}</ui-select-match>
+		                  <ui-select-match placeholder="Select one...">{{$select.selected.checkDate | date:'MM/dd/yyyy @ h:mma'}}</ui-select-match>
 		                  <ui-select-choices repeat="logEntry in cameraLogCtrl.logEntries | propsFilter: {checkDate: $select.search}">
-		                    <div ng-bind-html="logEntry.checkDate | highlight: $select.search"></div>
-		                    <small>
-		                      Check Date: {{logEntry.checkDate}}
-		                    </small>
+		                    <div ng-bind-html="logEntry.checkDate | date:'MM/dd/yyyy @ h:mma' | highlight: $select.search"></div>
 		                  </ui-select-choices>
 		                </ui-select>
 		            </div>
@@ -94,7 +91,8 @@
 				<div class="col-sm-1">
 					<div class="form-group">
 						<label>Set Letter</label>
-						<input type="text" name="setLetter" ng-model="cameraLogCtrl.selectedLogEntry.setLetter" 
+						<input type="text" ng-minLength="0" ng-maxLength="1" name="setLetter" 
+							   ng-model="cameraLogCtrl.selectedLogEntry.setLetter" 
 						       style="width: 100%" class="form-control" ng-trim="false"/>
 					</div>
 				</div>
@@ -246,9 +244,16 @@
 			</div>
 		</div>
         <!-- /.box-body -->
-		<div class="box-footer">
+		<div class="box-footer">		
+			<div class="pull-left">
+				<button class="btn btn-danger" mwl-confirm data-title="Confirm" message="Are you <b>sure</b> you want to delete this log entry?"
+				        placement="top" on-confirm="cameraLogCtrl.remove()" confirm-button-type="danger"
+		                cancel-button-type="default">
+		        	<i class="fa fa-trash-o"></i> Delete
+		        </button>
+		    </div>
 			<div class="pull-right">
-				<button type="submit" class="btn btn-primary" ng-click="cameraLogCtrl.save()">save</button>
+				<button type="submit" class="btn btn-primary" ng-click="cameraLogCtrl.save()"><i class="fa fa-save"></i> save</button>
 			</div>
 		</div>
         <!-- /.box-footer-->

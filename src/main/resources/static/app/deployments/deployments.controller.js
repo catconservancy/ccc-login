@@ -32,16 +32,18 @@
                       'distanceToRoad',
                       'roadType',
                       'azimuth',
+                      'utmDatum'
         ];
         vm.lookupLists = {};
         
-        vm.add = add;
         vm.onSelectDeploymentCallback = onSelectDeploymentCallback;
         vm.onSelectStudyAreaCallback = onSelectStudyAreaCallback;
         vm.onSelectLookupOptionCallback = onSelectLookupOptionCallback;
         vm.startDateOpen = startDateOpen;
         vm.endDateOpen = endDateOpen;
         vm.save = save;
+        vm.add = add;
+        vm.remove = remove;
         
         Deployments.query(function(data) {
         	vm.deployments = data;
@@ -138,6 +140,23 @@
                 vm.deployments.push(vm.inserted);
                 vm.selectedDeployment = vm.inserted;
         	});
+        }
+        
+        function remove() {
+        	if (vm.selectedDeployment.id === 0) {
+        		for( i= vm.deployments.length-1; i>=0; i--) {
+        		    if( vm.deployments[i].id == "0") 
+        		    	vm.deployments.splice(i,1);
+        		}
+        	} else {
+        		Deployments.delete({ id: vm.selectedDeployment.id }, function() {
+	        		$log.debug('Deleted from server');
+	        		Deployments.query(function(data) {
+                        vm.deployments = data;
+                        vm.selectedDeployment = null;
+                    });
+	        	});
+        	}        	
         }
     }
 }());

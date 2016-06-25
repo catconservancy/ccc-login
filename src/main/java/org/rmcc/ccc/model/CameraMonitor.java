@@ -2,15 +2,20 @@ package org.rmcc.ccc.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -96,20 +101,17 @@ public class CameraMonitor implements Serializable {
 	@Column(name="wildlife_sign_species", length=255)
 	private String wildlifeSignSpecies;
 
-	//bi-directional many-to-one association to Species
-	@ManyToOne
-	@JoinColumn(name="species_id")
-	private Species species;
+	@ManyToMany
+	@JoinTable(
+	    name="camera_monitor_species",
+	    joinColumns=@JoinColumn(name="CAMERA_MONITOR_ID", referencedColumnName="LOG_ID"),
+	    inverseJoinColumns=@JoinColumn(name="SPECIES_ID", referencedColumnName="SPECIES_ID"))
+	private List<Species> species;
 
 	//bi-directional many-to-one association to Deployments
 	@ManyToOne
 	@JoinColumn(name="deployment_id")
 	private Deployment deployment;
-
-	//bi-directional many-to-one association to StudyArea
-	@ManyToOne
-	@JoinColumn(name="study_area_id")
-	private StudyArea studyArea;
 
 	public CameraMonitor() {
 	}
@@ -282,27 +284,20 @@ public class CameraMonitor implements Serializable {
 		this.wildlifeSignSpecies = wildlifeSignSpecies;
 	}
 
-	public Species getSpecies() {
+	public List<Species> getSpecies() {
 		return species;
 	}
 
-	public void setSpecies(Species species) {
+	public void setSpecies(List<Species> species) {
 		this.species = species;
 	}
+
 	public Deployment getDeployment() {
 		return deployment;
 	}
 
 	public void setDeployment(Deployment deployment) {
 		this.deployment = deployment;
-	}
-
-	public StudyArea getStudyArea() {
-		return studyArea;
-	}
-
-	public void setStudyArea(StudyArea studyArea) {
-		this.studyArea = studyArea;
 	}
 
 	@JsonIgnore
