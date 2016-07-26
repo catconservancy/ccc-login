@@ -14,6 +14,8 @@
         vm.detectionDetailsList = [];
         vm.fileList = [];
         vm.treeData = [];
+        vm.fullscreen = false;
+        vm.showFilters = true;
 
         vm.selectThumb = selectThumb;
         vm.thumbClass = thumbClass;
@@ -167,9 +169,9 @@
         			vm.entry.thumbSrc = vm.selectedPhoto.thumbSrc;
         			vm.entry.$update(function(photo) {
         				$log.debug('update success');
-//        				PhotosService.query(function(data) {
-//        					vm.selectedPhoto = data;
-//        				});
+        				PhotosService.get({id:photo.id}, function(data) {
+        					vm.selectedPhoto = data;
+        				});
         			});
         		});
         	}
