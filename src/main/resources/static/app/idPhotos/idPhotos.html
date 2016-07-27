@@ -17,169 +17,165 @@
       <!-- Default box -->
       <div class="box" ng-class="{'box-fullscreen' : idPhotosCtrl.fullscreen}">
         <div class="box-header with-border">
-          <h3 class="box-title">ID Photos</h3>
-
-          <div class="box-tools pull-right">
-
-			<!--<div class="btn-group" id="filterDropdown">
-				<button type="button" class="btn btn-box-tool" data-toggle="dropdown" title="Filters">
-					Apply Photo Search Filters <i class="fa fa-filter"></i>
-				</button>
-				<ul class="dropdown-menu">
-					<li>
-						<fieldset><legend>Deployment Location Folders</legend>
-						  <div class="col-xs-12" style="padding: 0px 0px 5px 5px;" ng-show="idPhotosCtrl.breadCrumbList.length">
-						    Current Selection: 
-						    <span ng-repeat="link in idPhotosCtrl.breadCrumbList">
-						      <span ng-show="$index > 0">
-								<a ng-click="idPhotosCtrl.selectFolder(link)">
-									{{link.text}}
-								</a>
-								<span ng-show="!$last">></span>
-							  </span>
-							</span>
-						  </div>
-						  <div class="col-xs-3" ng-repeat="folder in idPhotosCtrl.treeData">
-						  	<a ng-click="idPhotosCtrl.selectFolder(folder)">
-						  		<i class="fa fa-folder-o"></i> {{folder.text}}
-						  	</a>
-						  </div>
-						</fieldset>
-					</li>
-					<li class="footer"></li>
-				</ul>
-			</div>-->
-			
-			
-			<button type="button" class="btn btn-box-tool" ng-click="idPhotosCtrl.showFilters = !idPhotosCtrl.showFilters" title="Filters">
-				{{idPhotosCtrl.showFilters ? 'Hide' : 'Show'}} Filters <i class="fa fa-filter"></i>
-			</button>
-            <button type="button" class="btn btn-box-tool" ng-click="idPhotosCtrl.fullscreen = !idPhotosCtrl.fullscreen" title="Expand">
-				<i class="glyphicon" ng-class="idPhotosCtrl.fullscreen ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></i>
-			</button>
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
-          </div>
+          	<h3 class="box-title">ID Photos</h3>
+	        <div class="pull-right">
+	            <button type="button" class="btn btn-box-tool" ng-click="idPhotosCtrl.fullscreen = !idPhotosCtrl.fullscreen" title="Expand">
+					<i class="glyphicon" ng-class="idPhotosCtrl.fullscreen ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></i>
+				</button>	
+          	</div>	
         </div>
-        <div id="wrapper" ng-class="{'toggle' : idPhotosCtrl.showFilters}">
-        	<div id="sidebar-wrapper">
-	            <ul class="sidebar-nav">
-	                <li class="sidebar-brand">
-	                    <a href="#">
-	                        Start Bootstrap
-	                    </a>
-	                </li>
-	            </ul>
-	        </div>
-	        <div id="page-content-wrapper">
-	            <div class="container-fluid">
-	                <div class="row">
-	                    <div class="col-lg-12">
-	                    
-					        <div class="box-body" ng-show="!idPhotosCtrl.photos.length">
-					        	No photos found for the selected Search Filters.
-					        </div>
-					        <div class="box-body carousel-container" ng-show="idPhotosCtrl.photos.length">
-					            <!-- thumb navigation carousel -->
-					            <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
-					
-					              <!-- thumb navigation carousel items -->
-					              <ul class="list-inline">
-					                <li ng-repeat="photo in idPhotosCtrl.photos">
-					                  <a id="carousel-selector-{{$index}}" ng-class="{'selected': photo.selected}" ng-click="idPhotosCtrl.selectThumb($index)">
-					                    <img src="http://localhost:8080/ccc/api/dropbox/thumb?path={{photo.metadata.pathLower}}" class="img-responsive">
-					                  </a>
-					                </li>
-					              </ul>
-					
-					            </div>
-					            <!--/ thumb navigation carousel -->
-					
-					
-					            <!-- main slider carousel -->
-					            <div class="row">
-					              <div class="col-md-12" id="slider">
-					
-					                <div class="col-md-12" id="carousel-bounding-box">
-					                  <div id="myCarousel" class="carousel slide" data-interval="false">
-					                    <!-- main slider carousel items -->
-					                    <div class="carousel-inner">
-					                      <div ng-repeat="photo in idPhotosCtrl.photos" ng-class="idPhotosCtrl.thumbClass(photo)" class="item" data-slide-number="{{$index}}" >
-					                        <img src="http://localhost:8080/ccc/api/dropbox/image?path={{photo.metadata.pathLower}}" class="img-responsive">
-					                      </div>
-					                    </div>
-					                    <!-- main slider carousel nav controls -->
-					                    <a class="carousel-control left" href="#myCarousel" data-slide="prev" ng-non-bindable>‹</a>
-					                    <a class="carousel-control right" href="#myCarousel" data-slide="next" ng-non-bindable>›</a>
-					                  </div>
-					                </div>
-					
-					              </div>
-					            </div>
-					            <!--/main slider carousel-->
-					
-					            <!-- species search bar -->
-					            <div class="row" ng-show="idPhotosCtrl.photos.length" style="margin-top:15px">
-					              <div class="col-md-3"><label for="speciesSelect" style="margin-left:15px">Species</label></div>
-					              <div class="col-md-2"><label for="detectionSelect" style="margin-left:15px">Detail</label></div>
-					              <div class="col-md-1"><label for="individuals" style="margin-left:15px">Individuals</label></div>
-					              <div class="col-md-6"><label for="comments" style="margin-left:15px">Comments</label></div>
-					            </div>
-					            <div class="row" ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections" style="margin-top:5px">
-					              <div class="col-md-3">
-					                <ui-select id="speciesSelect" autofocus="true" ng-model="detection.species" 
-					                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:15px"
-					                			on-select="idPhotosCtrl.onSelectSpeciesCallback($item, $model)" >
-					                  <ui-select-match placeholder="Select species">{{$select.selected.commonName}} &lt;{{$select.selected.latinName}}&gt;</ui-select-match>
-					                  <ui-select-choices repeat="species in idPhotosCtrl.speciesList | propsFilter: {commonName: $select.search, latinName: $select.search}">
-					                    <div ng-bind-html="species.commonName | highlight: $select.search"></div>
-					                    <small>
-					                      commonName: {{species.commonName}}
-					                      latinName: <span ng-bind-html="''+species.latinName | highlight: $select.search"></span>
-					                    </small>
-					                  </ui-select-choices>
-					                </ui-select>
-					              </div>
-					              <div class="col-md-2">
-					                <ui-select id="detectionSelect" autofocus="false" ng-model="detection.detectionDetail" 
-					                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:15px">
-					                  <ui-select-match placeholder="Select detection details">{{$select.selected.detailText}}</ui-select-match>
-					                  <ui-select-choices repeat="detectionDetail in detection.species.detectionDetailsList | propsFilter: {detailText: $select.search}">
-					                    <div ng-bind-html="detectionDetail.detailText | highlight: $select.search"></div>
-					                  </ui-select-choices>
-					                </ui-select>
-					              </div>
-					              <div class="col-md-1">
-									<input type="number" style="width: 97%; margin-left:15px" name="individuals" ng-model="detection.individuals" min="0" max="99" required>
-					              </div>
-					              <div class="col-md-4">
-					                <input type="textarea" style="width: 97%; margin-left:15px" name="comments" ng-model="detection.comments" ng-trim="false">
-					              </div>
-					              <div class="col-md-2" style="margin-top:-5px">
-					              
-									<button class="btn btn-primary" ng-click="idPhotosCtrl.saveSelectedPhoto()"><i class="fa fa-save"></i></button>
-									<button class="btn btn-danger" mwl-confirm data-title="Confirm" message="Are you <b>sure</b> you want to delete this detection?"
-									        placement="top" on-confirm="idPhotosCtrl.removeDetection(detection)" confirm-button-type="danger"
-							                cancel-button-type="default">
-							        	<i class="fa fa-trash-o"></i>
-							        </button>
-							        <i class="fa fa-check" style="color:green" ng-show="detection.hasOwnProperty('id')"></i>
-					              </div>
-					            </div>
-					            <!--/species search bar -->
-					
-					        </div>
-					        <!-- /.box-body -->
-					        <div class="box-footer">
-					          <button class="btn btn-default" ng-click="idPhotosCtrl.addDetection()" ng-show="idPhotosCtrl.photos.length"><i class="fa fa-plus-square-o"></i> Add Detection</button>
-					        </div>
-					        <!-- /.box-footer-->
-				        </div>
-				    </div>
-				</div>
+        <div class="box-body">
+            <div class="col-md-2">
+           	  <div class="box box-info">
+	            <div class="box-header">
+	              <h3 class="box-title">Search Filters</h3>
+	            </div>
+	            <div class="box-body">
+					<label>Location Folders</label>
+					<div ng-repeat="folder in idPhotosCtrl.treeData" style="padding-left: 5px; padding-bottom:2px">
+					  <a ng-click="idPhotosCtrl.selectFolder(folder)">
+					    <i class="fa fa-folder-o"></i> {{folder.text}}
+					  </a>
+					</div>
+	            </div>
+	            <!-- end loading -->
+	          </div>
 			</div>
+            <div class="col-md-7">	
+           	  <div class="box box-info">
+	            <div class="box-header">
+	              <h3 class="box-title" ng-show="idPhotosCtrl.breadCrumbList.length">
+	              	Selected Folder
+		          	  <div style="padding:10px 5px; font-size:.75em">
+					    <span ng-repeat="link in idPhotosCtrl.breadCrumbList">
+					      <span ng-show="$index > 0">
+							<a ng-click="idPhotosCtrl.selectFolder(link)">
+								{{link.text}}
+							</a>
+							<span ng-show="!$last">></span>
+						  </span>
+						</span>
+					  </div>
+				  </h3>
+	            </div>
+	            <div class="box-body">
+				  <div ng-show="!idPhotosCtrl.photos.length">
+				  	No photos found for the selected Search Filters.
+				  </div>
+				  <div ng-show="idPhotosCtrl.photos.length">
+		            <!-- thumb navigation carousel -->
+		            <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
+		              <!-- thumb navigation carousel items -->
+		              <ul class="list-inline">
+		                <li ng-repeat="photo in idPhotosCtrl.photos">
+		                  <a id="carousel-selector-{{$index}}" ng-class="{'selected': photo.selected}" ng-click="idPhotosCtrl.selectThumb($index)">
+		                    <img src="http://localhost:8080/ccc/api/dropbox/thumb?path={{photo.metadata.pathLower}}" class="img-responsive">
+		                  </a>
+		                </li>
+		              </ul>
+		
+		            </div>
+		            <!--/ thumb navigation carousel -->
+		            <!-- main slider carousel -->
+		            <div class="row">
+		              <div class="col-md-12" id="slider">
+		
+		                <div class="col-md-12" id="carousel-bounding-box">
+		                  <div id="myCarousel" class="carousel slide" data-interval="false">
+		                    <!-- main slider carousel items -->
+		                    <div class="carousel-inner">
+		                      <div ng-repeat="photo in idPhotosCtrl.photos" ng-class="idPhotosCtrl.thumbClass(photo)" class="item" data-slide-number="{{$index}}" >
+		                        <img src="http://localhost:8080/ccc/api/dropbox/image?path={{photo.metadata.pathLower}}" class="img-responsive">
+		                      </div>
+		                    </div>
+		                    <!-- main slider carousel nav controls -->
+		                    <a class="carousel-control left" href="#myCarousel" data-slide="prev" ng-non-bindable>‹</a>
+		                    <a class="carousel-control right" href="#myCarousel" data-slide="next" ng-non-bindable>›</a>
+		                  </div>
+		                </div>
+		
+		              </div>
+		            </div>
+		            <!--/main slider carousel-->
+		          </div>
+		        </div>
+			  </div>
+			</div>
+            <div class="col-md-3">
+           	  <div class="box box-info">
+	            <div class="box-header">
+	              <h3 class="box-title">Detections</h3>
+	            </div>
+	            <div class="box-body">
+	            	<!-- species search bar -->
+		            <div class="row" ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections" style="margin-top:5px">
+		            	
+			            <div class="row" style="padding: 5px 0px">
+			              <div class="col-md-3"><label for="speciesSelect" style="margin-left:15px">Species</label></div>
+			              <div class="col-md-9">
+			                <ui-select id="speciesSelect" autofocus="true" ng-model="detection.species" 
+			                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px"
+			                			on-select="idPhotosCtrl.onSelectSpeciesCallback($item, $model)" >
+			                  <ui-select-match placeholder="Select species">{{$select.selected.commonName}} &lt;{{$select.selected.latinName}}&gt;</ui-select-match>
+			                  <ui-select-choices repeat="species in idPhotosCtrl.speciesList | propsFilter: {commonName: $select.search, latinName: $select.search}">
+			                    <div ng-bind-html="species.commonName | highlight: $select.search"></div>
+			                    <small>
+			                      commonName: {{species.commonName}}
+			                      latinName: <span ng-bind-html="''+species.latinName | highlight: $select.search"></span>
+			                    </small>
+			                  </ui-select-choices>
+			                </ui-select>
+			              </div>
+			            </div>
+		            	<div class="row" style="padding: 5px 0px">
+			              <div class="col-md-3"><label for="detectionSelect" style="margin-left:15px">Detail</label></div>
+			              <div class="col-md-9">
+			                <ui-select id="detectionSelect" autofocus="false" ng-model="detection.detectionDetail" 
+			                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px">
+			                  <ui-select-match placeholder="Select detection details">{{$select.selected.detailText}}</ui-select-match>
+			                  <ui-select-choices repeat="detectionDetail in detection.species.detectionDetailsList | propsFilter: {detailText: $select.search}">
+			                    <div ng-bind-html="detectionDetail.detailText | highlight: $select.search"></div>
+			                  </ui-select-choices>
+			                </ui-select>
+			              </div>
+			            </div>
+		            	<div class="row" style="padding: 5px 0px">
+			              <div class="col-md-3"><label for="individuals" style="margin-left:15px">Individuals</label></div>
+			              <div class="col-md-9">
+							<input type="number" style="width: 97%; margin-left:0px" name="individuals" ng-model="detection.individuals" min="0" max="99" required>
+			              </div>
+			            </div>
+		            	<div class="row" style="padding: 5px 0px">
+			              <div class="col-md-3"><label for="comments" style="margin-left:15px">Comments</label></div>
+			              <div class="col-md-9">
+			                <input type="textarea" style="width: 97%; margin-left:0px" name="comments" ng-model="detection.comments" ng-trim="false">
+			              </div>
+			            </div>
+		            	<div class="row" style="padding: 5px 7px">
+			              <div class="col-md-12" style="margin-top:-5px">
+			              	<div class="pull-right">
+								<button class="btn btn-primary" ng-click="idPhotosCtrl.saveSelectedPhoto()"><i class="fa fa-save"></i></button>
+								<button class="btn btn-danger" mwl-confirm data-title="Confirm" message="Are you <b>sure</b> you want to delete this detection?"
+								        placement="top" on-confirm="idPhotosCtrl.removeDetection(detection)" confirm-button-type="danger"
+						                cancel-button-type="default">
+						        	<i class="fa fa-trash-o"></i>
+						        </button>
+						    </div>
+			              </div>
+			            </div>
+		            </div>
+	            	<div class="row" style="padding: 5px 7px">
+	          			<button class="btn btn-default pull-right" ng-click="idPhotosCtrl.addDetection()" ng-show="idPhotosCtrl.photos.length"><i class="fa fa-plus-square-o"></i> Add Another Detection</button>
+	            	</div>
+		            <!--/species search bar -->
+		      </div>
+		    </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+        </div>
+        <!-- /.box-footer-->
       </div>
       <!-- /.box -->
 
