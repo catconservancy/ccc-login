@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
@@ -23,8 +24,18 @@ public class CccApplication extends WebMvcConfigurerAdapter {
 		new SpringApplicationBuilder(CccApplication.class).run(args);
 	}
 	
-	/*@Bean
-    public SpringSecurityDialect springSecurityDialect(){
-        return new SpringSecurityDialect();
-    }*/
+	@RequestMapping({
+		"/dashboard",
+		"/importPhotos",
+		"/viewPhotos",
+		"/idPhotos",
+		"/folderLocation",
+		"/cameraMonitoringLog",
+		"/studyAreas",
+		"/deployments",
+		"/species",
+		"/detectionDetails"
+	})
+	public String index() { return "home"; }
+
 }

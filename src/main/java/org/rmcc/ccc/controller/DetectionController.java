@@ -3,7 +3,6 @@ package org.rmcc.ccc.controller;
 import java.util.List;
 
 import org.rmcc.ccc.model.Detection;
-import org.rmcc.ccc.model.DetectionDetail;
 import org.rmcc.ccc.repository.DetectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

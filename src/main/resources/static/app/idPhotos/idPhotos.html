@@ -31,11 +31,15 @@
 	              <h3 class="box-title">Search Filters</h3>
 	            </div>
 	            <div class="box-body">
+	            	<ng-loading loading="true"></ng-loading>
 					<label>Location Folders</label>
-					<div ng-repeat="folder in idPhotosCtrl.treeData" style="padding-left: 5px; padding-bottom:2px">
-					  <a ng-click="idPhotosCtrl.selectFolder(folder)">
-					    <i class="fa fa-folder-o"></i> {{folder.text}}
-					  </a>
+					<div style="max-height:250px; overflow-y:scroll">
+						<div ng-repeat="folder in idPhotosCtrl.treeData" 
+							 style="padding-left: 5px; padding-bottom:2px">
+						  <a ng-click="idPhotosCtrl.selectFolder(folder)">
+						    <i class="fa fa-folder-o"></i> {{folder.text}}
+						  </a>
+						</div>
 					</div>
 	            </div>
 	            <!-- end loading -->
@@ -67,8 +71,8 @@
 		            <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
 		              <!-- thumb navigation carousel items -->
 		              <ul class="list-inline">
-		                <li ng-repeat="photo in idPhotosCtrl.photos">
-		                  <a id="carousel-selector-{{$index}}" ng-class="{'selected': photo.selected}" ng-click="idPhotosCtrl.selectThumb($index)">
+		                <li ng-repeat="photo in idPhotosCtrl.photos" ng-class="{'selected': photo.selected, 'tagged' : photo.detections.length}">
+		                  <a id="carousel-selector-{{$index}}" ng-click="idPhotosCtrl.selectThumb($index)">
 		                    <img src="http://localhost:8080/ccc/api/dropbox/thumb?path={{photo.metadata.pathLower}}" class="img-responsive">
 		                  </a>
 		                </li>
@@ -84,8 +88,16 @@
 		                  <div id="myCarousel" class="carousel slide" data-interval="false">
 		                    <!-- main slider carousel items -->
 		                    <div class="carousel-inner">
-		                      <div ng-repeat="photo in idPhotosCtrl.photos" ng-class="idPhotosCtrl.thumbClass(photo)" class="item" data-slide-number="{{$index}}" >
+		                      <div ng-repeat="photo in idPhotosCtrl.photos" 
+		                           ng-class="idPhotosCtrl.thumbClass(photo)" 
+		                           class="item" 
+		                           data-slide-number="{{$index}}">
 		                        <img src="http://localhost:8080/ccc/api/dropbox/image?path={{photo.metadata.pathLower}}" class="img-responsive">
+		                        <h2>
+		                        	<span ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections">
+		                        		{{detection.species.commonName}} (<i>{{detection.species.latinName}}</i>) {{detection.detectionDetail.detailText}} &nbsp;&nbsp;<br/>
+									</span>
+								</h2>
 		                      </div>
 		                    </div>
 		                    <!-- main slider carousel nav controls -->
@@ -113,7 +125,7 @@
 			            <div class="row" style="padding: 5px 0px">
 			              <div class="col-md-3"><label for="speciesSelect" style="margin-left:15px">Species</label></div>
 			              <div class="col-md-9">
-			                <ui-select id="speciesSelect" autofocus="true" ng-model="detection.species" 
+			                <ui-select id="speciesSelect_{{$index}}" autofocus="true" ng-model="detection.species" 
 			                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px"
 			                			on-select="idPhotosCtrl.onSelectSpeciesCallback($item, $model)" >
 			                  <ui-select-match placeholder="Select species">{{$select.selected.commonName}} &lt;{{$select.selected.latinName}}&gt;</ui-select-match>
@@ -165,7 +177,7 @@
 			            </div>
 		            </div>
 	            	<div class="row" style="padding: 5px 7px">
-	          			<button class="btn btn-default pull-right" ng-click="idPhotosCtrl.addDetection()" ng-show="idPhotosCtrl.photos.length"><i class="fa fa-plus-square-o"></i> Add Another Detection</button>
+	          			<button class="btn btn-default pull-right" ng-click="idPhotosCtrl.addDetection()" ng-show="idPhotosCtrl.photos.length"><i class="fa fa-plus-square-o"></i> Add Detection</button>
 	            	</div>
 		            <!--/species search bar -->
 		      </div>

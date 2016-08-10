@@ -16,6 +16,7 @@
         vm.treeData = [];
         vm.fullscreen = false;
         vm.showFilters = true;
+        vm.treeDataLoaded = {};
 
         vm.selectThumb = selectThumb;
         vm.thumbClass = thumbClass;
@@ -39,6 +40,7 @@
         			vm.fileList.push(data[i].metadata);
         		}
         	}
+			vm.treeDataLoaded = vm.treeData && vm.treeData.length > 0 ? {} : {notFound: true};
         	$log.debug("vm.fileList", vm.fileList);
 
         	$('#filterDropdown .dropdown-menu').on({
@@ -88,6 +90,7 @@
 	                if (!vm.selectedPhoto.detections)
 	                	vm.selectedPhoto.detections = [{}];
             	}
+    			vm.treeDataLoaded = vm.treeData && vm.treeData.length > 0 ? {} : {notFound: true};
 	        });
         }
         

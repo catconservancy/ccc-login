@@ -8,9 +8,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.rmcc.ccc.model.DropboxFolder;
-import org.rmcc.ccc.model.User;
 import org.rmcc.ccc.service.user.DropboxService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +23,8 @@ import com.dropbox.core.v2.files.Metadata;
 @RestController
 @RequestMapping("/api/dropbox")
 public class DropboxController extends BaseController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CurrentUserControllerAdvice.class);
 	
 	private static final String UNCATALOGED_ROOT = "/ccc camera study project/uncataloged camera study area photos";
 	private static final String ARCHIVED_ROOT = "/ccc camera study project/archived photos";
@@ -60,8 +62,14 @@ public class DropboxController extends BaseController {
 	@RequestMapping(value = "/thumb", method = RequestMethod.GET, produces="image/png")
     public byte[] outputThumbnailImage(HttpServletResponse response, 
     		@RequestParam(value = "path", defaultValue = "") String path) throws DbxException, IOException {		
-		InputStream in = dropboxService.getThumbnailInputStreamByPath(path);
-		return IOUtils.toByteArray(in);
+		InputStream in;
+		try {
+			in = dropboxService.getThumbnailInputStreamByPath(path);
+			return IOUtils.toByteArray(in);
+		} catch (Exception e) {
+			LOGGER.info("unable to retrieve thumbnail by path: " + path);
+		}
+		return null;
     }
 
 }

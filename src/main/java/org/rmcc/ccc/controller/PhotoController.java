@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import org.rmcc.ccc.model.CccMetadata;
 import org.rmcc.ccc.model.Detection;
-import org.rmcc.ccc.model.DetectionDetail;
 import org.rmcc.ccc.model.Photo;
 import org.rmcc.ccc.repository.PhotoRepository;
 import org.rmcc.ccc.service.user.DropboxService;
