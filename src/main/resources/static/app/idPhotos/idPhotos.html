@@ -25,6 +25,21 @@
           	</div>	
         </div>
         <div class="box-body">
+        	<div class="col-md-12" ng-show="idPhotosCtrl.photos.length">
+	            <!-- thumb navigation carousel -->
+	            <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
+	              <!-- thumb navigation carousel items -->
+	              <ul class="list-inline">
+	                <li ng-repeat="photo in idPhotosCtrl.photos" ng-class="{'selected': photo.selected, 'tagged' : photo.detections[0].hasOwnProperty('id')}">
+	                  <a id="carousel-selector-{{$index}}" ng-click="idPhotosCtrl.selectThumb($index)">
+	                    <img src="http://localhost:8080/ccc/api/dropbox/thumb?path={{photo.metadata.pathLower}}" class="img-responsive">
+	                  </a>
+	                </li>
+	              </ul>
+	
+	            </div>
+	            <!--/ thumb navigation carousel -->
+		    </div>
             <div class="col-md-2">
            	  <div class="box box-info">
 	            <div class="box-header">
@@ -67,19 +82,6 @@
 				  	No photos found for the selected Search Filters.
 				  </div>
 				  <div ng-show="idPhotosCtrl.photos.length">
-		            <!-- thumb navigation carousel -->
-		            <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
-		              <!-- thumb navigation carousel items -->
-		              <ul class="list-inline">
-		                <li ng-repeat="photo in idPhotosCtrl.photos" ng-class="{'selected': photo.selected, 'tagged' : photo.detections.length}">
-		                  <a id="carousel-selector-{{$index}}" ng-click="idPhotosCtrl.selectThumb($index)">
-		                    <img src="http://localhost:8080/ccc/api/dropbox/thumb?path={{photo.metadata.pathLower}}" class="img-responsive">
-		                  </a>
-		                </li>
-		              </ul>
-		
-		            </div>
-		            <!--/ thumb navigation carousel -->
 		            <!-- main slider carousel -->
 		            <div class="row">
 		              <div class="col-md-12" id="slider">
@@ -95,7 +97,7 @@
 		                        <img src="http://localhost:8080/ccc/api/dropbox/image?path={{photo.metadata.pathLower}}" class="img-responsive">
 		                        <h2>
 		                        	<span ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections">
-		                        		{{detection.species.commonName}} (<i>{{detection.species.latinName}}</i>) {{detection.detectionDetail.detailText}} &nbsp;&nbsp;<br/>
+		                        		{{detection.species.commonName}} <i class="small" style="color:white">({{detection.species.latinName}})</i> - {{detection.detectionDetail.detailText}} &nbsp;&nbsp;<br/>
 									</span>
 								</h2>
 		                      </div>

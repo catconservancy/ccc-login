@@ -5,9 +5,11 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,6 +43,7 @@ public class DetectionDetail implements Serializable {
 
 	//bi-directional many-to-one association to Detection
 	@OneToMany(mappedBy="detectionDetail", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Detection> detections;
 
 	public DetectionDetail() {
@@ -79,7 +82,7 @@ public class DetectionDetail implements Serializable {
 	}
 
 	public List<Detection> getDetections() {
-		return this.detections;
+		return this.detections != null ? this.detections : new ArrayList<>();
 	}
 
 	public void setDetections(List<Detection> detections) {

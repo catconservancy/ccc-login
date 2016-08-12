@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
@@ -59,6 +60,7 @@ public class Detection implements Serializable {
 	//bi-directional many-to-one association to Photo
 	@ManyToOne
 	@JoinColumn(name="image_id")
+	@JsonIgnore
 	private Photo photo;
 
 	public Detection() {

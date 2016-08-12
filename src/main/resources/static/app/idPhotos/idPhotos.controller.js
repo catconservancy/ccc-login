@@ -2,9 +2,11 @@
     angular.module('CCC')
         .controller('IdPhotosController', IdPhotosController);
 
-    IdPhotosController.$inject = ['$log', '$scope', 'Species', 'DetectionDetails', 'Detection', 'PhotosService'];
+    IdPhotosController.$inject = ['$log', '$rootScope', '$scope', '$filter',
+                                  'Species', 'DetectionDetails', 'Detection', 'PhotosService'];
 
-    function IdPhotosController($log, $scope, Species, DetectionDetails, Detection, PhotosService) {
+    function IdPhotosController($log, $rootScope, $scope, $filter,
+    		Species, DetectionDetails, Detection, PhotosService) {
         var vm = this;
         vm.photos = [];
         vm.selectedPhoto = {};
@@ -174,6 +176,13 @@
         				$log.debug('update success');
         				PhotosService.get({id:photo.id}, function(data) {
         					vm.selectedPhoto = data;
+        					var photoIndex = -1;
+        					$filter('filter')(vm.photos, function (d) {
+        						if (vm.selectedPhoto.id === d.id) {
+        							photoIndex = vm.photos.indexOf(d);
+        						}
+        					});
+        					vm.photos[photoIndex].detections = data.detections; // updated to update flagged value in UI
         				});
         			});
         		});
