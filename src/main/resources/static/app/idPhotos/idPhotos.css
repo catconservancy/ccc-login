@@ -26,7 +26,7 @@ a {
 }
 
 #idPhotos .list-inline li.tagged {
-	background-color: lightgreen; 
+	background-color: #00a65a; 
 }
 
 #idPhotos .list-inline li.selected {

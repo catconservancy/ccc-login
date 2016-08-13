@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.rmcc.ccc.model.CccMetadata;
 import org.rmcc.ccc.model.Detection;
 import org.rmcc.ccc.model.Photo;
+import org.rmcc.ccc.repository.DetectionRepository;
 import org.rmcc.ccc.repository.PhotoRepository;
 import org.rmcc.ccc.service.user.DropboxService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,15 @@ public class PhotoController {
 	private static final String ARCHIVED_ROOT = "/ccc camera study project/archived photos";
 
 	private PhotoRepository photoRepository;
+	private DetectionRepository detectionRepository;
 	private DropboxService dropboxService;
 	
 	@Autowired
 	public PhotoController(PhotoRepository photoRepository,
+			DetectionRepository detectionRepository,
 			DropboxService dropboxService) {
 		this.photoRepository = photoRepository;
+		this.detectionRepository = detectionRepository;
 		this.dropboxService = dropboxService;
 	}	
 
@@ -87,6 +91,14 @@ public class PhotoController {
 	}
 	
 	private Photo savePhoto(Photo photo) {
+		Photo dbPhoto = photoRepository.findOne(photo.getId());
+		for (Detection d : dbPhoto.getDetections()) {
+			d.setPhoto(null);
+			if (d.getDetectionDetail() != null) {
+				d.getDetectionDetail().removeDetection(d);
+			}
+		}
+		photoRepository.save(photo);
 		for (Detection d: photo.getDetections()) {
 			d.setPhoto(photo);
 			if (d.getDetectionDetail() != null) {

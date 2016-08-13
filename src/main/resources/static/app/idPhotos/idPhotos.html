@@ -30,10 +30,18 @@
 	            <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
 	              <!-- thumb navigation carousel items -->
 	              <ul class="list-inline">
-	                <li ng-repeat="photo in idPhotosCtrl.photos" ng-class="{'selected': photo.selected, 'tagged' : photo.detections[0].hasOwnProperty('id')}">
+	                <li ng-repeat="photo in idPhotosCtrl.photos" 
+	                	ng-class="{'selected': photo.selected, 'tagged' : photo.detections[0].hasOwnProperty('id')}"
+	                	style="position:relative">
 	                  <a id="carousel-selector-{{$index}}" ng-click="idPhotosCtrl.selectThumb($index)">
 	                    <img src="http://localhost:8080/ccc/api/dropbox/thumb?path={{photo.metadata.pathLower}}" class="img-responsive">
 	                  </a>
+	                  <i class="fa fa-tag" 
+	                  	 style="position:absolute; right: 5px; bottom:5px; color:#00a65a; font-size:1.5em"
+	                  	 ng-show="photo.detections[0].hasOwnProperty('id')"></i>
+	                  <i class="fa fa-star" 
+	                  	 style="position:absolute; left: 5px; bottom:5px; color:#f39c12; font-size:1.5em"
+	                  	 ng-show="photo.highlight"></i>
 	                </li>
 	              </ul>
 	
@@ -76,6 +84,12 @@
 						</span>
 					  </div>
 				  </h3>
+	              <div class="pull-right" ng-show="idPhotosCtrl.selectedPhoto.hasOwnProperty('id')">			              		
+					Highlight Photo 
+					<button class="btn btn-primary" ng-click="idPhotosCtrl.highlightSelectedPhoto()">
+						<i class="fa fa-star" style="color:{{idPhotosCtrl.selectedPhoto.highlight ? '#f39c12' : 'gray'}}; font-size: 1.5em"></i>
+					</button>
+				  </div>
 	            </div>
 	            <div class="box-body">
 				  <div ng-show="!idPhotosCtrl.photos.length">
@@ -144,7 +158,7 @@
 		            	<div class="row" style="padding: 5px 0px">
 			              <div class="col-md-3"><label for="detectionSelect" style="margin-left:15px">Detail</label></div>
 			              <div class="col-md-9">
-			                <ui-select id="detectionSelect" autofocus="false" ng-model="detection.detectionDetail" 
+			                <ui-select id="detectionSelect" ng-model="detection.detectionDetail" 
 			                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px">
 			                  <ui-select-match placeholder="Select detection details">{{$select.selected.detailText}}</ui-select-match>
 			                  <ui-select-choices repeat="detectionDetail in detection.species.detectionDetailsList | propsFilter: {detailText: $select.search}">
@@ -167,7 +181,7 @@
 			            </div>
 		            	<div class="row" style="padding: 5px 7px">
 			              <div class="col-md-12" style="margin-top:-5px">
-			              	<div class="pull-right">
+			              	<div class="pull-right">			              		
 								<button class="btn btn-primary" ng-click="idPhotosCtrl.saveSelectedPhoto()"><i class="fa fa-save"></i></button>
 								<button class="btn btn-danger" mwl-confirm data-title="Confirm" message="Are you <b>sure</b> you want to delete this detection?"
 								        placement="top" on-confirm="idPhotosCtrl.removeDetection(detection)" confirm-button-type="danger"

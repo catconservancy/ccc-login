@@ -27,6 +27,7 @@
         vm.saveSelectedPhoto = saveSelectedPhoto;
         vm.removeDetection = removeDetection;
         vm.addDetection = addDetection;
+        vm.highlightSelectedPhoto = highlightSelectedPhoto;
         vm.onSelectSpeciesCallback = onSelectSpeciesCallback;
 
         PhotosService.query({},function(data) {
@@ -172,6 +173,7 @@
         			vm.entry.species = vm.selectedPhoto.species;
         			vm.entry.src = vm.selectedPhoto.src;
         			vm.entry.thumbSrc = vm.selectedPhoto.thumbSrc;
+        			vm.entry.highlight = vm.selectedPhoto.highlight;
         			vm.entry.$update(function(photo) {
         				$log.debug('update success');
         				PhotosService.get({id:photo.id}, function(data) {
@@ -189,8 +191,18 @@
         	}
         }
         
+        function highlightSelectedPhoto() {
+        	vm.selectedPhoto.highlight = !vm.selectedPhoto.highlight;
+        	saveSelectedPhoto();
+        }
+        
         function removeDetection(detection) {
         	$log.debug("called removeDetection",detection);
+        	var detectionIdx = vm.selectedPhoto.detections.indexOf(detection);
+        	if (detectionIdx > - 1) {
+        		vm.selectedPhoto.detections.splice(detectionIdx, 1);
+        		saveSelectedPhoto();
+        	}
         }
         
         function addDetection() {
