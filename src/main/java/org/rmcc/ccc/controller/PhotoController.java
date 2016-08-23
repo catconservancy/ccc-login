@@ -11,6 +11,7 @@ import org.rmcc.ccc.model.Detection;
 import org.rmcc.ccc.model.Photo;
 import org.rmcc.ccc.repository.DetectionRepository;
 import org.rmcc.ccc.repository.PhotoRepository;
+import org.rmcc.ccc.service.PhotoService;
 import org.rmcc.ccc.service.user.DropboxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.drew.imaging.ImageProcessingException;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.files.Metadata;
 
@@ -31,21 +33,24 @@ public class PhotoController {
 	private static final String ARCHIVED_ROOT = "/ccc camera study project/archived photos";
 
 	private PhotoRepository photoRepository;
+	private PhotoService photoService;
 	private DetectionRepository detectionRepository;
 	private DropboxService dropboxService;
 	
 	@Autowired
 	public PhotoController(PhotoRepository photoRepository,
+			PhotoService photoService,
 			DetectionRepository detectionRepository,
 			DropboxService dropboxService) {
 		this.photoRepository = photoRepository;
+		this.photoService = photoService;
 		this.detectionRepository = detectionRepository;
 		this.dropboxService = dropboxService;
 	}	
 
 	@RequestMapping(method = RequestMethod.GET)
 
-	public List<Photo> findAll(@RequestParam Map<String,String> params) throws DbxException, IOException {
+	public List<Photo> findAll(@RequestParam Map<String,String> params) throws Exception {
 		List<Photo> photos = new ArrayList<Photo>();
 		
 		// TODO: move this logic to a PhotService
@@ -65,6 +70,7 @@ public class PhotoController {
 			photo.setDropboxPath(metadata.getPathLower());
 			if (!metadata.isDir()) {
 				photo = photoRepository.save(photo);
+				PhotoService.getFileMetadata(dropboxService.getInputStreamByPath(metadata.getPathLower()), metadata.getName());
 			} else {
 				//TODO: add logic to populate create deployment and set on photo.
 			}
