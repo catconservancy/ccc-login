@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.rmcc.ccc.exception.InvalidPathException;
 import org.rmcc.ccc.model.CccMetadata;
+import org.rmcc.ccc.model.Deployment;
 import org.rmcc.ccc.model.Detection;
 import org.rmcc.ccc.model.Photo;
+import org.rmcc.ccc.repository.DeploymentRepository;
 import org.rmcc.ccc.repository.DetectionRepository;
 import org.rmcc.ccc.repository.PhotoRepository;
 import org.rmcc.ccc.service.PhotoService;
@@ -29,35 +32,42 @@ import com.dropbox.core.v2.files.Metadata;
 @RequestMapping("/api/photos")
 public class PhotoController {	
 	
-	private static final String UNCATALOGED_ROOT = "/ccc camera study project/uncataloged camera study area photos";
+	public static final String UNCATALOGED_ROOT = "/ccc camera study project/uncataloged camera study area photos";
 	private static final String ARCHIVED_ROOT = "/ccc camera study project/archived photos";
 
 	private PhotoRepository photoRepository;
 	private PhotoService photoService;
 	private DetectionRepository detectionRepository;
 	private DropboxService dropboxService;
+	private DeploymentRepository deploymentRepository;
 	
 	@Autowired
 	public PhotoController(PhotoRepository photoRepository,
 			PhotoService photoService,
 			DetectionRepository detectionRepository,
-			DropboxService dropboxService) {
+			DropboxService dropboxService,
+			DeploymentRepository deploymentRepository) {
 		this.photoRepository = photoRepository;
 		this.photoService = photoService;
 		this.detectionRepository = detectionRepository;
 		this.dropboxService = dropboxService;
+		this.deploymentRepository = deploymentRepository;
 	}	
 
 	@RequestMapping(method = RequestMethod.GET)
 
 	public List<Photo> findAll(@RequestParam Map<String,String> params) throws Exception {
 		List<Photo> photos = new ArrayList<Photo>();
+		String path = params.get("path");
 		
 		// TODO: move this logic to a PhotService
 		
 		List<Metadata> dropboxMetadata = new ArrayList<Metadata>();
-		if (params.get("path") != null) {
-			dropboxMetadata = dropboxService.getFolderContentsByPath(params.get("path"));
+		if (path != null) {
+			if (!path.equalsIgnoreCase(UNCATALOGED_ROOT) && !isValidPath(path)) {
+				throw new InvalidPathException(path);
+			}
+			dropboxMetadata = dropboxService.getFolderContentsByPath(path);
 		} else {		
 			dropboxMetadata = dropboxService.getFolderContentsByPath(UNCATALOGED_ROOT);
 		}
@@ -69,8 +79,9 @@ public class PhotoController {
 			photo.setMetadata(metadata);
 			photo.setDropboxPath(metadata.getPathLower());
 			if (!metadata.isDir()) {
+				photo.setDeployment(getDeploymentsByPath(path).get(0));
 				photo = photoRepository.save(photo);
-				PhotoService.getFileMetadata(dropboxService.getInputStreamByPath(metadata.getPathLower()), metadata.getName());
+//				PhotoService.getFileMetadata(dropboxService.getInputStreamByPath(metadata.getPathLower()), metadata.getName());
 			} else {
 				//TODO: add logic to populate create deployment and set on photo.
 			}
@@ -80,6 +91,24 @@ public class PhotoController {
         return photos;
     }
 	
+	private boolean isValidPath(String path) {
+		return getDeploymentsByPath(path).size() > 0;
+	}
+
+	private List<Deployment> getDeploymentsByPath(String path) {
+		String pathSubstr = path.substring(path.indexOf(UNCATALOGED_ROOT) + UNCATALOGED_ROOT.length() + 1);
+		String[] pathElements = pathSubstr.split("/");
+		List<Deployment> deployments = new ArrayList<>();
+		if (pathElements.length > 0) {
+			if (pathElements.length == 1) {
+				deployments = deploymentRepository.findByStudyAreaNameIgnoreCase(pathElements[0]);
+			} else {
+				deployments = deploymentRepository.findByStudyAreaNameAndLocationIDIgnoreCase(pathElements[0],pathElements[1]);
+			}
+		}
+		return deployments;
+	}
+
 	@RequestMapping(value = "/{photoId}", method = RequestMethod.GET)
 	Photo findById(@PathVariable Integer photoId) {
 		return photoRepository.findOne(photoId);

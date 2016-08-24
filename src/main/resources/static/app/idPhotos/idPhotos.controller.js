@@ -94,6 +94,8 @@
 	                	vm.selectedPhoto.detections = [{}];
             	}
     			vm.treeDataLoaded = vm.treeData && vm.treeData.length > 0 ? {} : {notFound: true};
+	        }, function(error) {
+	        	console.log(error);
 	        });
         }
         
