@@ -19,6 +19,7 @@
         vm.fullscreen = false;
         vm.showFilters = true;
         vm.treeDataLoaded = {};
+        vm.photoQueryError = null;
 
         vm.selectThumb = selectThumb;
         vm.thumbClass = thumbClass;
@@ -72,6 +73,7 @@
     		vm.fileList = [];
             vm.treeData = [];
         	PhotosService.query({path: folder.path},function(data) {
+                vm.photoQueryError = null;
         		vm.photos = [];
             	for (i = 0; i < data.length; i++) {
             		if (data[i].metadata.dir) {
@@ -95,7 +97,7 @@
             	}
     			vm.treeDataLoaded = vm.treeData && vm.treeData.length > 0 ? {} : {notFound: true};
 	        }, function(error) {
-	        	console.log(error);
+	            vm.photoQueryError = error.data.message;
 	        });
         }
         

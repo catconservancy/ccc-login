@@ -93,7 +93,18 @@
 	            </div>
 	            <div class="box-body">
 				  <div ng-show="!idPhotosCtrl.photos.length">
-				  	No photos found for the selected Search Filters.
+				  	<div class="alert alert-warning alert-dismissible">
+		                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+		                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+		                No photos found for the selected Search Filters.
+		            </div>
+				  </div>
+				  <div ng-show="idPhotosCtrl.photoQueryError">
+				  	<div class="alert alert-danger alert-dismissible">
+		                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+		                <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+		                {{idPhotosCtrl.photoQueryError}}
+		            </div>
 				  </div>
 				  <div ng-show="idPhotosCtrl.photos.length">
 		            <!-- main slider carousel -->
