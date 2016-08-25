@@ -9,7 +9,8 @@
         'mwl.confirm',
         'msl.uploads',
         'ui.select',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'ngMap'
     ])
         .config(config)
         .run(run);
