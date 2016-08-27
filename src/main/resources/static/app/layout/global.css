@@ -77,3 +77,4 @@ input[type="checkbox"].toggle-switch.checked + label:after {
 .touch .toggle-switch.checked + label.switch:before {
     outline: none;
 }
+.angular-google-map-container { height: 350px; }

@@ -34,7 +34,9 @@
         <js>webjar:angular-bootstrap-confirm/0.7.0/dist/angular-bootstrap-confirm.min.js</js>
         <js>webjar:angular-ui-select/0.14.8/select.js</js>
         <js>webjar:bootstrap-treeview/1.2.0/dist/bootstrap-treeview.min.js</js>
-        <js>webjar:angularjs-google-maps/1.7.11/ng-map.min.js</js>
+        <js>webjar:lodash/4.15.0/lodash.min.js</js>
+        <js>webjar:angular-simple-logger/0.1.5/angular-simple-logger.min.js</js>
+        <js>/resources/static/js/angular-google-maps.js</js>
         <js>/resources/static/js/angular-uploads.min.js</js>
         
         <css>/resources/static/css/bootstrap.min.css</css>

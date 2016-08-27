@@ -345,10 +345,16 @@
 					    <artifactId>angular-ui-bootstrap</artifactId>
 					    <version>1.3.2</version>
 					</dependency>
+					<!-- https://mvnrepository.com/artifact/org.webjars/lodash -->
 					<dependency>
-						<groupId>org.webjars</groupId>
-						<artifactId>angularjs-google-maps</artifactId>
-						<version>1.7.11</version>
+					    <groupId>org.webjars</groupId>
+					    <artifactId>lodash</artifactId>
+					    <version>4.15.0</version>
+					</dependency>
+					<dependency>
+					    <groupId>org.webjars</groupId>
+					    <artifactId>angular-simple-logger</artifactId>
+					    <version>0.1.5</version>
 					</dependency>
 				</dependencies>
 			</plugin>
