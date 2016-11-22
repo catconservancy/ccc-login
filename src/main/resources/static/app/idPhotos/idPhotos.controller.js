@@ -2,10 +2,10 @@
     angular.module('CCC')
         .controller('IdPhotosController', IdPhotosController);
 
-    IdPhotosController.$inject = ['$log', '$rootScope', '$scope', '$filter',
+    IdPhotosController.$inject = ['$q', '$log', '$rootScope', '$scope', '$filter',
                                   'Species', 'DetectionDetails', 'Detection', 'PhotosService'];
 
-    function IdPhotosController($log, $rootScope, $scope, $filter,
+    function IdPhotosController($q, $log, $rootScope, $scope, $filter,
     		Species, DetectionDetails, Detection, PhotosService) {
         var vm = this;
         vm.photos = [];
@@ -30,6 +30,8 @@
         vm.addDetection = addDetection;
         vm.highlightSelectedPhoto = highlightSelectedPhoto;
         vm.onSelectSpeciesCallback = onSelectSpeciesCallback;
+        vm.deleteSelectedPhoto = deleteSelectedPhoto;
+        vm.archiveTaggedPhotos = archiveTaggedPhotos;
 
         PhotosService.query({},function(data) {
         	for (i = 0; i < data.length; i++) {
@@ -58,6 +60,38 @@
         Species.query(function(data) {
             vm.speciesList = data;
         });
+        
+        function deleteSelectedPhoto() {
+        	PhotosService.delete({ path: vm.selectedPhoto.metadata.pathLower }, function() {
+        		var photoIdx = vm.photos.indexOf(vm.selectedPhoto);
+            	if (photoIdx > - 1) {
+            		vm.photos.splice(photoIdx, 1);
+            		vm.selectedPhoto = vm.photos[0];
+            	}
+        	});
+        }
+        
+        function archiveTaggedPhotos() {
+        	var indexesToRemove = [];
+        	var loopPromises = [];
+        	angular.forEach(vm.photos, function(photo, index) {
+        	    var deferred = $q.defer();
+        	    loopPromises.push(deferred.promise);
+        		if (photo.detections && photo.detections.length && photo.detections[0].hasOwnProperty('id')) {
+        			indexesToRemove.push(index);
+		        	PhotosService.archive({id: photo.id, index: i}, function() {
+		        		deferred.resolve();
+		        	});
+        		} else {
+        			deferred.resolve();
+        		}
+
+        	});
+        	$q.all(loopPromises).then(function () {
+        		for (var i = indexesToRemove.length -1; i >= 0; i--)
+        			vm.photos.splice(indexesToRemove[i],1);
+        	});
+        }
 
         function selectThumb(index) {
             $('#myCarousel').carousel(index);

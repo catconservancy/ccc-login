@@ -19,7 +19,17 @@
         <div class="box-header with-border">
           	<h3 class="box-title">ID Photos</h3>
 	        <div class="pull-right">
-	            <button type="button" class="btn btn-box-tool" ng-click="idPhotosCtrl.fullscreen = !idPhotosCtrl.fullscreen" title="Expand">
+	        	<button class="btn btn-default pull-right" 
+	        			ng-click="idPhotosCtrl.deleteSelectedPhoto()" 
+	        			ng-show="idPhotosCtrl.photos.length">
+	        		<i class="fa fa-trash-o"></i> Delete Selected
+	        	</button>
+	        	<button class="btn btn-default pull-right" 
+	        			ng-click="idPhotosCtrl.archiveTaggedPhotos()" 
+	        			ng-show="idPhotosCtrl.photos.length">
+	        		<i class="fa fa-archive"></i> Archive Tagged
+	        	</button>
+	            <button type="button" class="btn btn-box-tool pull-right" ng-click="idPhotosCtrl.fullscreen = !idPhotosCtrl.fullscreen" title="Expand">
 					<i class="glyphicon" ng-class="idPhotosCtrl.fullscreen ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></i>
 				</button>	
           	</div>	

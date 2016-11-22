@@ -16,6 +16,8 @@ import org.rmcc.ccc.repository.DetectionRepository;
 import org.rmcc.ccc.repository.PhotoRepository;
 import org.rmcc.ccc.service.PhotoService;
 import org.rmcc.ccc.service.user.DropboxService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +33,8 @@ import com.dropbox.core.v2.files.Metadata;
 @RestController
 @RequestMapping("/api/photos")
 public class PhotoController {	
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
 	
 	public static final String UNCATALOGED_ROOT = "/ccc camera study project/uncataloged camera study area photos";
 	private static final String ARCHIVED_ROOT = "/ccc camera study project/archived photos";
@@ -55,7 +59,6 @@ public class PhotoController {
 	}	
 
 	@RequestMapping(method = RequestMethod.GET)
-
 	public List<Photo> findAll(@RequestParam Map<String,String> params) throws Exception {
 		List<Photo> photos = new ArrayList<Photo>();
 		String path = params.get("path");
@@ -141,5 +144,18 @@ public class PhotoController {
 			}
 		}
 		return photoRepository.save(photo);
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE)
+	public void delete(@RequestParam Map<String,String> params) {
+		String path = params.get("path");
+		LOGGER.info("delete called for path: " + path);
+	}
+
+	@RequestMapping(value = "/{photoId}", method = RequestMethod.POST)
+	public Map<String,String> archive(@PathVariable Integer photoId, @RequestParam Map<String,String> params) {
+		Photo photo = photoRepository.findOne(photoId);
+		LOGGER.info("archive called for path: " + photo.getDropboxPath());
+		return params;
 	}
 }

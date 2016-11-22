@@ -16,6 +16,14 @@
         		params: {
         			path: '@path'
         		}
+        	},
+        	
+        	archive: {
+        		method: 'POST', 
+        		params: {
+        			id: '@id',
+        			index: '@index'
+        		}
         	}
         });
     }

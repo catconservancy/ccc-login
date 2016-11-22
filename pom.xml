@@ -200,7 +200,7 @@
 					<contextFolder>${basedir}/src/main</contextFolder>
 				</configuration>
 				<dependencies>
-                    <dependency>
+                    <!-- <dependency>
                         <groupId>org.webjars</groupId>
                         <artifactId>bootstrap</artifactId>
                         <version>3.3.5</version>
@@ -244,13 +244,13 @@
                         <groupId>org.webjars</groupId>
                         <artifactId>stomp-websocket</artifactId>
                         <version>2.3.3</version>
-                    </dependency>
+                    </dependency>-->
                     <!--<dependency>
                         <groupId>org.webjars.bower</groupId>
                         <artifactId>stacktrace-js</artifactId>
                         <version>1.0.1</version>
                     </dependency>-->
-                    <dependency>
+                    <!-- <dependency>
                         <groupId>org.webjars.bower</groupId>
                         <artifactId>Chart.js</artifactId>
                         <version>1.0.2</version>
@@ -299,7 +299,7 @@
                         <groupId>org.webjars.npm</groupId>
                         <artifactId>angular-localforage</artifactId>
                         <version>1.2.3</version>
-                    </dependency>
+                    </dependency>-->
                     <!--<dependency>
                         <groupId>org.webjars.bower</groupId>
                         <artifactId>ng-idle</artifactId>
@@ -310,17 +310,17 @@
                         <artifactId>angular-web-notification</artifactId>
                         <version>0.0.29</version>
                     </dependency>-->
-					<dependency>
+					<!-- <dependency>
 						<groupId>org.webjars</groupId>
 						<artifactId>angular-ui-select</artifactId>
 						<version>0.14.8</version>
-					</dependency>
+					</dependency>-->
                     <!--<dependency>
                         <groupId>org.webjars.bower</groupId>
                         <artifactId>angular-bootstrap-switch</artifactId>
                         <version>0.4.1</version>
                     </dependency>-->
-                    <dependency>
+                    <!-- <dependency>
                         <groupId>org.webjars.npm</groupId>
                         <artifactId>angular-chartist.js</artifactId>
                         <version>3.3.9</version>
@@ -344,9 +344,9 @@
 					    <groupId>org.webjars</groupId>
 					    <artifactId>angular-ui-bootstrap</artifactId>
 					    <version>1.3.2</version>
-					</dependency>
+					</dependency>-->
 					<!-- https://mvnrepository.com/artifact/org.webjars/lodash -->
-					<dependency>
+					<!-- <dependency>
 					    <groupId>org.webjars</groupId>
 					    <artifactId>lodash</artifactId>
 					    <version>4.15.0</version>
@@ -355,7 +355,7 @@
 					    <groupId>org.webjars</groupId>
 					    <artifactId>angular-simple-logger</artifactId>
 					    <version>0.1.5</version>
-					</dependency>
+					</dependency>-->
 				</dependencies>
 			</plugin>
 		</plugins>
