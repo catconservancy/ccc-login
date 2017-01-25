@@ -102,9 +102,18 @@ public class User implements Serializable, BaseModel {
 		return fullName;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getInitials() {
+        String[] names = this.fullName.split(" ");
+        String initials = "";
+        for (String name : names) {
+            initials += name.charAt(0);
+        }
+        return initials;
+    }
 
 	public boolean isEnabled() {
 		return enabled;

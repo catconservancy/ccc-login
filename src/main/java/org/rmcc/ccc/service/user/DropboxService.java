@@ -47,9 +47,6 @@ public class DropboxService {
             LOGGER.error("Can't connect to dropbox.");
         }
 
-//        // Upload "test.txt" to Dropbox
-//        InputStream in = new FileInputStream("test.txt");
-//        DbxFiles.FileMetadata metadata = client.files.uploadBuilder("/test.txt").run(in);
 	}
 	
 	public List<DropboxFolder> getFoldersByPath(String path) throws DbxException, IOException {

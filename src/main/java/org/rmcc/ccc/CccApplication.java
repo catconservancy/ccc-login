@@ -34,7 +34,8 @@ public class CccApplication extends WebMvcConfigurerAdapter {
 		"/studyAreas",
 		"/deployments",
 		"/species",
-		"/detectionDetails"
+        "/detectionDetails",
+        "/userProfile"
 	})
 	public String index() { return "home"; }
 

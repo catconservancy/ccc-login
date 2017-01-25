@@ -96,7 +96,14 @@
 	            templateUrl: 'app/cameraMonitoringLog/cameraMonitoringLog.html',
 	            controller: 'CameraMonitoringLogController',
 	            controllerAs: 'cameraLogCtrl'
-	        });
+	        })
+
+			.state('userProfile', {
+				url: '/userProfile',
+				templateUrl: 'app/userProfile/userProfile.html',
+				controller: 'UserProfileController',
+				controllerAs: 'userProfileCtrl'
+			});
 
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     };

@@ -2,6 +2,7 @@ package org.rmcc.ccc.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,6 +66,16 @@ public class UserController {
         return (List<User>) userRepository.findAll();
     }
 
+    @Loggable
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    public User getById(UsernamePasswordAuthenticationToken token, @PathVariable Long userId) {
+        if (userId == 0) {
+            return userService.getUserByEmail(token.getName()).get();
+        } else {
+            return userService.getUserById(userId).get();
+        }
+    }
+
 //  @PreAuthorize("hasAuthority('ADMIN')")
 	@Loggable
     @RequestMapping(method = RequestMethod.PUT)
@@ -74,6 +86,7 @@ public class UserController {
         	dbUser.setEnabled(user.isEnabled());
         	sendUserActivatedEmail(dbUser);
         }
+        dbUser.setFullName(user.getFullName());
         return userRepository.save(dbUser);
     }
 

@@ -2,12 +2,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-folder-open"></i>
-        Update Folder Location
+        <i class="fa fa-user"></i>
+        Update User Profile
       </h1>
       <ol class="breadcrumb">
         <li><a ui-sref="dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a ui-sref="folderLocation"><i class="fa fa-folder-open"></i> Folder Location</a></li>
+        <li><a ui-sref="userProfile"><i class="fa fa-folder-open"></i> User Profile</a></li>
       </ol>
     </section>
 
@@ -17,7 +17,7 @@
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
+          <h3 class="box-title">User Details</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -27,11 +27,22 @@
           </div>
         </div>
         <div class="box-body">
-          TBD...
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="fullName"
+                       ng-model="userProfileCtrl.user.fullName"
+                       style="width: 100%" class="form-control"/>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-          Footer
+          <div class="pull-right">
+            <button type="submit" class="btn btn-primary" ng-click="userProfileCtrl.save()"><i class="fa fa-save"></i> save</button>
+          </div>
         </div>
         <!-- /.box-footer-->
       </div>

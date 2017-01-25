@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" ng-app="CCC">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" ng-app="CCC">
 <head>
     <base href="/ccc/"/>
     <meta charset="utf-8"/>
@@ -61,36 +61,33 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				<img src="/ccc/img/ccc-user-160x160.jpg" class="user-image" alt="User Image"/>
-				<span class="hidden-xs" sec:authentication="name"></span>
+              <span class="fa-stack fa-1x">
+                <i class="fa fa-circle fa-stack-2x" style="color:white"></i>
+                <strong class="fa-stack-1x calendar-text" style="color:#605ca8">
+                  <span sec:authentication="principal.user.initials"></span>
+                </strong>
+              </span>
+			  <!--<img src="/ccc/img/ccc-user-160x160.jpg" class="user-image" alt="User Image"/>-->
+			  <span class="hidden-xs" sec:authentication="name"></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="/ccc/img/ccc-user-160x160.jpg" class="img-circle" alt="User Image"/>
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-circle fa-stack-2x" style="color:white"></i>
+                  <strong class="fa-stack-1x calendar-text" style="color:#605ca8">
+                    <span sec:authentication="principal.user.initials"></span>
+                  </strong>
+                </span>
+                <!--<img src="/ccc/img/ccc-user-160x160.jpg" class="img-circle" alt="User Image"/>-->
                 <p>
                   <span class="hidden-xs" sec:authentication="name"></span>
                 </p>
               </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Thing 1</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Thing 2</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Thing 3</a>
-                  </div>
-                </div>
-                <!-- /.row -->
-              </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a ui-sref="userProfile" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
 					<form th:action="@{/logout}" method="post">
@@ -115,7 +112,13 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="/ccc/img/ccc-user-160x160.jpg" class="img-circle" alt="User Image"/>
+          <span class="fa-stack fa-2x">
+            <i class="fa fa-circle fa-stack-2x" style="color:white"></i>
+            <strong class="fa-stack-1x calendar-text">
+              <span sec:authentication="principal.user.initials"></span>
+            </strong>
+          </span>
+          <!--<img src="/ccc/img/ccc-user-160x160.jpg" class="img-circle" alt="User Image"/>-->
         </div>
         <div class="pull-left info">
           <p>Roles:<span sec:authentication="principal.authorities"></span></p>

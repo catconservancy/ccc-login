@@ -1,10 +1,27 @@
 (function () {
     angular.module('CCC')
-        .controller('FolderLocationController', FolderLocationController);
+        .controller('UserProfileController', UserProfileController);
 
-    FolderLocationController.$inject = [];
+    UserProfileController.$inject = ['Users'];
 
-    function FolderLocationController() {
+    function UserProfileController(Users) {
         var vm = this;
+        vm.user = null;
+
+        vm.save = save;
+
+        function save() {
+            Users.update(vm.user,function(){
+                $log.debug("saved user", vm.user);
+                Users.get({ id: 0 }, function(data) {
+                    vm.user = data;
+                });
+            });
+        }
+
+        Users.get({ id: 0 }, function(data) {
+            vm.user = data;
+        });
+
     }
 }());
