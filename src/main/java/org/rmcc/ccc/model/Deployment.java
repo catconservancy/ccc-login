@@ -2,6 +2,8 @@ package org.rmcc.ccc.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.apache.commons.csv.CSVRecord;
 
 
 /**
@@ -29,7 +32,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name="deployments")
 @NamedQuery(name="Deployment.findAll", query="SELECT d FROM Deployment d")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Deployment implements Serializable {
+public class Deployment implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -123,6 +126,51 @@ public class Deployment implements Serializable {
 	private List<Photo> photos;
 
 	public Deployment() {
+	}
+
+	public Deployment(Integer deploymentId, String studyAreaID, String locationID, String ownership, String utm_e,
+					  String utm_n, String utm_zone, String utm_datum, String startDate, String endDate, String timeOfDay,
+					  String dominantSubstrate, String trailType, String positionOnSlope, String habitatRuggedness,
+					  String topographicFeature, String vegetationType, String rangelandUse, String humanVisitation,
+					  String distanceToHumanHabitat, String humanHabitatType, String distanceToRoad, String roadType,
+					  String azimuth, String notes) {
+		this.id = deploymentId;
+//		studyAreaID;
+		this.locationID = locationID;
+		this.ownership = ownership;
+		this.utmE = utm_e != null ? Integer.parseInt(utm_e) : null;
+		this.utmN = utm_n != null ? Integer.parseInt(utm_n) : null;
+		this.utmZone = utm_zone != null ? Integer.parseInt(utm_zone) : null;
+		this.utmDatum = utm_datum != null ? Integer.parseInt(utm_datum) : null;
+		this.startDate = startDate != null ? convertToTimestamp(startDate) : null;
+		this.endDate = endDate != null ? convertToTimestamp(endDate) : null;
+		this.timeOfDay = timeOfDay;
+		this.dominantSubstrate = dominantSubstrate;
+		this.trailType = trailType;
+		this.positionOnSlope = positionOnSlope;
+		this.habitatRuggedness = habitatRuggedness;
+		this.topographicFeature = topographicFeature;
+		this.vegetationType = vegetationType;
+		this.rangelandUse = rangelandUse;
+		this.humanVisitation = humanVisitation;
+		this.distanceToHumanHabitat = distanceToHumanHabitat;
+		this.humanHabitatType = humanHabitatType;
+		this.distanceToRoad = distanceToRoad;
+		this.roadType = roadType;
+		this.azimuth = azimuth;
+		this.notes = notes;
+	}
+
+	private Timestamp convertToTimestamp(String date) {
+		try{
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+			Date parsedDate = dateFormat.parse(date);
+			Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+			return timestamp;
+		}catch(Exception e){//this generic but you can control another types of exception
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public Integer getDeploymentID() {
@@ -367,4 +415,49 @@ public class Deployment implements Serializable {
 		return this.studyArea != null ? this.studyArea.getName() : null;
 	}
 
+	@Override
+	public String[] getFileHeaderMappings() {
+		//DeploymentID,StudyAreaID,LocationID,Ownership,UTM_E,UTM_N,UTM_Zone,UTM_Datum,StartDate,EndDate,TimeOfDay,DominantSubstrate,TrailType,PositionOnSlope,HabitatRuggedness,TopographicFeature,VegetationType,RangelandUse,HumanVisitation,DistanceToHumanHabitat,HumanHabitatType,DistanceToRoad,RoadType,Azimuth,Notes
+		return new String[0];
+	}
+
+	@Override
+	public String getFileName() {
+		return "Deployments.csv";
+	}
+
+	@Override
+	public BaseModel getFromCsvRecord(CSVRecord record) {
+		Integer deploymentId = null;
+		try { deploymentId = Integer.parseInt(record.get("DeploymentID")); } catch (NumberFormatException e) {}
+		if (deploymentId != null) {
+			Deployment deployment = new Deployment(deploymentId,
+					record.get("StudyAreaID"),
+					record.get("LocationID"),
+					record.get("Ownership"),
+					record.get("UTM_E"),
+					record.get("UTM_N"),
+					record.get("UTM_Zone"),
+					record.get("UTM_Datum"),
+					record.get("StartDate"),
+					record.get("EndDate"),
+					record.get("TimeOfDay"),
+					record.get("DominantSubstrate"),
+					record.get("TrailType"),
+					record.get("PositionOnSlope"),
+					record.get("HabitatRuggedness"),
+					record.get("TopographicFeature"),
+					record.get("VegetationType"),
+					record.get("RangelandUse"),
+					record.get("HumanVisitation"),
+					record.get("DistanceToHumanHabitat"),
+					record.get("HumanHabitatType"),
+					record.get("DistanceToRoad"),
+					record.get("RoadType"),
+					record.get("Azimuth"),
+					record.get("Notes"));
+			return deployment;
+		}
+		return null;
+	}
 }

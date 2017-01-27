@@ -13,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.csv.CSVRecord;
 
 /**
  * Entity implementation class for Entity: StudyArea
@@ -20,12 +21,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 @Table(name="study_area")
-public class StudyArea implements Serializable {
+public class StudyArea implements Serializable, BaseModel {
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="STUDY_AREA_ID_GENERATOR", sequenceName="STUDY_AREA_ID_SEQ")
+	@SequenceGenerator(name="STUDY_AREA_ID_GENERATOR", sequenceName="STUDY_AREA_ID_SEQ", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="STUDY_AREA_ID_GENERATOR")
 	@Column(name="id", unique=true, nullable=false)
 	private Integer id;
@@ -40,7 +41,13 @@ public class StudyArea implements Serializable {
 
 	public StudyArea() {
 		super();
-	}   
+	}
+
+	public StudyArea(Integer studyAreaId, String studyAreaName) {
+		this.id = studyAreaId;
+		this.name = studyAreaName;
+	}
+
 	public Integer getId() {
 		return this.id;
 	}
@@ -61,5 +68,28 @@ public class StudyArea implements Serializable {
 	public void setDeployments(List<Deployment> deployments) {
 		this.deployments = deployments;
 	}
-   
+
+	@Override
+	@JsonIgnore
+	public String[] getFileHeaderMappings() {
+		return new String[]{"StudyAreaID","StudyAreaName"};
+	}
+
+	@Override
+	@JsonIgnore
+	public String getFileName() {
+		return "StudyAreas.csv";
+	}
+
+	@Override
+	@JsonIgnore
+	public StudyArea getFromCsvRecord(CSVRecord record) {
+		Integer studyAreaId = null;
+		try { studyAreaId = Integer.parseInt(record.get("StudyAreaID")); } catch (NumberFormatException e) {}
+		if (studyAreaId != null) {
+			StudyArea studyArea = new StudyArea(studyAreaId, record.get("StudyAreaName"));
+			return studyArea;
+		}
+		return null;
+	}
 }
