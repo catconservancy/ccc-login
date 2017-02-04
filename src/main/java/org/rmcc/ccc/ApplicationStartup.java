@@ -1,15 +1,7 @@
 package org.rmcc.ccc;
 
-import org.rmcc.ccc.model.BaseModel;
-import org.rmcc.ccc.model.LookupOption;
-import org.rmcc.ccc.model.Role;
-import org.rmcc.ccc.model.Species;
-import org.rmcc.ccc.model.StudyArea;
-import org.rmcc.ccc.model.User;
-import org.rmcc.ccc.model.UserCreateForm;
-import org.rmcc.ccc.repository.LookupOptionRepository;
-import org.rmcc.ccc.repository.SpeciesRepository;
-import org.rmcc.ccc.repository.StudyAreaRepository;
+import org.rmcc.ccc.model.*;
+import org.rmcc.ccc.repository.*;
 import org.rmcc.ccc.service.user.UserService;
 import org.rmcc.ccc.utils.CsvFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +19,8 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     private CsvFileReader csvFileReader;
     private SpeciesRepository speciesRepository;
     private StudyAreaRepository studyAreaRepository;
+    private DeploymentRepository deploymentRepository;
+    private PhotoRepository photoRepository;
     private LookupOptionRepository lookupOptionRepository;
     private UserService userService;
 
@@ -34,12 +28,16 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     public ApplicationStartup(CsvFileReader csvFileReader,
                               SpeciesRepository speciesRepository,
                               StudyAreaRepository studyAreaRepository,
+                              DeploymentRepository deploymentRepository,
+                              PhotoRepository photoRepository,
                               LookupOptionRepository lookupOptionRepository,
                               UserService userService) {
         super();
         this.csvFileReader = csvFileReader;
         this.speciesRepository = speciesRepository;
         this.studyAreaRepository = studyAreaRepository;
+        this.deploymentRepository = deploymentRepository;
+        this.photoRepository = photoRepository;
         this.lookupOptionRepository = lookupOptionRepository;
         this.userService = userService;
     }
@@ -61,6 +59,22 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
                 StudyArea s = (StudyArea) studyArea;
                 s.setId(null);
                 studyAreaRepository.save(s);
+            }
+
+            List<BaseModel> deploymentList = csvFileReader.readCsvFile(new Deployment());
+            for (BaseModel deployment : deploymentList) {
+                Deployment d = (Deployment) deployment;
+                d.setId(null);
+                d.setStudyArea(studyAreaRepository.findOne(Integer.valueOf(d.getStudyAreaId())));
+                deploymentRepository.save(d);
+            }
+
+            List<BaseModel> photoList = csvFileReader.readCsvFile(new Photo());
+            for (BaseModel photo : photoList) {
+                Photo p = (Photo) photo;
+                p.setId(null);
+                p.setDeployment(deploymentRepository.findOne(Integer.valueOf(p.getDeploymentId())));
+                photoRepository.save(p);
             }
 
             List<BaseModel> lookupOptionList = csvFileReader.readCsvFile(new LookupOption());

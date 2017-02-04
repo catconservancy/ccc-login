@@ -6,17 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -119,6 +109,8 @@ public class Deployment implements Serializable, BaseModel {
 	@ManyToOne
 	@JoinColumn(name="study_area_id")
 	private StudyArea studyArea;
+	@Transient
+	private String studyAreaId;
 
 	//bi-directional many-to-one association to Photo
 	@OneToMany(mappedBy="deployment")
@@ -135,15 +127,15 @@ public class Deployment implements Serializable, BaseModel {
 					  String distanceToHumanHabitat, String humanHabitatType, String distanceToRoad, String roadType,
 					  String azimuth, String notes) {
 		this.id = deploymentId;
-//		studyAreaID;
+		this.studyAreaId = studyAreaID;
 		this.locationID = locationID;
 		this.ownership = ownership;
-		this.utmE = utm_e != null ? Integer.parseInt(utm_e) : null;
-		this.utmN = utm_n != null ? Integer.parseInt(utm_n) : null;
-		this.utmZone = utm_zone != null ? Integer.parseInt(utm_zone) : null;
-		this.utmDatum = utm_datum != null ? Integer.parseInt(utm_datum) : null;
-		this.startDate = startDate != null ? convertToTimestamp(startDate) : null;
-		this.endDate = endDate != null ? convertToTimestamp(endDate) : null;
+		this.utmE = utm_e != null && !"".equalsIgnoreCase(utm_e) ? Integer.parseInt(utm_e) : null;
+		this.utmN = utm_n != null && !"".equalsIgnoreCase(utm_n) ? Integer.parseInt(utm_n) : null;
+		this.utmZone = utm_zone != null && !"".equalsIgnoreCase(utm_zone) ? Integer.parseInt(utm_zone) : null;
+		this.utmDatum = utm_datum != null && !"".equalsIgnoreCase(utm_datum) ? Integer.parseInt(utm_datum) : null;
+		this.startDate = startDate != null && !"".equalsIgnoreCase(startDate) ? convertToTimestamp(startDate) : null;
+		this.endDate = endDate != null && !"".equalsIgnoreCase(endDate) ? convertToTimestamp(endDate) : null;
 		this.timeOfDay = timeOfDay;
 		this.dominantSubstrate = dominantSubstrate;
 		this.trailType = trailType;
@@ -415,10 +407,20 @@ public class Deployment implements Serializable, BaseModel {
 		return this.studyArea != null ? this.studyArea.getName() : null;
 	}
 
+	public String getStudyAreaId() {
+		return studyAreaId;
+	}
+
+	public void setStudyAreaId(String studyAreaId) {
+		this.studyAreaId = studyAreaId;
+	}
+
 	@Override
 	public String[] getFileHeaderMappings() {
-		//DeploymentID,StudyAreaID,LocationID,Ownership,UTM_E,UTM_N,UTM_Zone,UTM_Datum,StartDate,EndDate,TimeOfDay,DominantSubstrate,TrailType,PositionOnSlope,HabitatRuggedness,TopographicFeature,VegetationType,RangelandUse,HumanVisitation,DistanceToHumanHabitat,HumanHabitatType,DistanceToRoad,RoadType,Azimuth,Notes
-		return new String[0];
+		return new String[]{"DeploymentID","StudyAreaID","LocationID","Ownership","UTM_E","UTM_N","UTM_Zone","UTM_Datum",
+				"StartDate","EndDate","TimeOfDay","DominantSubstrate","TrailType","PositionOnSlope","HabitatRuggedness",
+				"TopographicFeature","VegetationType","RangelandUse","HumanVisitation","DistanceToHumanHabitat",
+				"HumanHabitatType","DistanceToRoad","RoadType","Azimuth","Notes"};
 	}
 
 	@Override

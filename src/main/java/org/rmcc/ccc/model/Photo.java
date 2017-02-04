@@ -2,6 +2,8 @@ package org.rmcc.ccc.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,6 +23,9 @@ import javax.persistence.Transient;
 import com.dropbox.core.v2.files.Metadata;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.apache.commons.csv.CSVRecord;
+import org.rmcc.ccc.controller.PhotoController;
+import org.rmcc.ccc.service.user.DropboxService;
 
 /**
  * The persistent class for the "Photos" database table.
@@ -30,7 +35,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "photos")
 @NamedQuery(name = "Photo.findAll", query = "SELECT p FROM Photo p")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Photo implements Serializable {
+public class Photo implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -65,6 +70,9 @@ public class Photo implements Serializable {
 	@JoinColumn(name = "deployment_id")
 	private Deployment deployment;
 
+	@Transient
+	private String deploymentId;
+
 	// bi-directional many-to-one association to Detection
 	@OneToMany(mappedBy = "photo", cascade = CascadeType.ALL)
 	private List<Detection> detections;
@@ -75,16 +83,43 @@ public class Photo implements Serializable {
 	public Photo() {
 	}
 
+	public Photo(Integer imageId, String imageDate, String fileName, String filePath, String speciesId, String directionOfTravel, String highlight, String deploymentID) {
+		this.id = imageId;
+		this.imageDate = imageDate != null && !"".equalsIgnoreCase(imageDate) ? convertToTimestamp(imageDate) : null;
+		this.fileName = fileName;
+		this.filePath = filePath;
+		this.dropboxPath = convertToDropboxPath(filePath);
+		this.directionOfTravel = directionOfTravel;
+		this.highlight = highlight != null && !"".equalsIgnoreCase(highlight) ? Boolean.valueOf(highlight) : null;
+		this.deploymentId = deploymentID;
+	}
+
+	private String convertToDropboxPath(String filePath) {
+		String dropboxPath = PhotoController.ARCHIVED_ROOT;
+		if (filePath.indexOf("") > -1) {
+
+		}
+		return filePath;
+	}
+
+	private Timestamp convertToTimestamp(String date) {
+		try{
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+			Date parsedDate = dateFormat.parse(date);
+			Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+			return timestamp;
+		}catch(Exception e){//this generic but you can control another types of exception
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public String getDirectionOfTravel() {
 		return this.directionOfTravel;
 	}
 
 	public void setDirectionOfTravel(String directionOfTravel) {
 		this.directionOfTravel = directionOfTravel;
-	}
-
-	public String getFileName() {
-		return this.fileName;
 	}
 
 	public void setFileName(String fileName) {
@@ -163,6 +198,14 @@ public class Photo implements Serializable {
 		this.metadata = metadata;
 	}
 
+	public String getDeploymentId() {
+		return deploymentId;
+	}
+
+	public void setDeploymentId(String deploymentId) {
+		this.deploymentId = deploymentId;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -176,6 +219,33 @@ public class Photo implements Serializable {
 	@Override
 	public int hashCode() {
 		return id == null ? 0 : id.hashCode();
+	}
+
+	@Override
+	public String[] getFileHeaderMappings() {
+		return new String[]{"ImageID","ImageDate","FileName","FilePath","Species","DirectionOfTravel","Highlight","DeploymentID"};
+	}
+
+	public String getFileName() {
+		return "Photos2.csv";
+	}
+
+	@Override
+	public BaseModel getFromCsvRecord(CSVRecord record) {
+		Integer imageId = null;
+		try { imageId = Integer.parseInt(record.get("ImageID")); } catch (NumberFormatException e) {}
+		if (imageId != null) {
+			Photo photo = new Photo(imageId,
+					record.get("ImageDate"),
+					record.get("FileName"),
+					record.get("FilePath"),
+					record.get("Species"),
+					record.get("DirectionOfTravel"),
+					record.get("Highlight"),
+					record.get("DeploymentID"));
+			return photo;
+		}
+		return null;
 	}
 
 }
