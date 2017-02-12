@@ -100,6 +100,9 @@ public class Deployment implements Serializable, BaseModel {
 	@Column(name="vegetation_type", length=255)
 	private String vegetationType;
 
+	@Column(name="dropbox_path")
+	private String dropboxPath;
+
 	//bi-directional many-to-one association to CameraMonitor
 	@OneToMany(mappedBy="deployment")
 	@JsonIgnore
@@ -339,6 +342,14 @@ public class Deployment implements Serializable, BaseModel {
 
 	public void setVegetationType(String vegetationType) {
 		this.vegetationType = vegetationType;
+	}
+
+	public String getDropboxPath() {
+		return dropboxPath;
+	}
+
+	public void setDropboxPath(String dropboxPath) {
+		this.dropboxPath = dropboxPath;
 	}
 
 	public List<Photo> getPhotos() {

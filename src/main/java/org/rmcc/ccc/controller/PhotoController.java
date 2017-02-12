@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.mysema.query.types.expr.BooleanExpression;
 import org.rmcc.ccc.exception.InvalidPathException;
-import org.rmcc.ccc.model.CccMetadata;
-import org.rmcc.ccc.model.Deployment;
-import org.rmcc.ccc.model.Detection;
-import org.rmcc.ccc.model.Photo;
-import org.rmcc.ccc.repository.DeploymentRepository;
-import org.rmcc.ccc.repository.DetectionRepository;
-import org.rmcc.ccc.repository.PhotoRepository;
+import org.rmcc.ccc.model.*;
+import org.rmcc.ccc.repository.*;
 import org.rmcc.ccc.service.PhotoService;
 import org.rmcc.ccc.service.user.DropboxService;
 import org.slf4j.Logger;
@@ -44,58 +42,100 @@ public class PhotoController {
 	private DetectionRepository detectionRepository;
 	private DropboxService dropboxService;
 	private DeploymentRepository deploymentRepository;
+	private StudyAreaRepository studyAreaRepository;
 	
 	@Autowired
 	public PhotoController(PhotoRepository photoRepository,
 			PhotoService photoService,
 			DetectionRepository detectionRepository,
 			DropboxService dropboxService,
-			DeploymentRepository deploymentRepository) {
+		    DeploymentRepository deploymentRepository,
+			StudyAreaRepository studyAreaRepository) {
 		this.photoRepository = photoRepository;
 		this.photoService = photoService;
 		this.detectionRepository = detectionRepository;
 		this.dropboxService = dropboxService;
 		this.deploymentRepository = deploymentRepository;
+		this.studyAreaRepository = studyAreaRepository;
 	}	
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Photo> findAll(@RequestParam Map<String,String> params) throws Exception {
 		List<Photo> photos = new ArrayList<Photo>();
 		String path = params.get("path");
-		
-		// TODO: move this logic to a PhotService
-		
-		List<Metadata> dropboxMetadata = new ArrayList<Metadata>();
-		if (path != null) {
-			if (!path.equalsIgnoreCase(UNCATALOGED_ROOT) && !isValidPath(path)) {
-				throw new InvalidPathException(path);
-			}
-			dropboxMetadata = dropboxService.getFolderContentsByPath(path);
-		} else {		
-			dropboxMetadata = dropboxService.getFolderContentsByPath(UNCATALOGED_ROOT);
-		}
-		
-		for (Metadata m : dropboxMetadata) {
-			CccMetadata metadata = (CccMetadata) m;
-			Optional<Photo> optPhoto = photoRepository.findOneByDropboxPath(m.getPathLower());
-			Photo photo = optPhoto.isPresent() ? optPhoto.get() : new Photo();
-			photo.setMetadata(metadata);
-			photo.setDropboxPath(metadata.getPathLower());
-			if (!metadata.isDir()) {
-				photo.setDeployment(getDeploymentsByPath(path).get(0));
-				photo = photoRepository.save(photo);
-//				PhotoService.getFileMetadata(dropboxService.getInputStreamByPath(metadata.getPathLower()), metadata.getName());
+		boolean isArchived = params.get("isArchived") != null && Boolean.valueOf(params.get("isArchived"));
+
+		if (isArchived) {
+			Integer studyAreaId = params.get("studyAreaId") != null ? Integer.parseInt(params.get("studyAreaId")) : null;
+			Integer locationId = params.get("locationId") != null ? Integer.parseInt(params.get("locationId")) : null;
+			boolean highlighted = params.get("highlighted") != null ? Boolean.valueOf(params.get("highlighted")) : false;
+			String speciesIds = params.get("speciesIds") != null ? params.get("speciesIds") : null;
+
+			PhotoPredicatesBuilder builder = new PhotoPredicatesBuilder();
+
+			if (studyAreaId != null)
+				builder.with("deployment.studyArea.id", ":", studyAreaId);
+			if (locationId != null)
+				builder.with("deployment.id", ":", locationId);
+
+			BooleanExpression exp = builder.build();
+			photoRepository.findAll(exp).forEach(photos::add);
+
+		} else {
+
+			List<Metadata> dropboxMetadata = new ArrayList<Metadata>();
+			if (path != null) {
+				if (!path.equalsIgnoreCase(UNCATALOGED_ROOT) && !isValidPath(path)) {
+					throw new InvalidPathException(path);
+				}
+				dropboxMetadata = dropboxService.getFolderContentsByPath(path);
 			} else {
-				//TODO: add logic to populate create deployment and set on photo.
+				dropboxMetadata = dropboxService.getFolderContentsByPath(UNCATALOGED_ROOT);
 			}
-			photos.add(photo);
+
+			for (Metadata m : dropboxMetadata) {
+				CccMetadata metadata = (CccMetadata) m;
+				Optional<Photo> optPhoto = photoRepository.findOneByDropboxPath(m.getPathLower());
+				Photo photo = optPhoto.isPresent() ? optPhoto.get() : new Photo();
+				photo.setMetadata(metadata);
+				photo.setDropboxPath(metadata.getPathLower());
+				if (!metadata.isDir()) {
+					photo.setDeployment(getDeploymentsByPath(path).isEmpty() ? getDeploymentsByPath(path).get(0): null);
+					photo = photoRepository.save(photo);
+					//				PhotoService.getFileMetadata(dropboxService.getInputStreamByPath(metadata.getPathLower()), metadata.getName());
+				} else {
+					//TODO: add logic to populate create deployment and set on photo.
+				}
+				photos.add(photo);
+			}
+
 		}
 		
         return photos;
     }
 	
 	private boolean isValidPath(String path) {
-		return getDeploymentsByPath(path).size() > 0;
+		String pathSubstr = path.substring(path.indexOf(UNCATALOGED_ROOT) + UNCATALOGED_ROOT.length() + 1);
+		String[] pathElements = pathSubstr.split("/");
+		boolean isValid = pathElements.length > 2;
+		if (getStudyAreaByPath(path).size() > 0) {
+			isValid = true;
+		} else {
+			if (getDeploymentsByPath(path).size() > 0) {
+				isValid = true;
+			}
+		}
+		return isValid;
+	}
+
+	private List<StudyArea> getStudyAreaByPath(String path) {
+		String pathSubstr = path.substring(path.indexOf(UNCATALOGED_ROOT) + UNCATALOGED_ROOT.length() + 1);
+		String[] pathElements = pathSubstr.split("/");
+		List<StudyArea> studyAreas = new ArrayList<>();
+		if (pathElements.length > 0) {
+			studyAreas = studyAreaRepository.findByDropboxPathIgnoreCase(path);
+		}
+		return studyAreas;
 	}
 
 	private List<Deployment> getDeploymentsByPath(String path) {
@@ -103,10 +143,14 @@ public class PhotoController {
 		String[] pathElements = pathSubstr.split("/");
 		List<Deployment> deployments = new ArrayList<>();
 		if (pathElements.length > 0) {
-			if (pathElements.length == 1) {
-				deployments = deploymentRepository.findByStudyAreaNameIgnoreCase(pathElements[0]);
-			} else {
-				deployments = deploymentRepository.findByStudyAreaNameAndLocationIDIgnoreCase(pathElements[0],pathElements[1]);
+			deployments = deploymentRepository.findByDropboxPathIgnoreCase(path);
+			if (deployments.isEmpty()) {
+				if (pathElements.length == 1) {
+					deployments = deploymentRepository.findByStudyAreaNameIgnoreCase(pathElements[0]);
+				} else {
+					StudyArea sa = studyAreaRepository.findOneByDropboxPathIgnoreCase(UNCATALOGED_ROOT + "/" + pathElements[0]);
+					deployments = deploymentRepository.findByStudyAreaNameAndLocationIDIgnoreCase(sa != null ? sa.getName() : pathElements[0], pathElements[1]);
+				}
 			}
 		}
 		return deployments;

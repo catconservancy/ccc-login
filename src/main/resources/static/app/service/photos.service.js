@@ -14,7 +14,8 @@
         		method: 'GET', 
         		isArray: true, 
         		params: {
-        			path: '@path'
+                    isArchived: '@isArchived',
+                    path: '@path'
         		}
         	},
         	

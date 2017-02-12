@@ -58,25 +58,25 @@
 	            </div>
 	            <!--/ thumb navigation carousel -->
 		    </div>
-            <div class="col-md-2">
-           	  <div class="box box-info">
-	            <div class="box-header">
-	              <h3 class="box-title">Search Filters</h3>
-	            </div>
-	            <div class="box-body">
-	            	<ng-loading loading="true"></ng-loading>
-					<label>Location Folders</label>
-					<div style="max-height:250px; overflow-y:scroll">
-						<div ng-repeat="folder in idPhotosCtrl.treeData" 
-							 style="padding-left: 5px; padding-bottom:2px">
-						  <a ng-click="idPhotosCtrl.selectFolder(folder)">
-						    <i class="fa fa-folder-o"></i> {{folder.text}}
-						  </a>
+			<div class="col-md-2">
+				<div class="box box-info">
+					<div class="box-header">
+						<h3 class="box-title">Search Filters</h3>
+					</div>
+					<div class="box-body">
+						<ng-loading loading="true"></ng-loading>
+						<label>Location Folders</label>
+						<div style="max-height:250px; overflow-y:scroll">
+							<div ng-repeat="folder in idPhotosCtrl.treeData"
+								 style="padding-left: 5px; padding-bottom:2px">
+								<a ng-click="idPhotosCtrl.selectFolder(folder)">
+									<i class="fa fa-folder-o"></i> {{folder.text}}
+								</a>
+							</div>
 						</div>
 					</div>
-	            </div>
-	            <!-- end loading -->
-	          </div>
+					<!-- end loading -->
+				</div>
 			</div>
             <div class="col-md-7">	
            	  <div class="box box-info">
@@ -114,6 +114,52 @@
 		                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 		                <h4><i class="icon fa fa-ban"></i> Alert!</h4>
 		                {{idPhotosCtrl.photoQueryError}}
+						<div class="row" ng-show="idPhotosCtrl.photoQueryError.indexOf('LocationID') === -1">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label>Associate folder with Study Area</label>
+									<ui-select id="studyAreasSelect" autofocus="false" ng-model="idPhotosCtrl.selectedStudyArea"
+											   theme="bootstrap" style="width: 100%" >
+										<ui-select-match placeholder="Select a Study Area">{{$select.selected.name}}</ui-select-match>
+										<ui-select-choices repeat="sa in idPhotosCtrl.studyAreas | propsFilter: {name: $select.search}">
+											<div ng-bind-html="sa.name | highlight: $select.search"></div>
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<button class="btn btn-primary"
+											style="margin: 25px -20px 0px;"
+											ng-click="idPhotosCtrl.saveSelectedStudyArea()"><i class="fa fa-save"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-show="idPhotosCtrl.photoQueryError.indexOf('LocationID') > -1">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label>Associate folder with Deployment Location</label>
+									<ui-select id="deploymentsSelect" autofocus="true" ng-model="idPhotosCtrl.selectedDeployment"
+											   theme="bootstrap">
+										<ui-select-match placeholder="Select one...">{{$select.selected.studyArea.name}}: {{$select.selected.locationID}}</ui-select-match>
+										<ui-select-choices repeat="deployment in idPhotosCtrl.deployments | propsFilter: {studyAreaName: $select.search, locationID: $select.search}">
+											<div ng-bind-html="deployment.studyArea.name | highlight: $select.search"></div>
+											<small>
+												Study Area: {{deployment.studyArea.name}}
+												Location ID: <span ng-bind-html="''+deployment.locationID | highlight: $select.search"></span>
+											</small>
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<button class="btn btn-primary"
+											style="margin: 25px -20px 0px;"
+											ng-click="idPhotosCtrl.saveSelectedDeployment()"><i class="fa fa-save"></i></button>
+								</div>
+							</div>
+						</div>
 		            </div>
 				  </div>
 				  <div ng-show="idPhotosCtrl.photos.length">

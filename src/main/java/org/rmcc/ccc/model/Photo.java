@@ -39,7 +39,7 @@ public class Photo implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "PHOTOS_IMAGEID_GENERATOR", sequenceName = "PHOTOS_ID_SEQ")
+	@SequenceGenerator(name = "PHOTOS_IMAGEID_GENERATOR", sequenceName = "PHOTOS_ID_SEQ", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PHOTOS_IMAGEID_GENERATOR")
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
@@ -88,18 +88,21 @@ public class Photo implements Serializable, BaseModel {
 		this.imageDate = imageDate != null && !"".equalsIgnoreCase(imageDate) ? convertToTimestamp(imageDate) : null;
 		this.fileName = fileName;
 		this.filePath = filePath;
-		this.dropboxPath = convertToDropboxPath(filePath);
+		this.dropboxPath = convertToDropboxPath(filePath) + fileName;
 		this.directionOfTravel = directionOfTravel;
 		this.highlight = highlight != null && !"".equalsIgnoreCase(highlight) ? Boolean.valueOf(highlight) : null;
 		this.deploymentId = deploymentID;
 	}
 
 	private String convertToDropboxPath(String filePath) {
-		String dropboxPath = PhotoController.ARCHIVED_ROOT;
-		if (filePath.indexOf("") > -1) {
-
+		String rootPath = PhotoController.ARCHIVED_ROOT.replace("/", "\\");
+		Integer rootIndex = filePath.toLowerCase().indexOf(rootPath);
+		String dropboxPath = null;
+		if (rootIndex > -1) {
+			dropboxPath = PhotoController.ARCHIVED_ROOT + filePath.substring(rootIndex + PhotoController.ARCHIVED_ROOT.length());
+			dropboxPath = dropboxPath.replace("\\","/").toLowerCase();
 		}
-		return filePath;
+		return dropboxPath;
 	}
 
 	private Timestamp convertToTimestamp(String date) {

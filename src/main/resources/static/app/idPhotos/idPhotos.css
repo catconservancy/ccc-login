@@ -15,25 +15,25 @@ a {
     overflow: auto;
 }
 
-#idPhotos .list-inline {
+#idPhotos .list-inline, #viewPhotos .list-inline {
     white-space: nowrap;
     overflow-x: scroll;
 }
 
-#idPhotos .list-inline li {
+#idPhotos .list-inline li, #viewPhotos .list-inline li {
 	margin: 2px;
 	padding: 3px;
 }
 
-#idPhotos .list-inline li.tagged {
+#idPhotos .list-inline li.tagged, #viewPhotos .list-inline li.tagged {
 	background-color: #00a65a; 
 }
 
-#idPhotos .list-inline li.selected {
+#idPhotos .list-inline li.selected, #viewPhotos .list-inline li.selected {
 	background-color: #00c0ef; 
 }
 
-#idPhotos .selected img {
+#idPhotos .selected img, #viewPhotos .selected img {
     opacity: 0.5;
 }
 
@@ -57,12 +57,12 @@ a {
    padding: 10px; 
 }
 
-#idPhotos .select2 > .select2-choice.ui-select-match {
+#idPhotos .select2 > .select2-choice.ui-select-match, #viewPhotos .select2 > .select2-choice.ui-select-match {
     /* Because of the inclusion of Bootstrap */
     height: 29px;
 }
 
-#idPhotos .selectize-control > .selectize-dropdown {
+#idPhotos .selectize-control > .selectize-dropdown, #viewPhotos .selectize-control > .selectize-dropdown {
     top: 36px;
 }
 

@@ -34,6 +34,9 @@ public class StudyArea implements Serializable, BaseModel {
 	@Column(name="name", length=255)
 	private String name;
 
+	@Column(name="dropbox_path")
+	private String dropboxPath;
+
 	//bi-directional many-to-one association to Deployment
 	@OneToMany(mappedBy="studyArea")
 	@JsonIgnore
@@ -62,6 +65,15 @@ public class StudyArea implements Serializable, BaseModel {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getDropboxPath() {
+		return dropboxPath;
+	}
+
+	public void setDropboxPath(String dropboxPath) {
+		this.dropboxPath = dropboxPath;
+	}
+
 	public List<Deployment> getDeployments() {
 		return deployments;
 	}

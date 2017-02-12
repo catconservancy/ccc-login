@@ -3,10 +3,11 @@
         .controller('IdPhotosController', IdPhotosController);
 
     IdPhotosController.$inject = ['$q', '$log', '$rootScope', '$scope', '$filter',
-                                  'Species', 'DetectionDetails', 'Detection', 'PhotosService'];
+                                  'Species', 'DetectionDetails', 'Detection', 'PhotosService',
+								  'StudyAreas', 'Deployments'];
 
     function IdPhotosController($q, $log, $rootScope, $scope, $filter,
-    		Species, DetectionDetails, Detection, PhotosService) {
+    		Species, DetectionDetails, Detection, PhotosService, StudyAreas, Deployments) {
         var vm = this;
         vm.photos = [];
         vm.selectedPhoto = {};
@@ -16,10 +17,14 @@
         vm.detectionDetailsList = [];
         vm.fileList = [];
         vm.treeData = [];
+        vm.studyAreas = [];
+        vm.deployments = [];
         vm.fullscreen = false;
         vm.showFilters = true;
         vm.treeDataLoaded = {};
         vm.photoQueryError = null;
+        vm.selectedStudyArea = null;
+        vm.selectedDeployment = null;
 
         vm.selectThumb = selectThumb;
         vm.thumbClass = thumbClass;
@@ -32,6 +37,8 @@
         vm.onSelectSpeciesCallback = onSelectSpeciesCallback;
         vm.deleteSelectedPhoto = deleteSelectedPhoto;
         vm.archiveTaggedPhotos = archiveTaggedPhotos;
+        vm.saveSelectedStudyArea = saveSelectedStudyArea;
+        vm.saveSelectedDeployment = saveSelectedDeployment;
 
         PhotosService.query({},function(data) {
         	for (i = 0; i < data.length; i++) {
@@ -55,6 +62,15 @@
         	    }
         	});
         	initializeCarousel();
+        });
+
+
+        Deployments.query(function(data) {
+            vm.deployments = data;
+        });
+
+        StudyAreas.query(function(data) {
+            vm.studyAreas = data;
         });
 
         Species.query(function(data) {
@@ -253,6 +269,32 @@
             DetectionDetails.findBySpeciesId({id: item.id}, function(data) {
             	item.detectionDetailsList = data;
                 console.log("vm.selectedPhoto.detectionDetailsList", data);
+            });
+        }
+
+        function saveSelectedStudyArea() {
+            vm.entry = StudyAreas.get({ id: vm.selectedStudyArea.id }, function() {
+                vm.entry.dropboxPath = vm.selectedFolder.path;
+                vm.entry.$update(function(studyArea) {
+                    $log.debug('update success');
+                    StudyAreas.query(function(data) {
+                        vm.studyAreas = data;
+                        selectFolder(vm.selectedFolder);
+                    });
+                });
+            });
+        }
+
+        function saveSelectedDeployment() {
+            vm.entry = Deployments.get({ id: vm.selectedDeployment.id }, function() {
+                vm.entry.dropboxPath = vm.selectedFolder.path;
+                vm.entry.$update(function(deployment) {
+                    $log.debug('update success');
+                    Deployments.query(function(data) {
+                        vm.deployments = data;
+                        selectFolder(vm.selectedFolder);
+                    });
+                });
             });
         }
 

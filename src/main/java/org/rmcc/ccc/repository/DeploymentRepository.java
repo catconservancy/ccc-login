@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DeploymentRepository extends CrudRepository<Deployment, Integer> {
 
+	List<Deployment> findByDropboxPathIgnoreCase(String dropboxPath);
 	List<Deployment> findByStudyAreaNameIgnoreCase(String studyAreaName);
 	List<Deployment> findByStudyAreaNameAndLocationIDIgnoreCase(String studyAreaName, String locationId);
 
