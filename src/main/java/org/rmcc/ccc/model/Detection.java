@@ -3,21 +3,12 @@ package org.rmcc.ccc.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.apache.commons.csv.CSVRecord;
 
 
 /**
@@ -28,7 +19,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name="detections")
 @NamedQuery(name="Detection.findAll", query="SELECT d FROM Detection d")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Detection implements Serializable {
+public class Detection implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -52,10 +43,16 @@ public class Detection implements Serializable {
 	@JoinColumn(name="species_id")
 	private Species species;
 
+	@Transient
+	private Integer speciesId;
+
 	//bi-directional many-to-one association to DetectionDetails
 	@ManyToOne
 	@JoinColumn(name="detail_id")
 	private DetectionDetail detectionDetail;
+
+	@Transient
+	private Integer detectionDetailId;
 
 	//bi-directional many-to-one association to Photo
 	@ManyToOne
@@ -63,7 +60,19 @@ public class Detection implements Serializable {
 	@JsonIgnore
 	private Photo photo;
 
+	@Transient
+	private Integer photoId;
+
 	public Detection() {
+	}
+
+	public Detection(Integer detectionId, String speciesId, String detectionDetailId, String individuals, String comments, String photoId) {
+		this.id = detectionId;
+		this.speciesId = speciesId != null && !"".equalsIgnoreCase(speciesId) ? Integer.parseInt(speciesId) : null;
+		this.detectionDetailId = detectionDetailId != null && !"".equalsIgnoreCase(detectionDetailId) ? Integer.parseInt(detectionDetailId) : null;
+		this.individuals = individuals != null && !"".equalsIgnoreCase(individuals) ? Integer.parseInt(individuals) : null;
+		this.comments = comments;
+		this.photoId = photoId != null && !"".equalsIgnoreCase(photoId) ? Integer.parseInt(photoId) : null;
 	}
 
 	public Integer getId() {
@@ -122,4 +131,53 @@ public class Detection implements Serializable {
 		this.photo = photo;
 	}
 
+	public Integer getSpeciesId() {
+		return speciesId;
+	}
+
+	public void setSpeciesId(Integer speciesId) {
+		this.speciesId = speciesId;
+	}
+
+	public Integer getDetectionDetailId() {
+		return detectionDetailId;
+	}
+
+	public void setDetectionDetailId(Integer detectionDetailId) {
+		this.detectionDetailId = detectionDetailId;
+	}
+
+	public Integer getPhotoId() {
+		return photoId;
+	}
+
+	public void setPhotoId(Integer photoId) {
+		this.photoId = photoId;
+	}
+
+	@Override
+	public String[] getFileHeaderMappings() {
+		return new String[]{"DetectionID","SpeciesID","DetailID","Individuals","Comments","ImageID"};
+	}
+
+	@Override
+	public String getFileName() {
+		return "Detections_rmcc.csv";
+	}
+
+	@Override
+	public BaseModel getFromCsvRecord(CSVRecord record) {
+		Integer detectionId = null;
+		try { detectionId = Integer.parseInt(record.get("DetectionID")); } catch (NumberFormatException e) {}
+		if (detectionId != null) {
+			Detection detection = new Detection(detectionId,
+					record.get("SpeciesID"),
+					record.get("DetailID"),
+					record.get("Individuals"),
+					record.get("Comments"),
+					record.get("ImageID"));
+			return detection;
+		}
+		return null;
+	}
 }

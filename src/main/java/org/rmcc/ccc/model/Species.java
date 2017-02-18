@@ -136,7 +136,7 @@ public class Species implements Serializable, BaseModel {
 	@Override
 	@JsonIgnore
 	public String getFileName() {
-		return "Species.csv";
+		return "Species_rmcc.csv";
 	}
 
 	@Override

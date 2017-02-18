@@ -90,7 +90,7 @@ public class StudyArea implements Serializable, BaseModel {
 	@Override
 	@JsonIgnore
 	public String getFileName() {
-		return "StudyAreas.csv";
+		return "StudyAreas_rmcc.csv";
 	}
 
 	@Override

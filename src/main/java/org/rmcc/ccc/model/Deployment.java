@@ -26,7 +26,7 @@ public class Deployment implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="DEPLOYMENTS_DEPLOYMENTID_GENERATOR", sequenceName="DEPLOYMENTS_ID_SEQ")
+	@SequenceGenerator(name="DEPLOYMENTS_DEPLOYMENTID_GENERATOR", sequenceName="DEPLOYMENTS_ID_SEQ", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DEPLOYMENTS_DEPLOYMENTID_GENERATOR")
 	@Column(name="id", unique=true, nullable=false)
 	private Integer id;
@@ -436,7 +436,7 @@ public class Deployment implements Serializable, BaseModel {
 
 	@Override
 	public String getFileName() {
-		return "Deployments.csv";
+		return "Deployments_rmcc.csv";
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.apache.commons.csv.CSVRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +22,11 @@ import java.util.List;
 @Table(name="detection_details")
 @NamedQuery(name="DetectionDetail.findAll", query="SELECT d FROM DetectionDetail d")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class DetectionDetail implements Serializable {
+public class DetectionDetail implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="DETECTIONDETAILS_DETAILID_GENERATOR", sequenceName="DETECTIONDETAILS_ID_SEQ")
+	@SequenceGenerator(name="DETECTIONDETAILS_DETAILID_GENERATOR", sequenceName="DETECTIONDETAILS_ID_SEQ", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DETECTIONDETAILS_DETAILID_GENERATOR")
 	@Column(name="detail_id", unique=true, nullable=false)
 	private Integer id;
@@ -41,12 +42,23 @@ public class DetectionDetail implements Serializable {
 	@JoinColumn(name="species_id")
 	private Species species;
 
+	@Transient
+	private Integer specId;
+
 	//bi-directional many-to-one association to Detection
 	@OneToMany(mappedBy="detectionDetail", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Detection> detections;
 
 	public DetectionDetail() {
+	}
+
+	public DetectionDetail(Integer detailId, String detailText, String speciesId, String shortcutKey) {
+//		DetailID,DetailText,SpeciesID,ShortcutKey
+		this.id = detailId;
+		this.detailText = detailText;
+		this.specId = speciesId != null && !"".equalsIgnoreCase(speciesId) ? Integer.parseInt(speciesId) : null;
+		this.shortcutKey = shortcutKey;
 	}
 
 	public Integer getId() {
@@ -81,6 +93,14 @@ public class DetectionDetail implements Serializable {
 		this.species = species;
 	}
 
+	public Integer getSpecId() {
+		return specId;
+	}
+
+	public void setSpecId(Integer specId) {
+		this.specId = specId;
+	}
+
 	public List<Detection> getDetections() {
 		return this.detections != null ? this.detections : new ArrayList<>();
 	}
@@ -101,6 +121,33 @@ public class DetectionDetail implements Serializable {
 		detection.setDetectionDetail(null);
 
 		return detection;
+	}
+
+	@Override
+	@JsonIgnore
+	public String[] getFileHeaderMappings() {
+		return new String[]{"DetailID","DetailText","SpeciesID","ShortcutKey"};
+	}
+
+	@Override
+	@JsonIgnore
+	public String getFileName() {
+		return "DetectionDetails_rmcc.csv";
+	}
+
+	@Override
+	@JsonIgnore
+	public DetectionDetail getFromCsvRecord(CSVRecord record) {
+		Integer detectionDetailId = null;
+		try { detectionDetailId = Integer.parseInt(record.get("DetailID")); } catch (NumberFormatException e) {}
+		if (detectionDetailId != null) {
+			DetectionDetail detectionDetail = new DetectionDetail(detectionDetailId,
+					record.get("DetailText"),
+					record.get("SpeciesID"),
+					record.get("ShortcutKey"));
+			return detectionDetail;
+		}
+		return null;
 	}
 
 }

@@ -230,7 +230,7 @@ public class Photo implements Serializable, BaseModel {
 	}
 
 	public String getFileName() {
-		return "Photos2.csv";
+		return "Photos_rmcc.csv";
 	}
 
 	@Override
