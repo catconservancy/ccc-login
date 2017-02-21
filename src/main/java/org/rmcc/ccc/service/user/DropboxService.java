@@ -2,23 +2,28 @@ package org.rmcc.ccc.service.user;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.*;
+import com.dropbox.core.v2.files.DeletedMetadata;
+import com.dropbox.core.v2.files.DownloadErrorException;
+import com.dropbox.core.v2.files.FolderMetadata;
+import com.dropbox.core.v2.files.ListFolderContinueErrorException;
+import com.dropbox.core.v2.files.ListFolderErrorException;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.LookupError;
+import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
-
 import org.rmcc.ccc.model.CccMetadata;
 import org.rmcc.ccc.model.DropboxFile;
 import org.rmcc.ccc.model.DropboxFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 
 @Service
@@ -40,12 +45,12 @@ public class DropboxService {
 		config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
 		client = new DbxClientV2(config, ACCESS_TOKEN);
 
-        // Get current account info
-        try {
-            account = client.users.getCurrentAccount();
-        } catch (DbxException e) {
-            LOGGER.error("Can't connect to dropbox.");
-        }
+//        // Get current account info
+//        try {
+//            account = client.users.getCurrentAccount();
+//        } catch (DbxException e) {
+//            LOGGER.error("Can't connect to dropbox.");
+//        }
 
 	}
 	

@@ -1,22 +1,24 @@
 package org.rmcc.ccc.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.dropbox.core.v2.files.Metadata;
 import com.mysema.query.types.expr.BooleanExpression;
 import org.rmcc.ccc.exception.InvalidPathException;
-import org.rmcc.ccc.model.*;
-import org.rmcc.ccc.repository.*;
+import org.rmcc.ccc.model.CccMetadata;
+import org.rmcc.ccc.model.Deployment;
+import org.rmcc.ccc.model.Detection;
+import org.rmcc.ccc.model.Photo;
+import org.rmcc.ccc.model.StudyArea;
+import org.rmcc.ccc.repository.DeploymentRepository;
+import org.rmcc.ccc.repository.DetectionRepository;
+import org.rmcc.ccc.repository.PhotoPredicatesBuilder;
+import org.rmcc.ccc.repository.PhotoRepository;
+import org.rmcc.ccc.repository.StudyAreaRepository;
 import org.rmcc.ccc.service.PhotoService;
 import org.rmcc.ccc.service.user.DropboxService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +26,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.drew.imaging.ImageProcessingException;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.v2.files.Metadata;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/photos")
@@ -60,7 +63,7 @@ public class PhotoController {
 	}	
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<Photo> findAll(@RequestParam Map<String,String> params) throws Exception {
+	public List<Photo> findAll(@RequestParam Map<String,String> params, Pageable pageable) throws Exception {
 		List<Photo> photos = new ArrayList<Photo>();
 		String path = params.get("path");
 		boolean isArchived = params.get("isArchived") != null && Boolean.valueOf(params.get("isArchived"));
@@ -79,7 +82,7 @@ public class PhotoController {
 				builder.with("deployment.id", ":", locationId);
 
 			BooleanExpression exp = builder.build();
-			photoRepository.findAll(exp).forEach(photos::add);
+			photoRepository.findAll(exp, pageable).forEach(photos::add);
 
 		} else {
 
