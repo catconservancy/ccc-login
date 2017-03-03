@@ -94,6 +94,7 @@ public class PhotoService {
         Timestamp startDate = new Timestamp(cal.getTime().getTime());
 
         if (startDateStr != null) {
+            //TODO: convert to expected format
             startDate = Timestamp.valueOf(startDateStr);
         }
 
@@ -105,6 +106,7 @@ public class PhotoService {
         Timestamp endDate = new Timestamp(today.getTime());
 
         if (endDateStr != null) {
+            //TODO: convert to expected format
             endDate = Timestamp.valueOf(endDateStr);
         }
 

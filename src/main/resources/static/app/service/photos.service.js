@@ -15,6 +15,15 @@
         		isArray: true, 
         		params: {
                     isArchived: '@isArchived',
+					studyAreaId: '@studyAreaId',
+					locationId: '@locationId',
+					highlighted: '@highlighted',
+					startDate: '@startDate',
+					endDate: '@endDate',
+					speciesIds: '@speciesIds',
+					page: '@page',
+					size: '@size',
+					sort: '@sort',
                     path: '@path'
         		}
         	},

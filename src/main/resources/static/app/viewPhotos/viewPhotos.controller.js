@@ -53,7 +53,9 @@
             var queryParams = {'isArchived':true};
             queryParams.studyAreaId = vm.selectedStudyArea ? vm.selectedStudyArea.id : null;
             queryParams.locationId = vm.selectedDeployment ? vm.selectedDeployment.id : null;
-            queryParams.highlighted = vm.selectedHighlight;
+            queryParams.highlighted = vm.selectedHighlight ? true : null;
+            queryParams.startDate = vm.selectedImageStartDate;
+            queryParams.endDate = vm.selectedImageEndDate;
             queryParams.speciesIds = vm.selectedSpecies ? toIdList(selectedSpecies) : null;
 
             PhotosService.query(queryParams,function(data) {
