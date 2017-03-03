@@ -1,7 +1,6 @@
 package org.rmcc.ccc.controller;
 
 import com.dropbox.core.v2.files.Metadata;
-import com.mysema.query.types.expr.BooleanExpression;
 import org.rmcc.ccc.exception.InvalidPathException;
 import org.rmcc.ccc.model.CccMetadata;
 import org.rmcc.ccc.model.Deployment;
@@ -10,7 +9,6 @@ import org.rmcc.ccc.model.Photo;
 import org.rmcc.ccc.model.StudyArea;
 import org.rmcc.ccc.repository.DeploymentRepository;
 import org.rmcc.ccc.repository.DetectionRepository;
-import org.rmcc.ccc.repository.PhotoPredicatesBuilder;
 import org.rmcc.ccc.repository.PhotoRepository;
 import org.rmcc.ccc.repository.StudyAreaRepository;
 import org.rmcc.ccc.service.PhotoService;
@@ -69,21 +67,7 @@ public class PhotoController {
 		boolean isArchived = params.get("isArchived") != null && Boolean.valueOf(params.get("isArchived"));
 
 		if (isArchived) {
-			Integer studyAreaId = params.get("studyAreaId") != null ? Integer.parseInt(params.get("studyAreaId")) : null;
-			Integer locationId = params.get("locationId") != null ? Integer.parseInt(params.get("locationId")) : null;
-			boolean highlighted = params.get("highlighted") != null ? Boolean.valueOf(params.get("highlighted")) : false;
-			String speciesIds = params.get("speciesIds") != null ? params.get("speciesIds") : null;
-
-			PhotoPredicatesBuilder builder = new PhotoPredicatesBuilder();
-
-			if (studyAreaId != null)
-				builder.with("deployment.studyArea.id", ":", studyAreaId);
-			if (locationId != null)
-				builder.with("deployment.id", ":", locationId);
-
-			BooleanExpression exp = builder.build();
-			photoRepository.findAll(exp, pageable).forEach(photos::add);
-
+			return photoService.getPhotos(params, pageable);
 		} else {
 
 			List<Metadata> dropboxMetadata = new ArrayList<Metadata>();
