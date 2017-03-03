@@ -23,7 +23,7 @@ public class Detection implements Serializable, BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="DETECTIONS_DETECTIONID_GENERATOR", sequenceName="DETECTIONS_ID_SEQ")
+	@SequenceGenerator(name="DETECTIONS_DETECTIONID_GENERATOR", sequenceName="DETECTIONS_ID_SEQ", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DETECTIONS_DETECTIONID_GENERATOR")
 	@Column(name="detection_id", unique=true, nullable=false)
 	private Integer id;
@@ -39,7 +39,7 @@ public class Detection implements Serializable, BaseModel {
 	private List<IndividualID> IndividualIds;
 
 	//bi-directional many-to-one association to Species
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="species_id")
 	private Species species;
 
@@ -47,7 +47,7 @@ public class Detection implements Serializable, BaseModel {
 	private Integer speciesId;
 
 	//bi-directional many-to-one association to DetectionDetails
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="detail_id")
 	private DetectionDetail detectionDetail;
 
@@ -55,7 +55,7 @@ public class Detection implements Serializable, BaseModel {
 	private Integer detectionDetailId;
 
 	//bi-directional many-to-one association to Photo
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="image_id")
 	@JsonIgnore
 	private Photo photo;
@@ -162,7 +162,7 @@ public class Detection implements Serializable, BaseModel {
 
 	@Override
 	public String getFileName() {
-		return "Detections_rmcc.csv";
+		return "Detections_lory.csv";
 	}
 
 	@Override

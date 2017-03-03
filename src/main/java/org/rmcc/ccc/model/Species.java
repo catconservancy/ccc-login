@@ -3,16 +3,7 @@ package org.rmcc.ccc.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.apache.commons.csv.CSVRecord;
 
@@ -46,12 +37,12 @@ public class Species implements Serializable, BaseModel {
 	private String shortcutKey;
 
 	//bi-directional many-to-one association to Detection
-	@OneToMany(mappedBy="species", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="species", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Detection> detections;
 
 	//bi-directional many-to-one association to DetectionDetails
-	@OneToMany(mappedBy="species", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="species", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<DetectionDetail> detectionDetails;
 
@@ -136,7 +127,7 @@ public class Species implements Serializable, BaseModel {
 	@Override
 	@JsonIgnore
 	public String getFileName() {
-		return "Species_rmcc.csv";
+		return "Species_lory.csv";
 	}
 
 	@Override

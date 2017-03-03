@@ -38,7 +38,7 @@ public class DetectionDetail implements Serializable, BaseModel {
 	private String shortcutKey;
 
 	//bi-directional many-to-one association to Species
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="species_id")
 	private Species species;
 
@@ -46,7 +46,7 @@ public class DetectionDetail implements Serializable, BaseModel {
 	private Integer specId;
 
 	//bi-directional many-to-one association to Detection
-	@OneToMany(mappedBy="detectionDetail", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="detectionDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Detection> detections;
 
@@ -132,7 +132,7 @@ public class DetectionDetail implements Serializable, BaseModel {
 	@Override
 	@JsonIgnore
 	public String getFileName() {
-		return "DetectionDetails_rmcc.csv";
+		return "DetectionDetails_lory.csv";
 	}
 
 	@Override

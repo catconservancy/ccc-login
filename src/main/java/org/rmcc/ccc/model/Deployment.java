@@ -436,7 +436,7 @@ public class Deployment implements Serializable, BaseModel {
 
 	@Override
 	public String getFileName() {
-		return "Deployments_rmcc.csv";
+		return "Deployments_lory.csv";
 	}
 
 	@Override

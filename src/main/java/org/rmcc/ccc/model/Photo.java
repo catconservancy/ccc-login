@@ -6,19 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import com.dropbox.core.v2.files.Metadata;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -66,7 +54,7 @@ public class Photo implements Serializable, BaseModel {
 	// private String species;
 
 	// bi-directional many-to-one association to Deployment
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "deployment_id")
 	private Deployment deployment;
 
@@ -74,7 +62,7 @@ public class Photo implements Serializable, BaseModel {
 	private String deploymentId;
 
 	// bi-directional many-to-one association to Detection
-	@OneToMany(mappedBy = "photo", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "photo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Detection> detections;
 
 	@Transient
@@ -230,7 +218,7 @@ public class Photo implements Serializable, BaseModel {
 	}
 
 	public String getFileName() {
-		return "Photos_rmcc.csv";
+		return "Photos_lory.csv";
 	}
 
 	@Override
