@@ -1,14 +1,24 @@
 package org.rmcc.ccc.model;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.apache.commons.csv.CSVRecord;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -162,7 +172,7 @@ public class Detection implements Serializable, BaseModel {
 
 	@Override
 	public String getFileName() {
-		return "Detections_lory.csv";
+		return "Detections.csv";
 	}
 
 	@Override

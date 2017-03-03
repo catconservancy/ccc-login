@@ -1,14 +1,5 @@
 package org.rmcc.ccc.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.imaging.jpeg.JpegMetadataReader;
@@ -21,11 +12,114 @@ import com.drew.metadata.Tag;
 import com.drew.metadata.exif.ExifReader;
 import com.drew.metadata.exif.GpsDirectory;
 import com.drew.metadata.iptc.IptcReader;
-
+import com.mysema.query.types.expr.BooleanExpression;
+import org.rmcc.ccc.model.Photo;
+import org.rmcc.ccc.repository.PhotoPredicatesBuilder;
+import org.rmcc.ccc.repository.PhotoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PhotoService {
+
+    private static final int DEFAULT_DAYS_BACK = 30;
+
+    private PhotoRepository photoRepository;
+
+    @Autowired
+    public PhotoService(PhotoRepository photoRepository) {
+        this.photoRepository = photoRepository;
+    }
+
+    public List<Photo> getPhotos(Map<String,String> params, Pageable pageable) {
+
+        Sort sort = pageable.getSort() != null ? pageable.getSort() : new Sort(Sort.Direction.ASC,"imageDate");
+
+        List<Photo> photos = new ArrayList<Photo>();
+
+        Integer studyAreaId =  getInteger(params, "studyAreaId");
+        Integer locationId =  getInteger(params, "locationId");
+        Boolean highlighted = getBoolean(params, "highlighted");
+        Timestamp startDate = getStartDate(params.get("startDate"));
+        Timestamp endDate = getEndDate(params.get("endDate"));
+        String[] speciesIds = getSpeciesIds(params.get("speciesIds"));
+
+        PhotoPredicatesBuilder builder = new PhotoPredicatesBuilder();
+
+        if (studyAreaId != null)
+            builder.with("deployment.studyArea.id", ":", studyAreaId);
+        if (locationId != null)
+            builder.with("deployment.id", ":", locationId);
+        if (speciesIds.length > 0)
+            builder.with("species.id", "in", speciesIds);
+        if (highlighted != null)
+            builder.with("highlight", ":", highlighted);
+        builder.with("imageDate", ">", startDate);
+        builder.with("imageDate", "<", endDate);
+
+        BooleanExpression exp = builder.build();
+        photoRepository.findAll(exp, pageable).forEach(photos::add);
+
+        return photos;
+    }
+
+    private String[] getSpeciesIds(String speciesIdsStr) {
+        String[] speciesIds = new String[0];
+        if (speciesIdsStr != null && !"".equalsIgnoreCase(speciesIdsStr)) {
+            speciesIds = speciesIdsStr.split(",");
+        }
+        return speciesIds;
+    }
+
+    private Timestamp getStartDate(String startDateStr) {
+        Calendar cal = Calendar.getInstance();
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        cal.setTimeInMillis(timestamp.getTime());
+        cal.add(Calendar.DAY_OF_MONTH, -DEFAULT_DAYS_BACK);
+
+        Timestamp startDate = new Timestamp(cal.getTime().getTime());
+
+        if (startDateStr != null) {
+            //TODO: convert to expected format
+            startDate = Timestamp.valueOf(startDateStr);
+        }
+
+        return startDate;
+    }
+
+    private Timestamp getEndDate(String endDateStr) {
+        Date today = new Date();
+        Timestamp endDate = new Timestamp(today.getTime());
+
+        if (endDateStr != null) {
+            //TODO: convert to expected format
+            endDate = Timestamp.valueOf(endDateStr);
+        }
+
+        return endDate;
+    }
+
+    private Integer getInteger(Map<String,String> params, String param) {
+        return params.get(param) != null ? Integer.parseInt(params.get(param)) : null;
+    }
+
+    private Boolean getBoolean(Map<String,String> params, String param) {
+        return params.get(param) != null ? Boolean.valueOf(params.get(param)) : null;
+    }
 
 	public static void getFileMetadata(final InputStream file, String fileName) throws ImageProcessingException, IOException {
 //        File file = new File("Tests/Data/withIptcExifGps.jpg");

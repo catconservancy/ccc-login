@@ -1,19 +1,27 @@
 package org.rmcc.ccc.model;
 
+import com.dropbox.core.v2.files.Metadata;
+import org.apache.commons.csv.CSVRecord;
+import org.rmcc.ccc.controller.PhotoController;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.*;
-
-import com.dropbox.core.v2.files.Metadata;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.apache.commons.csv.CSVRecord;
-import org.rmcc.ccc.controller.PhotoController;
-import org.rmcc.ccc.service.user.DropboxService;
 
 /**
  * The persistent class for the "Photos" database table.
@@ -218,7 +226,7 @@ public class Photo implements Serializable, BaseModel {
 	}
 
 	public String getFileName() {
-		return "Photos_lory.csv";
+		return "Photos.csv";
 	}
 
 	@Override
