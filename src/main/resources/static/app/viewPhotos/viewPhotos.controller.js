@@ -2,26 +2,26 @@
     angular.module('CCC')
         .controller('ViewPhotosController', ViewPhotosController);
 
-    ViewPhotosController.$inject = ['$scope','PhotosService','Deployments','StudyAreas','Species'];
+    ViewPhotosController.$inject = ['$scope','$timeout','PhotosService','Deployments','StudyAreas','Species'];
 
-    function ViewPhotosController($scope, PhotosService, Deployments, StudyAreas, Species) {
+    function ViewPhotosController($scope, $timeout, PhotosService, Deployments, StudyAreas, Species) {
         var vm = this;
         vm.selectedPhoto = {};
         vm.selectedFolder = {};
-        vm.breadCrumbList = [];
         vm.photos = [];
         vm.fileList = [];
         vm.treeData = [];
         vm.studyAreas = [];
         vm.deployments = [];
+        vm.currPage = 0;
         vm.photoQueryError = null;
         vm.fullscreen = false;
         vm.selectedHighlight = false;
         vm.selectedStudyArea = null;
         vm.selectedDeployment = null;
-        vm.selectedSpecies = null;
-        vm.selectedImageStartDate = null;
-        vm.selectedImageEndDate = null;
+        vm.selectedSpecies = [];
+        vm.selectedImageStartDate = new Date().setDate(new Date().getDate() - 30);
+        vm.selectedImageEndDate = new Date();
         vm.treeDataLoaded = {};
         vm.startDatePopup = { opened: false };
         vm.endDatePopup = { opened: false };
@@ -48,18 +48,29 @@
             vm.speciesList = data;
         });
 
-        function updateResults() {
+        $scope.$on('getMore', function () {
+            $timeout(function () {
+                updateResults(true);
+            });
+        });
 
-            var queryParams = {'isArchived':true};
+        function updateResults(nextPage) {
+
+            var queryParams = {'isArchived':true, 'page': nextPage ? vm.currPage + 1 : vm.currPage};
             queryParams.studyAreaId = vm.selectedStudyArea ? vm.selectedStudyArea.id : null;
             queryParams.locationId = vm.selectedDeployment ? vm.selectedDeployment.id : null;
             queryParams.highlighted = vm.selectedHighlight ? true : null;
             queryParams.startDate = vm.selectedImageStartDate;
             queryParams.endDate = vm.selectedImageEndDate;
-            queryParams.speciesIds = vm.selectedSpecies ? toIdList(selectedSpecies) : null;
+            queryParams.speciesIds = vm.selectedSpecies ? toIdList(vm.selectedSpecies) : null;
 
             PhotosService.query(queryParams,function(data) {
-                vm.photos = data;
+                if (nextPage) {
+                    vm.currPage++;
+                    vm.photos = vm.photos.concat(data);
+                } else {
+                    vm.photos = data;
+                }
                 setSelectedPhotoByIndex(0);
                 initializeCarousel();
             });
@@ -75,7 +86,9 @@
         };
 
         function selectThumb(index) {
-            $('#myCarousel').carousel(index);
+            $timeout(function () {
+                $('#myCarousel').carousel(index);
+            });
         }
 
         function thumbClass(photo) {
@@ -104,7 +117,7 @@
         }
 
         function setSelectedPhotoByIndex(index) {
-            // $scope.$apply(function() {
+            $timeout(function () {
                 for (i = 0; i < vm.photos.length; i++) {
                     if (i === index) {
                         vm.selectedPhoto = vm.photos[i];
@@ -115,15 +128,15 @@
                         vm.photos[i].selected = false;
                     }
                 }
-            // });
+            });
         }
 
         function toIdList(list) {
             var ids = [];
-            for(var i = 0; i < list.size; i++) {
+            for(var i = 0; i < list.length; i++) {
                 ids.push(list[i].id);
             }
-            return ids;
+            return ids.join(",");
         }
     }
 }());

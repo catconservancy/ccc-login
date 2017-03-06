@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -56,7 +59,7 @@ public class PhotoService {
         Boolean highlighted = getBoolean(params, "highlighted");
         Timestamp startDate = getStartDate(params.get("startDate"));
         Timestamp endDate = getEndDate(params.get("endDate"));
-        String[] speciesIds = getSpeciesIds(params.get("speciesIds"));
+        Integer[] speciesIds = getSpeciesIds(params.get("speciesIds"));
 
         PhotoPredicatesBuilder builder = new PhotoPredicatesBuilder();
 
@@ -64,7 +67,7 @@ public class PhotoService {
             builder.with("deployment.studyArea.id", ":", studyAreaId);
         if (locationId != null)
             builder.with("deployment.id", ":", locationId);
-        if (speciesIds.length > 0)
+        if (speciesIds != null && speciesIds.length > 0)
             builder.with("species.id", "in", speciesIds);
         if (highlighted != null)
             builder.with("highlight", ":", highlighted);
@@ -77,12 +80,16 @@ public class PhotoService {
         return photos;
     }
 
-    private String[] getSpeciesIds(String speciesIdsStr) {
-        String[] speciesIds = new String[0];
+    private Integer[] getSpeciesIds(String speciesIdsStr) {
+        String[] speciesIdsStrings = new String[0];
         if (speciesIdsStr != null && !"".equalsIgnoreCase(speciesIdsStr)) {
-            speciesIds = speciesIdsStr.split(",");
+            speciesIdsStrings = speciesIdsStr.split(",");
         }
-        return speciesIds;
+        Integer[] speciesIds = new Integer[speciesIdsStrings.length];
+        for (int i = 0; i < speciesIdsStrings.length; i++) {
+            speciesIds[i] = Integer.parseInt(speciesIdsStrings[i]);
+        }
+        return speciesIds.length > 0 ? speciesIds : null;
     }
 
     private Timestamp getStartDate(String startDateStr) {
@@ -94,11 +101,23 @@ public class PhotoService {
         Timestamp startDate = new Timestamp(cal.getTime().getTime());
 
         if (startDateStr != null) {
-            //TODO: convert to expected format
-            startDate = Timestamp.valueOf(startDateStr);
+            Date start = convertToDate(startDateStr);
+            if (start != null) {
+                startDate = new Timestamp(start.getTime());
+            }
         }
 
         return startDate;
+    }
+
+    private Date convertToDate(String startDateString) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        try {
+            return df.parse(startDateString.replaceAll("Z$", "+0000"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private Timestamp getEndDate(String endDateStr) {
@@ -106,8 +125,8 @@ public class PhotoService {
         Timestamp endDate = new Timestamp(today.getTime());
 
         if (endDateStr != null) {
-            //TODO: convert to expected format
-            endDate = Timestamp.valueOf(endDateStr);
+            Date end = convertToDate(endDateStr);
+            endDate = new Timestamp(end.getTime());
         }
 
         return endDate;

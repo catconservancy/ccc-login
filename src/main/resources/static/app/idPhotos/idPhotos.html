@@ -145,7 +145,6 @@
 										<ui-select-choices repeat="deployment in idPhotosCtrl.deployments | propsFilter: {studyAreaName: $select.search, locationID: $select.search}">
 											<div ng-bind-html="deployment.studyArea.name | highlight: $select.search"></div>
 											<small>
-												Study Area: {{deployment.studyArea.name}}
 												Location ID: <span ng-bind-html="''+deployment.locationID | highlight: $select.search"></span>
 											</small>
 										</ui-select-choices>

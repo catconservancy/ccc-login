@@ -29,9 +29,9 @@
             <!-- thumb navigation carousel -->
             <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
               <!-- thumb navigation carousel items -->
-              <ul class="list-inline">
+              <ul class="list-inline" scroll>
                 <li ng-repeat="photo in viewPhotosCtrl.photos"
-                    ng-class="{'selected': photo.selected, 'tagged' : photo.detections[0].hasOwnProperty('id')}"
+                    ng-class="{'selected': viewPhotosCtrl.selectedPhoto.id === photo.id, 'tagged' : photo.detections[0].hasOwnProperty('id')}"
                     style="position:relative">
                   <a id="carousel-selector-{{$index}}" ng-click="viewPhotosCtrl.selectThumb($index)">
                     <img src="http://localhost:8080/ccc/api/dropbox/thumb?path={{photo.dropboxPath}}" class="img-responsive">
@@ -58,8 +58,7 @@
                   <div class="form-group">
                     <label>Study Area</label>
                     <ui-select id="studyAreasSelect" autofocus="false" ng-model="viewPhotosCtrl.selectedStudyArea"
-                               theme="bootstrap" style="width: 100%"
-                               on-select="viewPhotosCtrl.updateResults($item, $model)" >
+                               theme="bootstrap" style="width: 100%">
                       <ui-select-match placeholder="Select a Study Area">{{$select.selected.name}}</ui-select-match>
                       <ui-select-choices repeat="sa in viewPhotosCtrl.studyAreas | propsFilter: {name: $select.search}">
                         <div ng-bind-html="sa.name | highlight: $select.search"></div>
@@ -71,13 +70,11 @@
                   <div class="form-group">
                     <label>Deployment Location</label>
                     <ui-select id="deploymentsSelect" autofocus="true" ng-model="viewPhotosCtrl.selectedDeployment"
-                               theme="bootstrap"
-                               on-select="viewPhotosCtrl.updateResults($item, $model)">
+                               theme="bootstrap">
                       <ui-select-match placeholder="Select one...">{{$select.selected.studyArea.name}}: {{$select.selected.locationID}}</ui-select-match>
                       <ui-select-choices repeat="deployment in viewPhotosCtrl.deployments | propsFilter: {studyAreaName: $select.search, locationID: $select.search}">
                         <div ng-bind-html="deployment.studyArea.name | highlight: $select.search"></div>
                         <small>
-                          Study Area: {{deployment.studyArea.name}}
                           Location ID: <span ng-bind-html="''+deployment.locationID | highlight: $select.search"></span>
                         </small>
                       </ui-select-choices>
@@ -87,10 +84,8 @@
                 <div class="row">
                   <div class="form-group">
                     <label>Species</label>
-                    <ui-select id="speciesSelect_{{$index}}" autofocus="true" ng-model="detection.species"
-                               theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px"
-                               on-select="viewPhotosCtrl.updateResults($item, $model)" >
-                      <ui-select-match placeholder="Select species">{{$select.selected.commonName}} &lt;{{$select.selected.latinName}}&gt;</ui-select-match>
+                    <ui-select multiple ng-model="viewPhotosCtrl.selectedSpecies" theme="select2" close-on-select="false" style="width: 97%; margin-left:0px">
+                      <ui-select-match placeholder="Select species...">{{$item.commonName}} &lt;{{$item.latinName}}&gt;</ui-select-match>
                       <ui-select-choices repeat="species in viewPhotosCtrl.speciesList | propsFilter: {commonName: $select.search, latinName: $select.search}">
                         <div ng-bind-html="species.commonName | highlight: $select.search"></div>
                         <small>
@@ -139,9 +134,18 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="form-group">
-                    <label>Highlight</label>
-                    <input id="enabledSwitch" type="checkbox" class="/*toggle-switch*/" ng-model="viewPhotosCtrl.selectedHighlight" ng-change="viewPhotosCtrl.updateResults()">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label>Highlight</label>
+                      <input id="enabledSwitch" type="checkbox" class="/*toggle-switch*/"
+                             ng-model="viewPhotosCtrl.selectedHighlight">
+                    </div>
+                  </div>
+                  <div class="col-sm-9" style="text-align:right">
+                    <button type="button" class="btn btn-primary" ng-click="viewPhotosCtrl.updateResults()">
+                      <i class="fa fa-search"></i>
+                      Search
+                    </button>
                   </div>
                 </div>
               </div>
@@ -151,19 +155,6 @@
           <div class="col-md-9">
             <div class="box box-info">
               <div class="box-header">
-                <h3 class="box-title" ng-show="viewPhotosCtrl.breadCrumbList.length">
-                  Selected Folder
-                  <div style="padding:10px 5px; font-size:.75em">
-					    <span ng-repeat="link in viewPhotosCtrl.breadCrumbList">
-					      <span ng-show="$index > 0">
-							<a ng-click="viewPhotosCtrl.selectFolder(link)">
-								{{link.text}}
-							</a>
-							<span ng-show="!$last">></span>
-						  </span>
-						</span>
-                  </div>
-                </h3>
               </div>
               <div class="box-body">
                 <div ng-show="!viewPhotosCtrl.photos.length">

@@ -3,9 +3,8 @@ server:
   port: 8080
 
 spring:
-  profiles:
-#    active: postgres
-    active: dev
+#  profiles:
+#    active: development
   thymeleaf:
     cache: false
   mail:
@@ -15,19 +14,66 @@ spring:
     password: test
   jpa:
     show-sql: true
-
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
 security:
   basic:
     enabled: false
 # demo only:
-  user:
-    password: password
+#  user:
+#    password: password
     
 logging:
   level: 
     org.springframework.security: INFO
+    org.springframework.boot.autoconfigure: DEBUG
     org.springframework.boot.actuate.audit.listener.AuditListener: DEBUG
 
 ccc: 
   dropbox:
     accessToken: 8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5EhbWhDw5jA83Yw3RKkjCz0D
+
+---
+spring:
+  profiles: development
+  datasource:
+    url: jdbc:h2:mem:CCC;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+---
+spring:
+  profiles: local
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/ccc
+#postgres/<personal>
+    username: ${pg.username}
+    password: ${pg.password}
+  database:
+    driverClassName: org.postgresql.Driver
+---
+spring:
+  profiles: production
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://db01.fort-techs.com:5432/ccc
+    username: aaron
+    password: pw4AARON!
+  database:
+    driverClassName: org.postgresql.Driver
