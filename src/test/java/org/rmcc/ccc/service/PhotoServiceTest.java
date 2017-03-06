@@ -37,8 +37,8 @@ public class PhotoServiceTest {
     public void testGetPhotos() throws Exception {
         Map<String,String> searchCriteria = new HashMap<>();
         searchCriteria.put("locationId", "5");
-        searchCriteria.put("startDate", "2014-03-03 13:55:00");
-        searchCriteria.put("endDate", "2017-03-03 13:55:00");
+        searchCriteria.put("startDate", "2014-03-03T13:55:00.000Z");
+        searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
         List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
@@ -50,8 +50,8 @@ public class PhotoServiceTest {
     public void testGetHighlightedPhotos() throws Exception {
         Map<String,String> searchCriteria = new HashMap<>();
         searchCriteria.put("highlighted", "true");
-        searchCriteria.put("startDate", "2014-03-03 13:55:00");
-        searchCriteria.put("endDate", "2017-03-03 13:55:00");
+        searchCriteria.put("startDate", "2014-03-03T13:55:00.000Z");
+        searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
         List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
@@ -63,8 +63,8 @@ public class PhotoServiceTest {
     public void testGetPhotosByStudyArea() throws Exception {
         Map<String,String> searchCriteria = new HashMap<>();
         searchCriteria.put("studyAreaId", "1");
-        searchCriteria.put("startDate", "2014-03-03 13:55:00");
-        searchCriteria.put("endDate", "2017-03-03 13:55:00");
+        searchCriteria.put("startDate", "2014-03-03T13:55:00.000Z");
+        searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
         List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
@@ -75,8 +75,8 @@ public class PhotoServiceTest {
     @Test
     public void testGetPhotosByDateRange() throws Exception {
         Map<String,String> searchCriteria = new HashMap<>();
-        searchCriteria.put("startDate", "2015-10-05 07:03:00");
-        searchCriteria.put("endDate", "2015-10-05 07:06:00");
+        searchCriteria.put("startDate", "2015-10-05T13:03:00.000Z");
+        searchCriteria.put("endDate", "2015-10-05T13:06:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
         List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
@@ -88,12 +88,12 @@ public class PhotoServiceTest {
     public void testGetPhotosBySpecies() throws Exception {
         Map<String,String> searchCriteria = new HashMap<>();
         searchCriteria.put("speciesIds", "11,39");
-        searchCriteria.put("startDate", "2014-03-03 13:55:00");
-        searchCriteria.put("endDate", "2017-03-03 13:55:00");
+        searchCriteria.put("startDate", "2014-03-03T13:55:00.000Z");
+        searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
         List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
-        assertThat(photos).hasSize(4);
+        assertThat(photos).hasSize(3);
 
 
         searchCriteria.put("speciesIds", "11,36,39");
