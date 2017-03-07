@@ -2,11 +2,11 @@
     angular.module('CCC')
         .controller('IdPhotosController', IdPhotosController);
 
-    IdPhotosController.$inject = ['$q', '$log', '$rootScope', '$scope', '$filter',
+    IdPhotosController.$inject = ['$q', '$log', '$rootScope', '$scope', '$filter', '$stateParams',
                                   'Species', 'DetectionDetails', 'Detection', 'PhotosService',
 								  'StudyAreas', 'Deployments'];
 
-    function IdPhotosController($q, $log, $rootScope, $scope, $filter,
+    function IdPhotosController($q, $log, $rootScope, $scope, $filter, $stateParams,
     		Species, DetectionDetails, Detection, PhotosService, StudyAreas, Deployments) {
         var vm = this;
         vm.photos = [];
@@ -40,7 +40,7 @@
         vm.saveSelectedStudyArea = saveSelectedStudyArea;
         vm.saveSelectedDeployment = saveSelectedDeployment;
 
-        PhotosService.query({},function(data) {
+        PhotosService.query($stateParams.dropboxPath ? {path:$stateParams.dropboxPath} : {},function(data) {
         	for (i = 0; i < data.length; i++) {
         		if (data[i].metadata.dir) {
         			vm.treeData.push({

@@ -39,21 +39,24 @@
 	            url: '/viewPhotos',
 	            templateUrl: 'app/viewPhotos/viewPhotos.html',
 	            controller: 'ViewPhotosController',
-	            controllerAs: 'viewPhotosCtrl'
+	            controllerAs: 'viewPhotosCtrl',
+                params: {"deploymentId":null}
 	        })
 	
 	        .state('idPhotos', {
 	            url: '/idPhotos',
 	            templateUrl: 'app/idPhotos/idPhotos.html',
 	            controller: 'IdPhotosController',
-	            controllerAs: 'idPhotosCtrl'
+	            controllerAs: 'idPhotosCtrl',
+                params: {"dropboxPath":null}
 	        })
 	
 	        .state('deployments', {
 	            url: '/deployments',
 	            templateUrl: 'app/deployments/deployments.html',
 	            controller: 'DeploymentsController',
-	            controllerAs: 'deploymentsCtrl'
+	            controllerAs: 'deploymentsCtrl',
+                params: {"deploymentId":null}
 	        })
 	
 	        .state('studyAreas', {

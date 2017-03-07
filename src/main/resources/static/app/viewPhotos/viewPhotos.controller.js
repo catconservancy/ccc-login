@@ -2,9 +2,9 @@
     angular.module('CCC')
         .controller('ViewPhotosController', ViewPhotosController);
 
-    ViewPhotosController.$inject = ['$scope','$timeout','PhotosService','Deployments','StudyAreas','Species'];
+    ViewPhotosController.$inject = ['$scope','$timeout','$stateParams','PhotosService','Deployments','StudyAreas','Species'];
 
-    function ViewPhotosController($scope, $timeout, PhotosService, Deployments, StudyAreas, Species) {
+    function ViewPhotosController($scope, $timeout, $stateParams, PhotosService, Deployments, StudyAreas, Species) {
         var vm = this;
         vm.selectedPhoto = {};
         vm.selectedFolder = {};
@@ -38,6 +38,15 @@
 
         Deployments.query(function(data) {
             vm.deployments = data;
+            if ($stateParams.deploymentId) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id === $stateParams.deploymentId) {
+                        vm.selectedDeployment = data[i];
+                        updateResults();
+                        break;
+                    }
+                }
+            }
         });
 
         StudyAreas.query(function(data) {

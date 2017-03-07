@@ -2,9 +2,9 @@
     <div ng-cloak>
         <strong>{{ parameter.model.title }}</strong>
         <ul style="margin-left: -15px; margin-top: 5px;">
-            <li><a ui-sref="idPhotos"><i class="fa fa-tag"></i> ID Photos</a></li>
-            <li><a ui-sref="viewPhotos"><i class="fa fa-eye"></i> View Photos</a></li>
-            <li><a ui-sref="deployments"><i class="fa fa-camera"></i> View Deployment Info</a></li>
+            <li><a ui-sref="idPhotos({deploymentId: parameter.model.deployment.dropboxPath})"><i class="fa fa-tag"></i> ID Photos</a></li>
+            <li><a ui-sref="viewPhotos({deploymentId: parameter.model.deployment.id})"><i class="fa fa-eye"></i> View Photos</a></li>
+            <li><a ui-sref="deployments({deploymentId: parameter.model.deployment.id})"><i class="fa fa-camera"></i> View Deployment Info</a></li>
         </ul>
     </div>
 </div>

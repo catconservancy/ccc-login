@@ -2,9 +2,9 @@
     angular.module('CCC')
         .controller('DeploymentsController', DeploymentsController);
 
-    DeploymentsController.$inject = ['$log', '$scope', 'StudyAreas', 'Deployments', 'LookupOption'];
+    DeploymentsController.$inject = ['$log', '$scope', '$stateParams', 'StudyAreas', 'Deployments', 'LookupOption'];
 
-    function DeploymentsController($log, $scope, StudyAreas, Deployments, LookupOption) {
+    function DeploymentsController($log, $scope, $stateParams, StudyAreas, Deployments, LookupOption) {
         var vm = this;
         vm.inserted = {};
         vm.selectedDeployment = null;
@@ -47,6 +47,14 @@
         
         Deployments.query(function(data) {
         	vm.deployments = data;
+        	if ($stateParams.deploymentId) {
+        	    for (var i = 0; i < data.length; i++) {
+                    if (data[i].id === $stateParams.deploymentId) {
+                        vm.selectedDeployment = data[i];
+                        break;
+                    }
+                }
+            }
         });
 
         StudyAreas.query(function(data) {
