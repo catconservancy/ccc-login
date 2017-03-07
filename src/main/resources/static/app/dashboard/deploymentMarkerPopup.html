@@ -1,11 +1,10 @@
 <div ng-controller="MarkerController" style="white-space:nowrap">
     <div ng-cloak>
-        <strong>I'm the template, Sup?</strong>
-        <div ng-cloak>
-            Parameter from opener: {{ parameter.message }}
-        </div>
-        <div ng-cloak>
-            Template specific: {{ templateValue }}
-        </div>
+        <strong>{{ parameter.model.title }}</strong>
+        <ul style="margin-left: -15px; margin-top: 5px;">
+            <li><a ui-sref="idPhotos"><i class="fa fa-tag"></i> ID Photos</a></li>
+            <li><a ui-sref="viewPhotos"><i class="fa fa-eye"></i> View Photos</a></li>
+            <li><a ui-sref="deployments"><i class="fa fa-camera"></i> View Deployment Info</a></li>
+        </ul>
     </div>
 </div>

@@ -6,25 +6,7 @@
 
     function DashboardController($log, $scope, $timeout, Deployments, GisUtility, uiGmapGoogleMapApi) {
         var vm = this;
-        // vm.markers = [];
-        vm.map = {};
-        vm.onMarkerClicked = onMarkerClicked;
-        function onMarkerClicked(marker) {
-            marker.showWindow = true;
-            $scope.$apply();
-            //window.alert("Marker: lat: " + marker.latitude + ", lon: " + marker.longitude + " clicked!!")
-        };
-        // // Do stuff with your $scope.
-        // // Note: Some of the directives require at least something to be defined originally!
-        // // e.g. $scope.markers = []
-        //
-        // // uiGmapGoogleMapApi is a promise.
-        // // The "then" callback function provides the google.maps object.
-        // vm.markers = [];
-        // vm.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
-        // uiGmapGoogleMapApi.then(function(maps) {
-        // 	$log.debug('got to uiGmapGoogleMapApi.then', maps);
-        // });
+        vm.selectedMarker = {};
         vm.map = {
             center: {
                 latitude: 40.1451,
@@ -55,7 +37,8 @@
             },
             markersEvents: {
                 click: function(marker, eventName, model) {
-                    console.log('Click marker');
+                    $log.debug('Click marker', marker);
+                    vm.selectedMarker = marker;
                     vm.map.window.model = model;
                     vm.map.window.show = true;
                 }
@@ -64,31 +47,6 @@
         vm.options = {
             scrollwheel: false
         };
-        var createDeploymentMarker = function(i, bounds, idKey) {
-            var lat_min = bounds.southwest.latitude,
-                lat_range = bounds.northeast.latitude - lat_min,
-                lng_min = bounds.southwest.longitude,
-                lng_range = bounds.northeast.longitude - lng_min;
-
-            if (idKey == null) {
-                idKey = "id";
-            }
-
-            var latitude = lat_min + (Math.random() * lat_range);
-            var longitude = lng_min + (Math.random() * lng_range);
-            var ret = {
-                latitude: latitude,
-                longitude: longitude,
-                title: 'm' + i
-            };
-            ret[idKey] = i;
-            return ret;
-        };
-        // var markers = [];
-        // for (var i = 0; i < 50; i++) {
-        //     markers.push(createRandomMarker(i, vm.map.bounds))
-        // }
-        // vm.deploymentMarkers = markers;
 
         uiGmapGoogleMapApi.then(function(maps) {
             $log.debug('got to uiGmapGoogleMapApi.then', maps);
@@ -105,7 +63,8 @@
                                     id: i,
                                     latitude: myLatLng.lat,
                                     longitude: myLatLng.lng,
-                                    title: deployment.studyArea.name + ": " + deployment.locationID
+                                    title: deployment.studyArea.name + ": " + deployment.locationID,
+                                    deployment: deployment
                                 }
                                 // bounds.extend(marker.getPosition());
                                 markers.push(marker);
