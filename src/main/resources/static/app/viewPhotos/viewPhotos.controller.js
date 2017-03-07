@@ -56,6 +56,10 @@
 
         function updateResults(nextPage) {
 
+            if (!nextPage) {
+                vm.currPage = 0;
+            }
+
             var queryParams = {'isArchived':true, 'page': nextPage ? vm.currPage + 1 : vm.currPage};
             queryParams.studyAreaId = vm.selectedStudyArea ? vm.selectedStudyArea.id : null;
             queryParams.locationId = vm.selectedDeployment ? vm.selectedDeployment.id : null;

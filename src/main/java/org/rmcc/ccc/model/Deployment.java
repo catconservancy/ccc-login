@@ -1,17 +1,25 @@
 package org.rmcc.ccc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.csv.CSVRecord;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.apache.commons.csv.CSVRecord;
 
 
 /**
@@ -89,10 +97,10 @@ public class Deployment implements Serializable, BaseModel {
 	private Integer utmDatum;
 
 	@Column(name="utm_e")
-	private Integer utmE;
+	private Double utmE;
 
 	@Column(name="utm_n")
-	private Integer utmN;
+	private Double utmN;
 
 	@Column(name="utm_zone")
 	private Integer utmZone;
@@ -133,8 +141,8 @@ public class Deployment implements Serializable, BaseModel {
 		this.studyAreaId = studyAreaID;
 		this.locationID = locationID;
 		this.ownership = ownership;
-		this.utmE = utm_e != null && !"".equalsIgnoreCase(utm_e) ? Integer.parseInt(utm_e) : null;
-		this.utmN = utm_n != null && !"".equalsIgnoreCase(utm_n) ? Integer.parseInt(utm_n) : null;
+		this.utmE = utm_e != null && !"".equalsIgnoreCase(utm_e) ? Double.parseDouble(utm_e) : null;
+		this.utmN = utm_n != null && !"".equalsIgnoreCase(utm_n) ? Double.parseDouble(utm_n) : null;
 		this.utmZone = utm_zone != null && !"".equalsIgnoreCase(utm_zone) ? Integer.parseInt(utm_zone) : null;
 		this.utmDatum = utm_datum != null && !"".equalsIgnoreCase(utm_datum) ? Integer.parseInt(utm_datum) : null;
 		this.startDate = startDate != null && !"".equalsIgnoreCase(startDate) ? convertToTimestamp(startDate) : null;
@@ -320,19 +328,19 @@ public class Deployment implements Serializable, BaseModel {
 		this.trailType = trailType;
 	}
 
-	public Integer getUtmE() {
+	public Double getUtmE() {
 		return this.utmE;
 	}
 
-	public void setUtmE(Integer utmE) {
+	public void setUtmE(Double utmE) {
 		this.utmE = utmE;
 	}
 
-	public Integer getUtmN() {
+	public Double getUtmN() {
 		return this.utmN;
 	}
 
-	public void setUtmN(Integer utmN) {
+	public void setUtmN(Double utmN) {
 		this.utmN = utmN;
 	}
 

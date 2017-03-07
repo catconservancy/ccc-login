@@ -12,7 +12,24 @@
     <div class="box-body no-padding">
       <div class="row">
         <div class="col-md-9 col-sm-8" style="min-height:350px">
-            <ui-gmap-google-map center='dashboard.map.center' zoom='dashboard.map.zoom'></ui-gmap-google-map>
+          <ui-gmap-google-map center="dashboard.map.center" zoom="dashboard.map.zoom" draggable="true" options="options" bounds="dashboard.map.bounds">
+            <ui-gmap-window
+                    show="dashboard.map.window.show"
+                    coords="dashboard.map.window.model"
+                    options="dashboard.map.window.options"
+                    closeClick="dashboard.map.window.closeClick()"
+                    templateUrl='dashboard.map.window.templateUrl'
+                    templateParameter='dashboard.map.window.templateParameter'>
+            </ui-gmap-window>
+            <ui-gmap-markers
+                    models="dashboard.deploymentMarkers"
+                    coords="'self'"
+                    events="dashboard.map.markersEvents"
+                    options="'options'"
+                    icon="'icon'">
+            </ui-gmap-markers>
+          </ui-gmap-google-map>
+            <!--<ui-gmap-google-map ng-if="dashboard.map.center" center='dashboard.map.center' zoom='dashboard.map.zoom'></ui-gmap-google-map>-->
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-4">

@@ -1,5 +1,5 @@
 DeploymentID,StudyAreaID,LocationID,Ownership,UTM_E,UTM_N,UTM_Zone,UTM_Datum,StartDate,EndDate,TimeOfDay,DominantSubstrate,TrailType,PositionOnSlope,HabitatRuggedness,TopographicFeature,VegetationType,RangelandUse,HumanVisitation,DistanceToHumanHabitat,HumanHabitatType,DistanceToRoad,RoadType,Azimuth,Notes
-7,1,4-Deer,,,,,,,,,,,,,,,,,,,,,,
+7,1,4-Deer,,480945.3832914458,4481184.436760134,13,,,,,,,,,,,,,,,,,,
 8,1,Boulder Ridge,,,,,,,,,,,,,,,,,,,,,,
 9,1,Plot,,,,,,,,,,,,,,,,,,,,,,
 10,1,Ravine 2,,,,,,,,,,,,,,,,,,,,,,
