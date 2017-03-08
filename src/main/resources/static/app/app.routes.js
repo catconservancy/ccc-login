@@ -66,13 +66,6 @@
 	            controllerAs: 'studyAreaCtrl'
 	        })
 	
-	        .state('folderLocation', {
-	            url: '/folderLocation',
-	            templateUrl: 'app/folderLocation/folderLocation.html',
-	            controller: 'FolderLocationController',
-	            controllerAs: 'folderLocationCtrl'
-	        })
-	
 	        .state('species', {
 	            url: '/species',
 	            templateUrl: 'app/species/species.html',

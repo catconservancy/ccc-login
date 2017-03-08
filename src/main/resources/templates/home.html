@@ -97,10 +97,10 @@
               </li>
             </ul>
           </li>
-          <!-- Control Sidebar Toggle Button -->
+          <!-- Control Sidebar Toggle Button
           <li>
             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </nav>
@@ -125,24 +125,13 @@
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
-      <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search..."/>
-          <span class="input-group-btn">
-            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-            </button>
-          </span>
-        </div>
-      </form>
-      <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">Actions</li>
+        <li ui-sref-active="active"><a ui-sref="dashboard"><i class="fa fa-dashboard"></i> <span>View Dashboard</span></a></li>
         <li ui-sref-active="active"><a ui-sref="importPhotos"><i class="fa fa-upload"></i> <span>Import Photos</span></a></li>
         <li ui-sref-active="active"><a ui-sref="viewPhotos"><i class="fa fa-eye"></i> <span>View Photos</span></a></li>
         <li ui-sref-active="active"><a ui-sref="idPhotos"><i class="fa fa-tags"></i> <span>ID Photos</span></a></li>
-        <li ui-sref-active="active"><a ui-sref="folderLocation"><i class="fa fa-folder-open"></i> <span>Update Folder Location</span></a></li>
         <li ui-sref-active="active"><a ui-sref="cameraMonitoringLog"><i class="fa fa-pencil-square-o"></i> <span>Camera Monitoring Log</span></a></li>
         <li class="treeview active">
           <a href="#">
@@ -172,69 +161,69 @@
   
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 0.0.1
+      <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2016 <a href="http://www.catconservancy.org/">Rocky Mountain Cat Conservancy</a>.</strong> All rights
+    <strong>Copyright &copy; 2017 <a href="http://www.catconservancy.org/">Rocky Mountain Cat Conservancy</a>.</strong> All rights
     reserved.
   </footer>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <!-- Home tab content -->
-      <div class="tab-pane" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Heading 1</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript::;">
-              <i class="menu-icon fa bg-red"></i>
+  <!--&lt;!&ndash; Control Sidebar &ndash;&gt;-->
+  <!--<aside class="control-sidebar control-sidebar-dark">-->
+    <!--&lt;!&ndash; Create the tabs &ndash;&gt;-->
+    <!--<ul class="nav nav-tabs nav-justified control-sidebar-tabs">-->
+      <!--<li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>-->
+      <!--<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>-->
+    <!--</ul>-->
+    <!--&lt;!&ndash; Tab panes &ndash;&gt;-->
+    <!--<div class="tab-content">-->
+      <!--&lt;!&ndash; Home tab content &ndash;&gt;-->
+      <!--<div class="tab-pane" id="control-sidebar-home-tab">-->
+        <!--<h3 class="control-sidebar-heading">Heading 1</h3>-->
+        <!--<ul class="control-sidebar-menu">-->
+          <!--<li>-->
+            <!--<a href="javascript::;">-->
+              <!--<i class="menu-icon fa bg-red"></i>-->
 
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Sub Heading</h4>
+              <!--<div class="menu-info">-->
+                <!--<h4 class="control-sidebar-subheading">Sub Heading</h4>-->
 
-                <p>Content</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
+                <!--<p>Content</p>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+        <!--&lt;!&ndash; /.control-sidebar-menu &ndash;&gt;-->
 
-      </div>
-      <!-- /.tab-pane -->
-      <!-- Stats tab content -->
-      <div class="tab-pane" id="control-sidebar-stats-tab">Tab2 Content</div>
-      <!-- /.tab-pane -->
-      <!-- Settings tab content -->
-      <div class="tab-pane" id="control-sidebar-settings-tab">
-        <h3 class="control-sidebar-heading">Heading 1</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript::;">
-              <i class="menu-icon fa bg-red"></i>
+      <!--</div>-->
+      <!--&lt;!&ndash; /.tab-pane &ndash;&gt;-->
+      <!--&lt;!&ndash; Stats tab content &ndash;&gt;-->
+      <!--<div class="tab-pane" id="control-sidebar-stats-tab">Tab2 Content</div>-->
+      <!--&lt;!&ndash; /.tab-pane &ndash;&gt;-->
+      <!--&lt;!&ndash; Settings tab content &ndash;&gt;-->
+      <!--<div class="tab-pane" id="control-sidebar-settings-tab">-->
+        <!--<h3 class="control-sidebar-heading">Heading 1</h3>-->
+        <!--<ul class="control-sidebar-menu">-->
+          <!--<li>-->
+            <!--<a href="javascript::;">-->
+              <!--<i class="menu-icon fa bg-red"></i>-->
 
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Sub Heading</h4>
+              <!--<div class="menu-info">-->
+                <!--<h4 class="control-sidebar-subheading">Sub Heading</h4>-->
 
-                <p>Content</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
-      </div>
-      <!-- /.tab-pane -->
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
+                <!--<p>Content</p>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+        <!--&lt;!&ndash; /.control-sidebar-menu &ndash;&gt;-->
+      <!--</div>-->
+      <!--&lt;!&ndash; /.tab-pane &ndash;&gt;-->
+    <!--</div>-->
+  <!--</aside>-->
+  <!--&lt;!&ndash; /.control-sidebar &ndash;&gt;-->
+  <!--&lt;!&ndash; Add the sidebar's background. This div must be placed-->
+       <!--immediately after the control sidebar &ndash;&gt;-->
+  <!--<div class="control-sidebar-bg"></div>-->
 </div>
 <!-- ./wrapper -->
 

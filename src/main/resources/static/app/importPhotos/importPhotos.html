@@ -17,7 +17,7 @@
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
+          <h3 class="box-title">How to Upload Images to Dropbox</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -27,98 +27,145 @@
           </div>
         </div>
         <div class="box-body">
-        	<div class="row">
-        		<div class="col-md-12">
-					<button class="btn btn-default btn-lg" msl-file-input="fileSelectionHandler">
-						<span class="glyphicon glyphicon-file"></span> 
-						Select file(s)
-						<input type="file" multiple="" style="display: none;">
-					</button> 
-					or 
-					<button class="btn btn-default btn-lg" msl-folder-input="fileSelectionHandler" tooltip="Available only on Google Chrome">
-						<span class="glyphicon glyphicon-folder-open"></span> 
-						Select folder
-						<input type="file" webkitdirectory="" style="display: none;">
-					</button> 
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-8">
-					<div class="panel panel-default" ng-show="files.length > 0">
-						<div class="panel-heading"><span class="glyphicon glyphicon-list"></span> Selected Files</div>
-						<div class="table-responsive">
-							<table class="table table-striped table-hover">
-								<thead>
-									<tr>
-                                        <th>Preview</th>
-                                        <th>Name</th>
-										<th>Type</th>
-										<th>Size</th>
-										<th></th>
-										<th></th>
-										<th class="upload-status"></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="file in files">
-									    <td><img ng-src="{{fileSources[file.name]}}" class="img-thumbnail" alt="{{file.name}}" width="304" height="236"/></td>
-										<td>{{file.name}}</td>
-										<td>{{file.type}}</td>
-										<td>{{file.size / 1000}} KB</td>
-										<td>
-											<button class="btn btn-primary" ng-click="startUploadFor($index)" ng-show="!uploadStartRequestedFor($index) || uploadPausedFor($index)"><span class="glyphicon glyphicon-play"></span> Start upload</button>
-											<button class="btn btn-warning" ng-click="pauseUploadFor($index)" ng-show="uploadRunningFor($index)"><span class="glyphicon glyphicon-pause"></span> Pause</button>
-										</td>
-										<td><button class="btn btn-danger" ng-click="cancelUploadFor($index)"><span class="glyphicon glyphicon-trash"></span> Cancel</button></td>
-										<td>
-											<div class="alert alert-info" ng-show="uploadStartRequestedFor($index) && !uploadStartedFor($index)"><span class="glyphicon glyphicon-hourglass"></span> Upload starting...</div>
-											<progressbar class="progress-striped" ng-class="uploadRunningFor($index) ? 'active' : ''" ng-show="uploadRunningFor($index) || uploadPausedFor($index)" value="completionFor($index)">{{completionFor($index)}}%</progressbar>
-											<div class="alert alert-success" ng-show="uploadCompletedFor($index)"><span class="glyphicon glyphicon-thumbs-up"></span> Upload completed</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+
+			<h4>Create a Dropbox Account</h4>
+			<p>Go to www.Dropbox.com.</p>
+			<p>You’ll see two options: <b>Login</b> or <b>Create an Account</b>. Select Create an Account and enter you name, email, and a password.</p>
+			<h4>Install Dropbox on Your Computer</h4>
+			<p>There are two versions of Dropbox: the <b>online version</b> and the <b>desktop version</b>. For this project, you will need to install the Desktop version on your computer.</p>
+			<p>Why? Using the Dropbox application is really convenient and fast. In fact, using Dropbox on your computer is just like using any other folder on your hard drive, except the files you drag into your Dropbox folder automatically sync online and to any other computers or mobile devices linked to your account. The application runs in the background and automatically keeps your files in sync and backed up online. It's like having the same folder on all of your computers and mobile devices at the same time.</p>
+			<p>The desktop application is really convenient because you never need to manually upload or download files in your Dropbox folder. The application automatically watches your Dropbox folder and keeps your files in sync for you. Any time you save a change to a file and are connected to the internet, that change will sync everywhere you have Dropbox installed.</p>
+			<p>The desktop application <i>even works when you go offline</i>. The next time you're online, Dropbox will sync changes just where it left off.</p>
+			<h4>Upload Images to Dropbox</h4>
+			<p>Once you install the Desktop version, it creates a new folder on your computer called <b>Dropbox</b>. Your Dropbox folder works just like any other folder on your hard drive, except everything in your Dropbox folder automatically syncs to the web and to any other computer with Dropbox installed.</p>
+			<p>Move your image files into your Dropbox by <b>dragging and dropping them into your Dropbox folder</b>. The files in your Dropbox folder will automatically be synced online and to your other computers. NOTE: Before you upload your images, you must create a specific set of folders to organize them (see next section, <i>How to Organize Your Files in Dropbox</i>).</p>
+			<h4>How to Organize Your Files in Dropbox</h4>
+			<p>All CCC Projects must use the following folder structure so that the information is consistent between projects. Create your folders in Dropbox exactly as follows:</p>
+			<ol>
+				<li>Create a folder for your project called “CCC Camera Study Project.”<br/>
+					<b>📂   CCC Camera Study Project</b></li>
+				<li>Within it, create four subfolders:<br/>
+					<div style="margin-left: 22px">
+						<b>📂  Uncatalogued Camera Study Area Photos</b><br/>
+						This folder is the first stop for your images after you’ve downloaded them from your camera’s SD card. It contains all images that have not yet been “catalogued” or uploaded to the database file.
+					</div>
+					<div style="margin-left: 22px">
+						<b>📂  Archived Photos</b><br/>
+						After you have uploaded your images to the database, they will be stored here.
+					</div>
+					<div style="margin-left: 22px">
+						<b>📂  Database Files</b><br/>
+						As the name implies, this folder contains your main database file and all additional versions of it that you create.
+					</div>
+					<div style="margin-left: 22px">
+						<b>📂  Master Forms and Manuals</b><br/>
+						This folder is a repository for important  documents such as the CCC Handbook handbook, data forms, and pre-field checklist.
+					</div>
+				</li>
+				<li>
+					Within the Uncatalogued Camera Study Area Photos folder, create a new folder for each <b>Study Area</b> that has the official location name for the property, such as Lory State Park.<br/>
+					<div style="margin-left: 22px; font-weight:bold; color:darkgray">
+						📂  Uncatalogued Camera Study Area Photos
+						<div style="margin-left: 15px; font-weight:bold; color:#333">
+							📂  Lory State Park
 						</div>
 					</div>
-					<div class="btn-group" ng-show="files.length > 0">
-						<button class="btn btn-primary btn-lg" ng-click="startAll()" ng-disabled="!anyStartable()"><span class="glyphicon glyphicon-play"></span> Start all</button>
-						<button class="btn btn-warning btn-lg" ng-click="pauseAll()" ng-disabled="!anyPausable()"><span class="glyphicon glyphicon-pause"></span> Pause all</button>
-						<button class="btn btn-danger btn-lg" ng-click="cancelAll()"><span class="glyphicon glyphicon-trash"></span> Cancel all</button>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="panel panel-default" ng-show="completed_uploads_ids.length > 0">
-						<div class="panel-heading"><span class="glyphicon glyphicon-ok"></span> Completed Uploads</div>
-						<div class="panel-body">
-							<span class="uploaded-file" ng-repeat="id in completed_uploads_ids" msl-dnd-item="{{id}}">
-								<span class="glyphicon glyphicon-file"></span> {{completed_uploads[id].file_name}}
-							</span>
+				</li>
+				<li>
+					Within your Study Area folder, create a new folder that further defines the study area. This is your <b>Location ID</b> folder. Choose a name that includes some reference to the immediate location of the image set. It could the name of a particular trail or describe a key landscape feature, such as Rocky Hill Trailhead, Ravine, Saddle, etc.<br/>
+					<div style="margin-left: 22px; font-weight:bold; color:darkgray">
+						📂  Uncatalogued Camera Study Area Photos
+						<div style="margin-left: 15px; font-weight:bold; color:darkgray">
+							📂  Lory State Park
+							<div style="margin-left: 15px; font-weight:bold; color:#333">
+								📂  Rocky Hill Trailhead
+							</div>
 						</div>
 					</div>
-					<div class="panel panel-default" ng-show="completed_uploads_ids.length > 0" msl-dnd-target="moveIntoA">
-						<div class="panel-heading"><span class="glyphicon glyphicon-folder-open"></span> Remote Folder A</div>
-						<div class="panel-body" ng-show="filesInA().length === 0">Drag completed uploads here...</div>
-						<div class="panel-body" ng-show="filesInA().length > 0">
-							<span class="uploaded-file" ng-repeat="file in filesInA()">
-								<span class="glyphicon glyphicon-file"></span> {{file}}
-							</span>
+				</li>
+				<li>
+					Within your Location ID folder, create a folder named after the date the images were removed from the camera. This is your <b>Camera Check Date</b> folder.
+					<p><b>NOTE: You must use the following date format or the database will not be able to locate your images:</b></p>
+					<p>mm.dd.yyyy</p>
+					<p>Example: March 1, 2015 would be 03.01.2015</p>
+					<div style="margin-left: 22px; font-weight:bold; color:darkgray">
+						📂  Uncatalogued Camera Study Area Photos
+						<div style="margin-left: 15px; font-weight:bold; color:darkgray">
+							📂  Lory State Park
+							<div style="margin-left: 15px; font-weight:bold; color:darkgray">
+								📂  Rocky Hill Trailhead
+								<div style="margin-left: 15px; font-weight:bold; color:#333">
+									📂  03.01.2015
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="panel panel-default" ng-show="completed_uploads_ids.length > 0" msl-dnd-target="moveIntoB">
-						<div class="panel-heading"><span class="glyphicon glyphicon-folder-open"></span> Remote Folder B</div>
-						<div class="panel-body" ng-show="filesInB().length === 0">...or here</div>
-						<div class="panel-body" ng-show="filesInB().length > 0">
-							<span class="uploaded-file" ng-repeat="file in filesInB()">
-								<span class="glyphicon glyphicon-file"></span> {{file}}
-							</span>
+					<p>You are now finished creating the folder structure for the Uncatalogued Camera Study Area Photos.</p>
+				</li>
+				<li>
+					Return to your <b>Archived Photos</b> folder.
+				</li>
+				<li>
+					Within your Archived Photos folder, create a folder called “Highlight Photos.” This is where you will save the best photos captured from your camera traps. To learn more, see page 29, “How to Highlight Photos”).<br/>
+					<div style="margin-left: 22px; font-weight:bold; color:darkgray">
+						📂  Archived Photos
+						<div style="margin-left: 15px; font-weight:bold; color:#333">
+							📂  Highlight Photos
 						</div>
 					</div>
-				</div>
-			</div>
-        </div>
+				</li>
+				<li>
+					Within your Highlight Photos folder, create a Study Area folder like you did in Step 3.<br/>
+
+					<div style="margin-left: 22px; font-weight:bold; color:darkgray">
+						📂  Archived Photos
+						<div style="margin-left: 15px; font-weight:bold; color:darkgray">
+							📂  Highlight Photos
+							<div style="margin-left: 15px; font-weight:bold; color:#333">
+								📂  Lory State Park
+							</div>
+						</div>
+					</div>
+				</li>
+				<li>
+					Within your Study Area folder, create a <b>Location ID</b> folder like you did in Step 4.<br/>
+					<div style="margin-left: 22px; font-weight:bold; color:darkgray">
+						📂  Archived Photos
+						<div style="margin-left: 15px; font-weight:bold; color:darkgray">
+							📂  Highlight Photos
+							<div style="margin-left: 15px; font-weight:bold; color:darkgray">
+								📂  Lory State Park
+								<div style="margin-left: 15px; font-weight:bold; color:#333">
+									📂  Rocky Hill Trailhead
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li>
+					Finally, within your Location ID folder, create a folder indicating the year the images were taken.<br/>
+					<div style="margin-left: 22px; font-weight:bold; color:darkgray">
+						📂  Archived Photos
+						<div style="margin-left: 15px; font-weight:bold; color:darkgray">
+							📂  Highlight Photos
+							<div style="margin-left: 15px; font-weight:bold; color:darkgray">
+								📂  Lory State Park
+								<div style="margin-left: 15px; font-weight:bold; color:darkgray">
+									📂  Rocky Hill Trailhead
+									<div style="margin-left: 15px; font-weight:bold; color:#333">
+										📂  2015
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ol>
+			<h4>The Importance of Backing Up Your Image Files</h4>
+			<p>In addition to uploading your images to Dropbox, we strongly recommend backing up your images to an external hard drive. That way if someone accidentally deletes your Dropbox files or you are unable to access your account, your original images files will still be accessible.</p>
+		</div>
         <!-- /.box-body -->
         <div class="box-footer">
-          Footer
         </div>
         <!-- /.box-footer-->
       </div>
