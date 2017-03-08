@@ -148,6 +148,24 @@
                     </button>
                   </div>
                 </div>
+                <div class="row" ng-show="viewPhotosCtrl.selectedPhoto">
+                  <div class="col-sm-12">
+                    <hr/>
+                    <h4>Image Data</h4>
+                  </div>
+                </div>
+                <div class="row" ng-show="viewPhotosCtrl.selectedPhoto">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label>Image Date</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-9">
+                    <div class="form-group">
+                      {{ viewPhotosCtrl.selectedPhoto.imageDate | date : "medium" }}
+                    </div>
+                  </div>
+                </div>
               </div>
               <!-- end loading -->
             </div>
