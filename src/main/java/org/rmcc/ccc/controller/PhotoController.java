@@ -87,11 +87,8 @@ public class PhotoController {
 				photo.setMetadata(metadata);
 				photo.setDropboxPath(metadata.getPathLower());
 				if (!metadata.isDir()) {
-					photo.setDeployment(getDeploymentsByPath(path).isEmpty() ? getDeploymentsByPath(path).get(0): null);
+					photo.setDeployment(!getDeploymentsByPath(path).isEmpty() ? getDeploymentsByPath(path).get(0): null);
 					photo = photoRepository.save(photo);
-					//				PhotoService.getFileMetadata(dropboxService.getInputStreamByPath(metadata.getPathLower()), metadata.getName());
-				} else {
-					//TODO: add logic to populate create deployment and set on photo.
 				}
 				photos.add(photo);
 			}

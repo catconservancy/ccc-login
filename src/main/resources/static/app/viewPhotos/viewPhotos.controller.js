@@ -2,9 +2,11 @@
     angular.module('CCC')
         .controller('ViewPhotosController', ViewPhotosController);
 
-    ViewPhotosController.$inject = ['$scope','$timeout','$stateParams','PhotosService','Deployments','StudyAreas','Species'];
+    ViewPhotosController.$inject = ['$scope','$timeout','$stateParams',
+        'PhotosService','Deployments','StudyAreas','Species','SpinnerService'];
 
-    function ViewPhotosController($scope, $timeout, $stateParams, PhotosService, Deployments, StudyAreas, Species) {
+    function ViewPhotosController($scope, $timeout, $stateParams, 
+                                  PhotosService, Deployments, StudyAreas, Species, SpinnerService) {
         var vm = this;
         vm.selectedPhoto = {};
         vm.selectedFolder = {};
@@ -37,6 +39,7 @@
         vm.endDateOpen = endDateOpen;
 
         Deployments.query(function(data) {
+            SpinnerService.hide('viewPhotosSpinner');
             vm.deployments = data;
             if ($stateParams.deploymentId) {
                 for (var i = 0; i < data.length; i++) {
@@ -64,6 +67,7 @@
         });
 
         function updateResults(nextPage) {
+            SpinnerService.show('viewPhotosSpinner');
 
             if (!nextPage) {
                 vm.currPage = 0;
@@ -84,7 +88,10 @@
                 } else {
                     vm.photos = data;
                 }
-                setSelectedPhotoByIndex(0);
+                SpinnerService.hide('viewPhotosSpinner');
+                if (!nextPage) {
+                    setSelectedPhotoByIndex(0);
+                }
                 initializeCarousel();
             });
 

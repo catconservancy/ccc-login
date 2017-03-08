@@ -25,10 +25,14 @@
 	    });
     }
 
-    run.$inject = ['$rootScope', '$log', '$filter'];
+    run.$inject = ['$rootScope', '$log', '$filter', 'SpinnerService'];
 
-    function run($rootScope, $log, $filter) {
+    function run($rootScope, $log, $filter, SpinnerService) {
     	$log.debug('in run');
+
+        $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
+            SpinnerService._unregisterAll();
+        });
 
         $rootScope.getObjectById = function(array,id) {
             return $filter('filter')(array, function (d) {return d.id === id;})[0];

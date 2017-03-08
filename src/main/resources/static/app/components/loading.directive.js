@@ -1,159 +1,160 @@
-//(function () {
-//    angular.module('CCC').directive('ngLoading', ngLoading);
-//
-//    ngLoading.$inject = ['$compile'];
-//
-//    function ngLoading($compile) {
-//
-//        var loadingSpinner = '<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>';
-//
-//        return {
-//            restrict: 'A',
-//            link: function (scope, element, attrs) {
-////                var originalContent = element.html();
-//                var originalContent = $compile(element.contents())(scope);
-//                element.html(loadingSpinner);
-//                scope.$watch(attrs.ngLoading, function (val) {
-//                    if(val) {
-//                        if(val.notFound) {
-//                            element.html(attrs.ngLoadingNotFound ? attrs.ngLoadingNotFound : "Not found.");
-//                        } else {
-//                            element.html(originalContent);
-////                            $compile(element.contents())(scope);
-//                        }
-//                    } else {
-//                        element.html(loadingSpinner);
-//                    }
-//                });
-//            }
-//        }
-//    }
-//}());
+(function () {
+    angular.module('CCC')
+        .factory('SpinnerService', SpinnerService);
+
+    SpinnerService.$inject = [];
+
+    function SpinnerService() {
+        var spinners = {};
+        return {
+            _register: function (data) {
+                if (!data.hasOwnProperty('name')) {
+                    throw new Error("Spinner must specify a name when registering with the spinner service.");
+                }
+                if (spinners.hasOwnProperty(data.name)) {
+                    throw new Error("A spinner with the name '" + data.name + "' has already been registered.");
+                }
+                spinners[data.name] = data;
+            },
+            _unregister: function (name) {
+                if (spinners.hasOwnProperty(name)) {
+                    delete spinners[name];
+                }
+            },
+            _unregisterGroup: function (group) {
+                for (var name in spinners) {
+                    if (spinners[name].group === group) {
+                        delete spinners[name];
+                    }
+                }
+            },
+            _unregisterAll: function () {
+                for (var name in spinners) {
+                    delete spinners[name];
+                }
+            },
+            show: function (name) {
+                var spinner = spinners[name];
+                if (!spinner) {
+                    throw new Error("No spinner named '" + name + "' is registered.");
+                }
+                spinner.show();
+            },
+            hide: function (name) {
+                var spinner = spinners[name];
+                if (!spinner) {
+                    throw new Error("No spinner named '" + name + "' is registered.");
+                }
+                spinner.hide();
+            },
+            showGroup: function (group) {
+                var groupExists = false;
+                for (var name in spinners) {
+                    var spinner = spinners[name];
+                    if (spinner.group === group) {
+                        spinner.show();
+                        groupExists = true;
+                    }
+                }
+                if (!groupExists) {
+                    throw new Error("No spinners found with group '" + group + "'.")
+                }
+            },
+            hideGroup: function (group) {
+                var groupExists = false;
+                for (var name in spinners) {
+                    var spinner = spinners[name];
+                    if (spinner.group === group) {
+                        spinner.hide();
+                        groupExists = true;
+                    }
+                }
+                if (!groupExists) {
+                    throw new Error("No spinners found with group '" + group + "'.")
+                }
+            },
+            showAll: function () {
+                for (var name in spinners) {
+                    spinners[name].show();
+                }
+            },
+            hideAll: function () {
+                for (var name in spinners) {
+                    spinners[name].hide();
+                }
+            }
+        };
+    }
+})();
 (function() {
-	angular.module('CCC').directive('ngLoading', ngLoading);
-	ngLoading.$inject = [ '$compile' ];
-	function ngLoading($compile) {
-		function matchSizeClass(size) {
-			var sizeClass;
-			switch (size) {
-			case "sm":
-				sizeClass = "fa-lg";
-				break;
-			case "md":
-				sizeClass = "fa-3x";
-				break;
-			case "lg":
-				sizeClass = "fa-4x";
-				break;
-			case "xl":
-				sizeClass = "fa-5x";
-				break;
-			default:
-				sizeClass = "fa-3x";
-			}
-			return sizeClass;
-		}
-		function matchTypeClass(type) {
-			var typeClass;
-			switch (type) {
-			case "gears":
-				typeClass = "fa-cog";
-				break;
-			case "dots":
-				typeClass = "fa-spinner";
-				break;
-			default:
-				typeClass = "fa-circle-o-notch";
-			}
-			return typeClass;
-		}
-		function matchTopPercent(size) {
-			var topPercent;
-			switch (size) {
-			case "sm":
-				topPercent = "53%";
-				break;
-			case "md":
-				topPercent = "49%";
-				break;
-			case "lg":
-				topPercent = "47%";
-				break;
-			case "xl":
-				topPercent = "35%";
-			}
-			return topPercent;
-		}
-		function compileTemplate(scope, template, typeClass, sizeClass, topPct,
-				leftPct, text) {
-			var _template = _.clone(template);
-			_template = _template.replace("{size}", sizeClass).replace(
-					"{type}", typeClass);
-			return $compile(angular.element(_template))(scope);
-		}
-		var link = function(scope, element, attrs) {
-			var e = angular.element(element[0]), spinnerTemplate = (attrs.text ? '<h3 style="position:absolute; top:{{top}}; left:{{left}};">{{text}}</h3>'
-					: '')
-					+ '<i class="fa {size} {type} manual-loading-indicator"></i>', overlay = true, sizeClass = "fa-3x", typeClass = "fa-circle-o-notch", spinner, zIndex;
-			if (attrs.overlay) {
-				overlay = attrs.overlay === "true" ? true : false;
-			}
-			e.hide();
-			zIndex = e.parent().css("z-index");
-			if (isNaN(zIndex)) {
-				e.css("z-index", 1);
-			} else {
-				e.css("z-index", zIndex + 1);
-			}
-			if (overlay) {
-				e.addClass("manual-overlay");
-			}
-			attrs.$observe("loading", function(loading) {
-				if (loading.toLowerCase() === "true") {
-					e.show();
-				} else {
-					e.hide();
-				}
-			});
-			attrs.$observe("type", function(type) {
-				typeClass = matchTypeClass(type);
-				element.empty();
-				spinner = compileTemplate(scope, spinnerTemplate, typeClass,
-						sizeClass);
-				element.append(spinner);
-			});
-			attrs.$observe("size", function(size) {
-				sizeClass = matchSizeClass(size);
-				element.empty();
-				spinner = compileTemplate(scope, spinnerTemplate, typeClass,
-						sizeClass);
-				spinner.css({
-					top : matchTopPercent(size)
-				});
-				element.append(spinner);
-			});
-			attrs.$observe("text", function(text) {
-				scope.text = text ? text : '';
-			});
-			attrs.$observe("left", function(left) {
-				scope.left = left ? left : '30%';
-				if (left) {
-					spinner = element.children()[0];
-					spinner.style.left = left;
-				}
-			});
-			attrs.$observe("top", function(top) {
-				scope.top = top ? top : '40%';
-				if (top) {
-					spinner = element.children()[0];
-					spinner.style.top = top;
-				}
-			});
-		};
-		return {
-			link : link,
-			replace : true,
-			restrict : "A"
-		};
-	}
-}());
+    angular.module('CCC').directive('spinner', spinner);
+    spinner.$inject = [];
+    function spinner() {
+        return {
+            restrict: 'EA',
+            replace: true,
+            transclude: true,
+            scope: {
+                name: '@?',
+                group: '@?',
+                show: '=?',
+                imgSrc: '@?',
+                register: '@?',
+                onLoaded: '&?',
+                onShow: '&?',
+                onHide: '&?'
+            },
+            template: [
+                '<span ng-show="show">',
+                '  <img ng-show="imgSrc" src="{{imgSrc}}" />',
+                '  <span ng-transclude></span>',
+                '</span>'
+            ].join(''),
+            controller: ["$scope", "SpinnerService", function ($scope, SpinnerService) {
+
+                // register should be true by default if not specified.
+                if (!$scope.hasOwnProperty('register')) {
+                    $scope.register = true;
+                }
+
+                // Declare a mini-API to hand off to our service so the service
+                // doesn't have a direct reference to this directive's scope.
+                var api = {
+                    name: $scope.name,
+                    group: $scope.group,
+                    show: function () {
+                        $scope.show = true;
+                    },
+                    hide: function () {
+                        $scope.show = false;
+                    },
+                    toggle: function () {
+                        $scope.show = !$scope.show;
+                    }
+                };
+
+                // Register this spinner with the spinner service.
+                if ($scope.register) {
+                    SpinnerService._register(api);
+                }
+
+                // If an onShow or onHide expression was provided, register a watcher
+                // that will fire the relevant expression when show's value changes.
+                if ($scope.onShow || $scope.onHide) {
+                    $scope.$watch('show', function (show) {
+                        if (show && $scope.onShow) {
+                            $scope.onShow({ SpinnerService: SpinnerService, spinnerApi: api });
+                        } else if (!show && $scope.onHide) {
+                            $scope.onHide({ SpinnerService: SpinnerService, spinnerApi: api });
+                        }
+                    });
+                }
+
+                // This spinner is good to go. Fire the onLoaded expression.
+                if ($scope.onLoaded) {
+                    $scope.onLoaded({ SpinnerService: SpinnerService, spinnerApi: api });
+                }
+            }]
+        };
+    }
+})();

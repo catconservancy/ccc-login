@@ -64,8 +64,8 @@
 						<h3 class="box-title">Search Filters</h3>
 					</div>
 					<div class="box-body">
-						<ng-loading loading="true"></ng-loading>
 						<label>Location Folders</label>
+						<spinner name="folderSpinner" show="true" img-src="/ccc/img/loading.gif"></spinner>
 						<div style="max-height:250px; overflow-y:scroll">
 							<div ng-repeat="folder in idPhotosCtrl.treeData"
 								 style="padding-left: 5px; padding-bottom:2px">

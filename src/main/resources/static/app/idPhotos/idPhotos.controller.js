@@ -4,10 +4,10 @@
 
     IdPhotosController.$inject = ['$q', '$log', '$rootScope', '$scope', '$filter', '$stateParams',
                                   'Species', 'DetectionDetails', 'Detection', 'PhotosService',
-								  'StudyAreas', 'Deployments'];
+								  'StudyAreas', 'Deployments', 'SpinnerService'];
 
     function IdPhotosController($q, $log, $rootScope, $scope, $filter, $stateParams,
-    		Species, DetectionDetails, Detection, PhotosService, StudyAreas, Deployments) {
+    		Species, DetectionDetails, Detection, PhotosService, StudyAreas, Deployments, SpinnerService) {
         var vm = this;
         vm.photos = [];
         vm.selectedPhoto = {};
@@ -54,6 +54,7 @@
         		}
         	}
 			vm.treeDataLoaded = vm.treeData && vm.treeData.length > 0 ? {} : {notFound: true};
+            SpinnerService.hide('folderSpinner');
         	$log.debug("vm.fileList", vm.fileList);
 
         	$('#filterDropdown .dropdown-menu').on({
@@ -118,6 +119,7 @@
         }
         
         function selectFolder(folder) {
+            SpinnerService.show('folderSpinner');
         	vm.selectedFolder = folder;
         	splitFolder();
     		vm.fileList = [];
@@ -146,8 +148,10 @@
 	                	vm.selectedPhoto.detections = [{}];
             	}
     			vm.treeDataLoaded = vm.treeData && vm.treeData.length > 0 ? {} : {notFound: true};
+                SpinnerService.hide('folderSpinner');
 	        }, function(error) {
 	            vm.photoQueryError = error.data.message;
+                SpinnerService.hide('folderSpinner');
 	        });
         }
         
