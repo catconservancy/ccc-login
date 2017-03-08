@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -100,5 +101,25 @@ public class PhotoServiceTest {
 
         photos = photoService.getPhotos(searchCriteria,pageable);
         assertThat(photos).hasSize(4);
+    }
+
+    @Test
+    public void convertPath() {
+        Map<String,String> searchCriteria = new HashMap<>();
+        searchCriteria.put("highlighted", "true");
+        searchCriteria.put("startDate", "2014-03-03T13:55:00.000Z");
+        searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
+        Pageable pageable = new PageRequest(0,5);
+
+        List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
+        Photo photoToTest = photos.get(0);
+        photoToTest.setDropboxPath("/ccc camera study project/uncataloged camera study area photos/Bobcat Ridge photos/PL1/12.25.2017/".toLowerCase());
+
+        String archivedPath = photoService.convertToArchivedPath(photoToTest);
+        assertEquals("/ccc camera study project/archived photos/highlight photos/bobcat ridge photos/pl1/2015/", archivedPath);
+
+        photoToTest.setHighlight(false);
+        archivedPath = photoService.convertToArchivedPath(photoToTest);
+        assertEquals("/ccc camera study project/archived photos/archived study area photos/bobcat ridge photos/pl1/12.25.2017/", archivedPath);
     }
 }

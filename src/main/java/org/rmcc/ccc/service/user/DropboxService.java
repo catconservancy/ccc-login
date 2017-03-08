@@ -163,5 +163,11 @@ public class DropboxService {
         return false;
     }
 
+	public void deleteFile(String path) throws DbxException {
+		client.files.delete(path);
+	}
 
+	public void moveFile(String fromPath, String toPath) throws DbxException {
+		client.files.move(fromPath, toPath);
+	}
 }

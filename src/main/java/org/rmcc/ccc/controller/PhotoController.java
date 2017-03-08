@@ -1,5 +1,6 @@
 package org.rmcc.ccc.controller;
 
+import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.files.Metadata;
 import org.rmcc.ccc.exception.InvalidPathException;
 import org.rmcc.ccc.model.CccMetadata;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/photos")
-public class PhotoController {	
+public class PhotoController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
 	
@@ -175,15 +177,24 @@ public class PhotoController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE)
-	public void delete(@RequestParam Map<String,String> params) {
+	public void delete(UsernamePasswordAuthenticationToken token, @RequestParam Map<String,String> params) throws DbxException {
 		String path = params.get("path");
-		LOGGER.info("delete called for path: " + path);
+		LOGGER.info("delete called for path: " + path + ", by user: " + token.getName());
+		dropboxService.deleteFile(path);
+		Optional<Photo> optPhoto = photoRepository.findOneByDropboxPath(path);
+		if (optPhoto.isPresent()) {
+			photoRepository.delete(optPhoto.get());
+		}
 	}
 
 	@RequestMapping(value = "/{photoId}", method = RequestMethod.POST)
-	public Map<String,String> archive(@PathVariable Integer photoId, @RequestParam Map<String,String> params) {
+	public Photo archive(@PathVariable Integer photoId, @RequestParam Map<String,String> params) throws DbxException {
 		Photo photo = photoRepository.findOne(photoId);
 		LOGGER.info("archive called for path: " + photo.getDropboxPath());
-		return params;
+		String archivedPath = photoService.convertToArchivedPath(photo);
+		dropboxService.moveFile(photo.getDropboxPath(),archivedPath);
+		photo.setDropboxPath(archivedPath);
+
+		return photoRepository.save(photo);
 	}
 }

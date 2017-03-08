@@ -36,6 +36,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static org.rmcc.ccc.controller.PhotoController.ARCHIVED_ROOT;
+import static org.rmcc.ccc.controller.PhotoController.UNCATALOGED_ROOT;
+
 @Service
 public class PhotoService {
 
@@ -78,6 +81,30 @@ public class PhotoService {
         photoRepository.findAll(exp, pageable).forEach(photos::add);
 
         return photos;
+    }
+
+    public String convertToArchivedPath(Photo photo) {
+
+        String archivedPath = null;
+
+        if (photo.getDropboxPath() != null) {
+            archivedPath = photo.getDropboxPath().toLowerCase().replace(UNCATALOGED_ROOT, ARCHIVED_ROOT + "/archived study area photos");
+            if (photo.getHighlight()) {
+                archivedPath = archivedPath.replace("/archived study area photos", "/highlight photos");
+                String[] pathElements = archivedPath.split("/");
+                String highlightPath = "";
+                for (int i = 0; i < 6; i++)
+                    highlightPath += pathElements[i] + "/";
+
+                long timestamp = photo.getImageDate().getTime();
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(timestamp);
+                int imageYear = cal.get(Calendar.YEAR);
+
+                archivedPath = highlightPath + imageYear + "/";
+            }
+        }
+        return archivedPath;
     }
 
     private Integer[] getSpeciesIds(String speciesIdsStr) {
