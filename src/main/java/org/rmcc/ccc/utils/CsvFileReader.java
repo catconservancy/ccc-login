@@ -1,21 +1,25 @@
 package org.rmcc.ccc.utils;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.rmcc.ccc.model.BaseModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class CsvFileReader {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CsvFileReader.class);
 
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -47,24 +51,22 @@ public class CsvFileReader {
             
             //Read the CSV file records starting from the second record to skip the header
             for (int i = 1; i < csvRecords.size(); i++) {
-            	CSVRecord record = (CSVRecord) csvRecords.get(i);
-            	//Create a new student object and fill his data
-            	BaseModel loadModel = model.getFromCsvRecord(record);
+                CSVRecord record = csvRecords.get(i);
+                //Create a new student object and fill his data
+                BaseModel loadModel = model.getFromCsvRecord(record);
                 models.add(loadModel);	
 			}
 
             return models;
         } 
         catch (Exception e) {
-        	System.out.println("Error in CsvFileReader !!!");
-            e.printStackTrace();
+            LOGGER.error("Error occurred reading CSV file: " + model.getDataImportFileName(), e);
         } finally {
             try {
                 fileReader.close();
                 csvFileParser.close();
             } catch (IOException e) {
-            	System.out.println("Error while closing fileReader/csvFileParser !!!");
-                e.printStackTrace();
+                LOGGER.error("Error while closing fileReader/csvFileParser !!!", e);
             }
         }
 		return null;

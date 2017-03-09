@@ -20,6 +20,8 @@ import org.rmcc.ccc.repository.SpeciesRepository;
 import org.rmcc.ccc.repository.StudyAreaRepository;
 import org.rmcc.ccc.service.user.UserService;
 import org.rmcc.ccc.utils.CsvFileReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
@@ -31,6 +33,8 @@ import java.util.List;
 @Component
 @Profile({"development"})
 public class ApplicationStartup implements ApplicationListener<ContextRefreshedEvent> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationStartup.class);
 
     private CsvFileReader csvFileReader;
     private SpeciesRepository speciesRepository;
@@ -131,8 +135,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
                 userService.create(uf);
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error("ApplicationStartup error", e);
         }
 
     }

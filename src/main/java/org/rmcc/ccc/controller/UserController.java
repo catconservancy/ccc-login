@@ -1,13 +1,5 @@
 package org.rmcc.ccc.controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.validation.Valid;
-
 import org.rmcc.ccc.annotations.Loggable;
 import org.rmcc.ccc.model.User;
 import org.rmcc.ccc.model.UserCreateForm;
@@ -31,6 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -41,14 +39,13 @@ public class UserController {
 	private static final String EMAIL_SENDER = "aaron.g.jones@gmail.com";
 	//TODO: should be a list of admin users or TBD
 	private static final String ADMIN_EMAIL = "aaron.g.jones@gmail.com"; 
-	
-	private UserRepository userRepository;
-    private JavaMailSender javaMailSender;
     private final UserService userService;
     private final UserCreateFormValidator userCreateFormValidator;
-	
-	@Autowired
-	public UserController(UserRepository userRepository,
+    private UserRepository userRepository;
+    private JavaMailSender javaMailSender;
+
+    @Autowired
+    public UserController(UserRepository userRepository,
 			JavaMailSender javaMailSender,
 			UserService userService, 
 			UserCreateFormValidator userCreateFormValidator) {
@@ -61,8 +58,8 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.GET)
     public List<User> search(@RequestParam Map<String,String> params) throws Exception {
 		if (params.get("enabled") != null) {
-			return (List<User>) userRepository.findByEnabled(Boolean.valueOf(params.get("enabled")));
-		}
+            return userRepository.findByEnabled(Boolean.valueOf(params.get("enabled")));
+        }
         return (List<User>) userRepository.findAll();
     }
 
@@ -130,7 +127,7 @@ public class UserController {
             helper.setSubject("CCC User Access Granted");
             helper.setText("Your access request has been granted.  You may now login to the application.");
         } catch (MessagingException e) {
-            e.printStackTrace();
+            LOGGER.error("MessagingException occurred sending user activated email.", e);
         } finally {}
         javaMailSender.send(mail);
     }
@@ -146,7 +143,7 @@ public class UserController {
             helper.setSubject("CCC User Created");
             helper.setText("A new user has registered and requested access to the CCC Databse: " + user.getFullName() + ": " + user.getEmail());
         } catch (MessagingException e) {
-            e.printStackTrace();
+            LOGGER.error("MessagingException occurred sending user registration email.", e);
         } finally {}
         javaMailSender.send(mail);
     }

@@ -3,8 +3,23 @@ package org.rmcc.ccc.model;
 import com.dropbox.core.v2.files.Metadata;
 import org.apache.commons.csv.CSVRecord;
 import org.rmcc.ccc.controller.PhotoController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -20,6 +35,9 @@ import java.util.List;
 @NamedQuery(name = "Photo.findAll", query = "SELECT p FROM Photo p")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Photo implements Serializable, BaseModel {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Photo.class);
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -95,8 +113,8 @@ public class Photo implements Serializable, BaseModel {
 			Date parsedDate = dateFormat.parse(date);
 			Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 			return timestamp;
-		}catch(Exception e){//this generic but you can control another types of exception
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error("Error converting date string to timestamp for date string: " + date, e);
 		}
 		return null;
 	}
@@ -109,12 +127,12 @@ public class Photo implements Serializable, BaseModel {
 		this.directionOfTravel = directionOfTravel;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
 	public String getFileName() {
 		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public String getFilePath() {

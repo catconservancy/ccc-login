@@ -42,7 +42,7 @@ public class PhotoServiceTest {
         searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
-        List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
+        List<Photo> photos = photoService.getDbPhotos(searchCriteria, pageable);
         assertThat(photos).hasSize(4);
         assertTrue(photos.get(0).getId() == 1);
     }
@@ -55,7 +55,7 @@ public class PhotoServiceTest {
         searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
-        List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
+        List<Photo> photos = photoService.getDbPhotos(searchCriteria, pageable);
         assertThat(photos).hasSize(1);
         assertTrue(photos.get(0).getId() == 3);
     }
@@ -68,7 +68,7 @@ public class PhotoServiceTest {
         searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
-        List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
+        List<Photo> photos = photoService.getDbPhotos(searchCriteria, pageable);
         assertThat(photos).hasSize(4);
         assertTrue(photos.get(0).getId() == 1);
     }
@@ -80,7 +80,7 @@ public class PhotoServiceTest {
         searchCriteria.put("endDate", "2015-10-05T13:06:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
-        List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
+        List<Photo> photos = photoService.getDbPhotos(searchCriteria, pageable);
         assertThat(photos).hasSize(2);
         assertTrue(photos.get(0).getId() == 1);
     }
@@ -93,13 +93,13 @@ public class PhotoServiceTest {
         searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
-        List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
+        List<Photo> photos = photoService.getDbPhotos(searchCriteria, pageable);
         assertThat(photos).hasSize(3);
 
 
         searchCriteria.put("speciesIds", "11,36,39");
 
-        photos = photoService.getPhotos(searchCriteria,pageable);
+        photos = photoService.getDbPhotos(searchCriteria, pageable);
         assertThat(photos).hasSize(4);
     }
 
@@ -111,7 +111,7 @@ public class PhotoServiceTest {
         searchCriteria.put("endDate", "2017-03-03T13:55:00.000Z");
         Pageable pageable = new PageRequest(0,5);
 
-        List<Photo> photos = photoService.getPhotos(searchCriteria,pageable);
+        List<Photo> photos = photoService.getDbPhotos(searchCriteria, pageable);
         Photo photoToTest = photos.get(0);
         photoToTest.setDropboxPath("/ccc camera study project/uncataloged camera study area photos/Bobcat Ridge photos/PL1/12.25.2017/".toLowerCase());
 

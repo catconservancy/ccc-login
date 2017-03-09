@@ -1,14 +1,11 @@
 package org.rmcc.ccc.controller;
 
 
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.rmcc.ccc.annotations.Loggable;
 import org.rmcc.ccc.model.ErrorInfo;
 import org.rmcc.ccc.validator.ValidationError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
@@ -20,8 +17,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Locale;
+
 public class BaseController {
-	
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
+
 	@Autowired
 	private MessageSource messageSource;
 
@@ -29,7 +32,7 @@ public class BaseController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorInfo handleException(HttpServletRequest request, Exception ex) {
-        ex.printStackTrace();
+        LOGGER.error("Controller exception occurred", ex);
         return new ErrorInfo(ex.getMessage(), request.getRequestURL().toString());
     }
     
@@ -55,9 +58,9 @@ public class BaseController {
     }
     
     private String resolveErrorMessage(FieldError fieldError) {
-    	String msg = null;
-    	try {
-    		msg = messageSource.getMessage(fieldError, Locale.getDefault());
+        String msg;
+        try {
+            msg = messageSource.getMessage(fieldError, Locale.getDefault());
     	} catch (NoSuchMessageException e) {
     		msg = fieldError.getCode();
     	}

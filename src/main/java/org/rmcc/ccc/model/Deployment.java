@@ -2,6 +2,8 @@ package org.rmcc.ccc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +33,9 @@ import java.util.List;
 @NamedQuery(name="Deployment.findAll", query="SELECT d FROM Deployment d")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Deployment implements Serializable, BaseModel {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Deployment.class);
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -170,8 +175,8 @@ public class Deployment implements Serializable, BaseModel {
 			Date parsedDate = dateFormat.parse(date);
 			Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 			return timestamp;
-		}catch(Exception e){//this generic but you can control another types of exception
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error("Error converting date string to timestamp for date string: " + date, e);
 		}
 		return null;
 	}

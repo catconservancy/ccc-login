@@ -21,14 +21,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static org.rmcc.ccc.controller.PhotoController.UNCATALOGED_ROOT;
+
 @RestController
 @RequestMapping("/api/dropbox")
 public class DropboxController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CurrentUserControllerAdvice.class);
 	
-	private static final String UNCATALOGED_ROOT = "/ccc camera study project/uncataloged camera study area photos";
-	private static final String ARCHIVED_ROOT = "/ccc camera study project/archived photos";
 	private static final List<String> ACCEPTED_MEDIA_TYPES = Arrays.asList("image/jpeg","image/gif","image/png","application/pdf");
 
 	private DropboxService dropboxService;
@@ -38,26 +38,37 @@ public class DropboxController extends BaseController {
 		this.dropboxService = dropboxService;
 	}
 
-	/*@RequestMapping(value = "/tree", method = RequestMethod.GET)
-    public List<DropboxFolder> recursiveQuery(@RequestParam Map<String,String> params) throws DbxException, IOException {
-		if (params.get("path") != null) {
-			return dropboxService.getFoldersByPath(params.get("recursivePath"));
-		}
-		return null;
-    }*/
+    public static boolean isValidMediaType(InputStream inputStream) {
+        boolean isValid = true;
+
+        Tika tika = new Tika();
+        if (inputStream != null) {
+            String mediaType = null;
+            try {
+                mediaType = tika.detect(inputStream);
+            } catch (IOException e) {
+                LOGGER.error("unable to detect media type", e);
+            }
+            isValid = ACCEPTED_MEDIA_TYPES.contains(mediaType);
+        } else {
+            isValid = false;
+        }
+
+        return isValid;
+    }
 
 	@RequestMapping(method = RequestMethod.GET)
     public List<Metadata> findAll(@RequestParam Map<String,String> params) throws DbxException, IOException {
 		if (params.get("path") != null) {
-			return (List<Metadata>) dropboxService.getFolderContentsByPath(params.get("path"));
-		}		
-		return (List<Metadata>) dropboxService.getFolderContentsByPath(UNCATALOGED_ROOT);
+            return dropboxService.getFolderContentsByPath(params.get("path"));
+        }
+        return dropboxService.getFolderContentsByPath(UNCATALOGED_ROOT);
     }
 
 	@RequestMapping(value = "/image", method = RequestMethod.GET, produces="image/png")
-    public byte[] outputImage(HttpServletResponse response, 
-    		@RequestParam(value = "path", defaultValue = "") String path) throws DbxException, IOException, InvalidImageTypeException {
-		InputStream in = dropboxService.getInputStreamByPath(path);
+    public byte[] outputImage(HttpServletResponse response,
+                              @RequestParam(value = "path", defaultValue = "") String path) throws DbxException, IOException, InvalidImageTypeException {
+        InputStream in = dropboxService.getInputStreamByPath(path);
 //		if (!isValidMediaType(in)) {
 //		    LOGGER.error("File is not a valid image type: " + path);
 //			throw new InvalidImageTypeException("File is not a valid image type: " + path);
@@ -66,9 +77,9 @@ public class DropboxController extends BaseController {
     }
 
 	@RequestMapping(value = "/thumb", method = RequestMethod.GET, produces="image/png")
-    public byte[] outputThumbnailImage(HttpServletResponse response, 
-    		@RequestParam(value = "path", defaultValue = "") String path) throws DbxException, IOException, InvalidImageTypeException {
-		InputStream in;
+    public byte[] outputThumbnailImage(HttpServletResponse response,
+                                       @RequestParam(value = "path", defaultValue = "") String path) throws DbxException, IOException, InvalidImageTypeException {
+        InputStream in;
         in = dropboxService.getThumbnailInputStreamByPath(path);
 //        if (!isValidMediaType(in)) {
 //            LOGGER.error("File is not a valid image type: " + path);
@@ -76,24 +87,5 @@ public class DropboxController extends BaseController {
 //        }
         return IOUtils.toByteArray(in);
     }
-
-	public static boolean isValidMediaType(InputStream inputStream) {
-		boolean isValid = true;
-
-		Tika tika = new Tika();
-		if (inputStream != null) {
-			String mediaType = null;
-			try {
-				mediaType = tika.detect(inputStream);
-			} catch (IOException e) {
-				LOGGER.error("unable to detect media type",e);
-			}
-			isValid = ACCEPTED_MEDIA_TYPES.contains(mediaType);
-		} else {
-			isValid = false;
-		}
-
-		return isValid;
-	}
 
 }
