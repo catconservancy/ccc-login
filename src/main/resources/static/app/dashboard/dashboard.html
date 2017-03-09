@@ -33,27 +33,28 @@
 						<!-- small box -->
 						<div class="small-box bg-aqua">
 							<div class="inner">
-								<h3>150</h3>
-								<p>Tagged Photos</p>
+								<h3>{{dashboard.counts.newTaggedCount}}</h3>
+								<p>New Archived Tagged Photos</p>
 							</div>
 							<div class="icon">
 								<i class="fa fa-tags"></i>
 							</div>
-							<a href="#" class="small-box-footer">More info <i
-								class="fa fa-arrow-circle-right"></i></a>
+							<a ui-sref="viewPhotos({cannedQuery: 'newArchivedTagged'})" class="small-box-footer">View
+								Photos <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>
 					<div class="col-lg-3 col-xs-6">
 						<!-- small box -->
 						<div class="small-box bg-green">
 							<div class="inner">
-								<h3>150</h3>
-								<p>Highlighted Photos</p>
+								<h3>{{dashboard.counts.newHighlightedCount}}</h3>
+								<p>New Archived Highlighted Photos</p>
 							</div>
 							<div class="icon">
 								<i class="fa fa-star"></i>
 							</div>
-							<a href="#" class="small-box-footer">More info <i
+							<a ui-sref="viewPhotos({cannedQuery: 'newArchivedHighlighted'})" class="small-box-footer">View
+								Photos <i
 								class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>
@@ -61,13 +62,13 @@
 						<!-- small box -->
 						<div class="small-box bg-yellow">
 							<div class="inner">
-								<h3>150</h3>
+								<h3>{{dashboard.counts.logCount}}</h3>
 								<p>Camera Monitoring Logs</p>
 							</div>
 							<div class="icon">
 								<i class="fa fa-pencil-square-o"></i>
 							</div>
-							<a href="#" class="small-box-footer">More info <i
+							<a ui-sref="cameraMonitoringLog" class="small-box-footer">View Logs <i
 								class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>
@@ -75,13 +76,13 @@
 						<!-- small box -->
 						<div class="small-box bg-red">
 							<div class="inner">
-								<h3>150</h3>
+								<h3>{{dashboard.counts.studyAreaCount}}</h3>
 								<p>Study Areas</p>
 							</div>
 							<div class="icon">
 								<i class="fa fa-location-arrow"></i>
 							</div>
-							<a href="#" class="small-box-footer">More info <i
+							<a ui-sref="studyAreas" class="small-box-footer">View Study Areas <i
 								class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>

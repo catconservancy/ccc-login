@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -104,7 +105,7 @@ public class PhotoServiceTest {
     }
 
     @Test
-    public void convertPath() {
+    public void testConvertPath() {
         Map<String,String> searchCriteria = new HashMap<>();
         searchCriteria.put("highlighted", "true");
         searchCriteria.put("startDate", "2014-03-03T13:55:00.000Z");
@@ -121,5 +122,17 @@ public class PhotoServiceTest {
         photoToTest.setHighlight(false);
         archivedPath = photoService.convertToArchivedPath(photoToTest);
         assertEquals("/ccc camera study project/archived photos/archived study area photos/bobcat ridge photos/pl1/12.25.2017/", archivedPath);
+    }
+
+    @Test
+    public void testGetNewTaggedCount() {
+        Integer count = photoService.getNewTaggedCount();
+        assertNotNull(count);
+    }
+
+    @Test
+    public void testGetNewHighlightedCount() {
+        Integer count = photoService.getNewHighlightedCount();
+        assertNotNull(count);
     }
 }

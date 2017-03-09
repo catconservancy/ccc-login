@@ -69,28 +69,40 @@ public class PhotoService {
 
         List<Photo> photos = new ArrayList<Photo>();
 
-        Integer studyAreaId =  getInteger(params, "studyAreaId");
-        Integer locationId =  getInteger(params, "locationId");
-        Boolean highlighted = getBoolean(params, "highlighted");
-        Timestamp startDate = getStartDate(params.get("startDate"));
-        Timestamp endDate = getEndDate(params.get("endDate"));
-        Integer[] speciesIds = getSpeciesIds(params.get("speciesIds"));
+        if (params.get("cannedQuery") != null) {
 
-        PhotoPredicatesBuilder builder = new PhotoPredicatesBuilder();
+            String cannedQuery = params.get("cannedQuery");
+            if (cannedQuery.equalsIgnoreCase("newArchivedTagged")) {
+                photoRepository.getNewTagged(pageable).forEach(photos::add);
+            } else if (cannedQuery.equalsIgnoreCase("newArchivedHighlighted")) {
+                photoRepository.getNewHighlighted(pageable).forEach(photos::add);
+            }
 
-        if (studyAreaId != null)
-            builder.with("deployment.studyArea.id", ":", studyAreaId);
-        if (locationId != null)
-            builder.with("deployment.id", ":", locationId);
-        if (speciesIds != null && speciesIds.length > 0)
-            builder.with("species.id", "in", speciesIds);
-        if (highlighted != null)
-            builder.with("highlight", ":", highlighted);
-        builder.with("imageDate", ">", startDate);
-        builder.with("imageDate", "<", endDate);
+        } else {
 
-        BooleanExpression exp = builder.build();
-        photoRepository.findAll(exp, pageable).forEach(photos::add);
+            Integer studyAreaId = getInteger(params, "studyAreaId");
+            Integer locationId = getInteger(params, "locationId");
+            Boolean highlighted = getBoolean(params, "highlighted");
+            Timestamp startDate = getStartDate(params.get("startDate"));
+            Timestamp endDate = getEndDate(params.get("endDate"));
+            Integer[] speciesIds = getSpeciesIds(params.get("speciesIds"));
+
+            PhotoPredicatesBuilder builder = new PhotoPredicatesBuilder();
+
+            if (studyAreaId != null)
+                builder.with("deployment.studyArea.id", ":", studyAreaId);
+            if (locationId != null)
+                builder.with("deployment.id", ":", locationId);
+            if (speciesIds != null && speciesIds.length > 0)
+                builder.with("species.id", "in", speciesIds);
+            if (highlighted != null)
+                builder.with("highlight", ":", highlighted);
+            builder.with("imageDate", ">", startDate);
+            builder.with("imageDate", "<", endDate);
+
+            BooleanExpression exp = builder.build();
+            photoRepository.findAll(exp, pageable).forEach(photos::add);
+        }
 
         return photos;
     }
@@ -218,6 +230,14 @@ public class PhotoService {
         return archivedPath;
     }
 
+    public Integer getNewTaggedCount() {
+        return photoRepository.getNewTaggedCount();
+    }
+
+    public Integer getNewHighlightedCount() {
+        return photoRepository.getNewHighlightedCount();
+    }
+
     private Integer[] getSpeciesIds(String speciesIdsStr) {
         String[] speciesIdsStrings = new String[0];
         if (speciesIdsStr != null && !"".equalsIgnoreCase(speciesIdsStr)) {
@@ -253,9 +273,13 @@ public class PhotoService {
         try {
             return df.parse(startDateString.replaceAll("Z$", "+0000"));
         } catch (ParseException e) {
-            LOGGER.error("ParseException occurred converting string to date: " + startDateString, e);
+            LOGGER.warn("ParseException occurred converting string to date: " + startDateString, e);
+            try {
+                return new Date(Long.valueOf(startDateString));
+            } catch (NumberFormatException e1) {
+                return null;
+            }
         }
-        return null;
     }
 
     private Timestamp getEndDate(String endDateStr) {
@@ -277,5 +301,4 @@ public class PhotoService {
     private Boolean getBoolean(Map<String,String> params, String param) {
         return params.get(param) != null ? Boolean.valueOf(params.get(param)) : null;
     }
-
 }

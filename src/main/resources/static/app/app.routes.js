@@ -40,7 +40,10 @@
 	            templateUrl: 'app/viewPhotos/viewPhotos.html',
 	            controller: 'ViewPhotosController',
 	            controllerAs: 'viewPhotosCtrl',
-                params: {"deploymentId":null}
+                params: {
+                    "deploymentId": null,
+                    "cannedQuery": null
+                }
 	        })
 	
 	        .state('idPhotos', {
@@ -102,5 +105,5 @@
 			});
 
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    };
+    }
 }());

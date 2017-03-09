@@ -54,7 +54,33 @@
                 <h3 class="box-title">Search Filters</h3>
               </div>
               <div class="box-body">
-                <div class="row">
+                <div class="row" ng-show="viewPhotosCtrl.cannedQuery === 'newArchivedTagged'">
+                  <!-- small box -->
+                  <div class="small-box bg-aqua">
+                    <div class="inner" style="padding: 35px 10px">
+                      <p>New Archived Tagged Photos<br/></p>
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-tags"></i>
+                    </div>
+                    <a ui-sref="viewPhotos({cannedQuery: null})" class="small-box-footer">New Search <i
+                            class="fa fa-arrow-circle-right"></i></a>
+                  </div>
+                </div>
+                <div class="row" ng-show="viewPhotosCtrl.cannedQuery === 'newArchivedHighlighted'">
+                  <!-- small box -->
+                  <div class="small-box bg-green">
+                    <div class="inner" style="padding: 35px 10px">
+                      <p>New Archived Highlighted Photos<br/></p>
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-star"></i>
+                    </div>
+                    <a ui-sref="viewPhotos({cannedQuery: null})" class="small-box-footer">New Search <i
+                            class="fa fa-arrow-circle-right"></i></a>
+                  </div>
+                </div>
+                <div class="row" ng-hide="viewPhotosCtrl.cannedQuery">
                   <div class="form-group">
                     <label>Study Area</label>
                     <ui-select id="studyAreasSelect" autofocus="false" ng-model="viewPhotosCtrl.selectedStudyArea"
@@ -66,7 +92,7 @@
                     </ui-select>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" ng-hide="viewPhotosCtrl.cannedQuery">
                   <div class="form-group">
                     <label>Deployment Location</label>
                     <ui-select id="deploymentsSelect" autofocus="true" ng-model="viewPhotosCtrl.selectedDeployment"
@@ -81,7 +107,7 @@
                     </ui-select>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" ng-hide="viewPhotosCtrl.cannedQuery">
                   <div class="form-group">
                     <label>Species</label>
                     <ui-select multiple ng-model="viewPhotosCtrl.selectedSpecies" theme="select2" close-on-select="false" style="width: 97%; margin-left:0px">
@@ -96,7 +122,7 @@
                     </ui-select>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" ng-hide="viewPhotosCtrl.cannedQuery">
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Image Start Date</label>
@@ -133,7 +159,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" ng-hide="viewPhotosCtrl.cannedQuery">
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label>Highlight</label>
@@ -148,13 +174,26 @@
                     </button>
                   </div>
                 </div>
-                <div class="row" ng-show="viewPhotosCtrl.selectedPhoto">
+                <div class="row" ng-show="viewPhotosCtrl.selectedPhoto.id">
                   <div class="col-sm-12">
                     <hr/>
                     <h4>Image Data</h4>
+                    <hr/>
                   </div>
                 </div>
-                <div class="row" ng-show="viewPhotosCtrl.selectedPhoto">
+                <div class="row" ng-show="viewPhotosCtrl.selectedPhoto.fileName">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label>File Name</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-9">
+                    <div class="form-group">
+                      {{ viewPhotosCtrl.selectedPhoto.fileName }}
+                    </div>
+                  </div>
+                </div>
+                <div class="row" ng-show="viewPhotosCtrl.selectedPhoto.imageDate">
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label>Image Date</label>

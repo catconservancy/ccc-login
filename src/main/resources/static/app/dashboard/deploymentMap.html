@@ -12,7 +12,8 @@
     <div class="box-body no-padding">
       <div class="row">
         <div class="col-md-9 col-sm-8" style="min-height:350px">
-          <ui-gmap-google-map center="dashboard.map.center" zoom="dashboard.map.zoom" draggable="true" options="options" bounds="dashboard.map.bounds">
+          <ui-gmap-google-map center="dashboard.map.center" zoom="dashboard.map.zoom" draggable="true"
+                              options="dashboard.options" bounds="dashboard.map.bounds">
             <ui-gmap-window
                     show="dashboard.map.window.show"
                     coords="dashboard.map.window.model"
@@ -36,20 +37,20 @@
           <div class="pad box-pane-right bg-green" style="min-height: 280px">
             <div class="description-block margin-bottom">
               <div class="sparkbar pad" data-color="#fff"><canvas width="34" height="30" style="display: inline-block; width: 34px; height: 30px; vertical-align: top;"></canvas></div>
-              <h5 class="description-header">13</h5>
-              <span class="description-text">Species</span>
+              <h5 class="description-header">{{dashboard.counts.detectedSpecies}}</h5>
+              <span class="description-text">Detected Species</span>
             </div>
             <!-- /.description-block -->
             <div class="description-block margin-bottom">
               <div class="sparkbar pad" data-color="#fff"><canvas width="34" height="30" style="display: inline-block; width: 34px; height: 30px; vertical-align: top;"></canvas></div>
-              <h5 class="description-header">22</h5>
-              <span class="description-text">Camera Monitor Logs</span>
+              <h5 class="description-header">{{dashboard.counts.taggedPhotos}}</h5>
+              <span class="description-text">Tagged Photos</span>
             </div>
             <!-- /.description-block -->
             <div class="description-block">
               <div class="sparkbar pad" data-color="#fff"><canvas width="34" height="30" style="display: inline-block; width: 34px; height: 30px; vertical-align: top;"></canvas></div>
-              <h5 class="description-header">4</h5>
-              <span class="description-text">Study Areas</span>
+              <h5 class="description-header">{{dashboard.counts.highlightedPhotos}}</h5>
+              <span class="description-text">Highlighted Photos</span>
             </div>
             <!-- /.description-block -->
           </div>

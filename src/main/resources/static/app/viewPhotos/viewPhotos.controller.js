@@ -49,6 +49,9 @@
                         break;
                     }
                 }
+            } else if ($stateParams.cannedQuery) {
+                vm.cannedQuery = $stateParams.cannedQuery;
+                updateResults();
             }
         });
 
@@ -80,6 +83,7 @@
             queryParams.startDate = vm.selectedImageStartDate;
             queryParams.endDate = vm.selectedImageEndDate;
             queryParams.speciesIds = vm.selectedSpecies ? toIdList(vm.selectedSpecies) : null;
+            queryParams.cannedQuery = vm.cannedQuery ? vm.cannedQuery : null;
 
             PhotosService.query(queryParams,function(data) {
                 if (nextPage) {
@@ -99,12 +103,10 @@
 
         function startDateOpen() {
             vm.startDatePopup.opened = true;
-        };
-
+        }
         function endDateOpen() {
             vm.endDatePopup.opened = true;
-        };
-
+        }
         function selectThumb(index) {
             $timeout(function () {
                 $('#myCarousel').carousel(index);
