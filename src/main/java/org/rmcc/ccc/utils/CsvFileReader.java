@@ -1,6 +1,5 @@
 package org.rmcc.ccc.utils;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class CsvFileReader {
 	
 	public List<BaseModel> readCsvFile(BaseModel model) {
 		
-		Resource resource = resourceLoader.getResource("classpath:/data_load/" + model.getFileName());
+		Resource resource = resourceLoader.getResource("classpath:/data_load/" + model.getDataImportFileName());
 
 		InputStreamReader fileReader = null;
 		

@@ -58,10 +58,10 @@ public class DropboxController extends BaseController {
     public byte[] outputImage(HttpServletResponse response, 
     		@RequestParam(value = "path", defaultValue = "") String path) throws DbxException, IOException, InvalidImageTypeException {
 		InputStream in = dropboxService.getInputStreamByPath(path);
-		if (!isValidMediaType(in)) {
-		    LOGGER.error("File is not a valid image type: " + path);
-			throw new InvalidImageTypeException("File is not a valid image type: " + path);
-		}
+//		if (!isValidMediaType(in)) {
+//		    LOGGER.error("File is not a valid image type: " + path);
+//			throw new InvalidImageTypeException("File is not a valid image type: " + path);
+//		}
 		return IOUtils.toByteArray(in);
     }
 
@@ -70,10 +70,10 @@ public class DropboxController extends BaseController {
     		@RequestParam(value = "path", defaultValue = "") String path) throws DbxException, IOException, InvalidImageTypeException {
 		InputStream in;
         in = dropboxService.getThumbnailInputStreamByPath(path);
-        if (!isValidMediaType(in)) {
-            LOGGER.error("File is not a valid image type: " + path);
-            throw new InvalidImageTypeException("File is not a valid image type: " + path);
-        }
+//        if (!isValidMediaType(in)) {
+//            LOGGER.error("File is not a valid image type: " + path);
+//            throw new InvalidImageTypeException("File is not a valid image type: " + path);
+//        }
         return IOUtils.toByteArray(in);
     }
 

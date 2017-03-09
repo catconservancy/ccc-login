@@ -89,7 +89,7 @@ public class StudyArea implements Serializable, BaseModel {
 
 	@Override
 	@JsonIgnore
-	public String getFileName() {
+	public String getDataImportFileName() {
 		return "StudyAreas_lory.csv";
 	}
 

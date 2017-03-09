@@ -131,7 +131,7 @@ public class DetectionDetail implements Serializable, BaseModel {
 
 	@Override
 	@JsonIgnore
-	public String getFileName() {
+	public String getDataImportFileName() {
 		return "DetectionDetails_lory.csv";
 	}
 

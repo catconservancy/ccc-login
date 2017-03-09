@@ -160,7 +160,7 @@ public class Detection implements Serializable, BaseModel {
 	}
 
 	@Override
-	public String getFileName() {
+	public String getDataImportFileName() {
 		return "Detections.csv";
 	}
 

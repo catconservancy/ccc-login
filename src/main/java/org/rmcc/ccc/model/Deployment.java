@@ -443,7 +443,7 @@ public class Deployment implements Serializable, BaseModel {
 	}
 
 	@Override
-	public String getFileName() {
+	public String getDataImportFileName() {
 		return "Deployments_lory.csv";
 	}
 

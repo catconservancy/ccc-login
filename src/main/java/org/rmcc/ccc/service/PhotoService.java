@@ -89,7 +89,7 @@ public class PhotoService {
 
         if (photo.getDropboxPath() != null) {
             archivedPath = photo.getDropboxPath().toLowerCase().replace(UNCATALOGED_ROOT, ARCHIVED_ROOT + "/archived study area photos");
-            if (photo.getHighlight()) {
+            if (photo.getHighlight() != null && photo.getHighlight()) {
                 archivedPath = archivedPath.replace("/archived study area photos", "/highlight photos");
                 String[] pathElements = archivedPath.split("/");
                 String highlightPath = "";
@@ -165,6 +165,32 @@ public class PhotoService {
 
     private Boolean getBoolean(Map<String,String> params, String param) {
         return params.get(param) != null ? Boolean.valueOf(params.get(param)) : null;
+    }
+
+    public Timestamp getImageDate(InputStream inputStream) {
+        Date imageDate = new Date();
+        try {
+            Metadata metadata = ImageMetadataReader.readMetadata(inputStream);
+            for (Directory directory : metadata.getDirectories()) {
+                for (Tag tag : directory.getTags()) {
+                    String tagStr = tag.toString().toLowerCase();
+                    if (tagStr.indexOf("date") > -1) {
+                        String dateStr = tagStr.substring(tagStr.indexOf("- ") + 2);
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd hh:mm:ss");
+                        try {
+                            return new Timestamp(sdf.parse(dateStr).getTime());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        } catch (ImageProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new Timestamp(imageDate.getTime());
     }
 
 	public static void getFileMetadata(final InputStream file, String fileName) throws ImageProcessingException, IOException {

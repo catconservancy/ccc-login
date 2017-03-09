@@ -138,7 +138,7 @@ public class User implements Serializable, BaseModel {
 
 	@Override
 	@JsonIgnore
-	public String getFileName() {
+	public String getDataImportFileName() {
 		return "User.csv";
 	}
 

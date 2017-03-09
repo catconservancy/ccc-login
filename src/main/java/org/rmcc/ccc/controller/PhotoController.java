@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +89,7 @@ public class PhotoController extends BaseController {
 				Photo photo = optPhoto.isPresent() ? optPhoto.get() : new Photo();
 				photo.setMetadata(metadata);
 				photo.setDropboxPath(metadata.getPathLower());
+				photo.setFileName(metadata.getName());
 				if (!metadata.isDir()) {
 					photo.setDeployment(!getDeploymentsByPath(path).isEmpty() ? getDeploymentsByPath(path).get(0): null);
 					photo = photoRepository.save(photo);
@@ -173,6 +175,14 @@ public class PhotoController extends BaseController {
 				d.getDetectionDetail().addDetection(d);
 			}
 		}
+		if (photo.getHighlight() != null && photo.getHighlight() && photo.getImageDate() == null) {
+			try {
+				InputStream inputStream = dropboxService.getInputStreamByPath(photo.getDropboxPath());
+				photo.setImageDate(photoService.getImageDate(inputStream));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return photoRepository.save(photo);
 	}
 
@@ -191,7 +201,7 @@ public class PhotoController extends BaseController {
 	public Photo archive(@PathVariable Integer photoId, @RequestParam Map<String,String> params) throws DbxException {
 		Photo photo = photoRepository.findOne(photoId);
 		LOGGER.info("archive called for path: " + photo.getDropboxPath());
-		String archivedPath = photoService.convertToArchivedPath(photo);
+		String archivedPath = photoService.convertToArchivedPath(photo) + photo.getFileName();
 		dropboxService.moveFile(photo.getDropboxPath(),archivedPath);
 		photo.setDropboxPath(archivedPath);
 

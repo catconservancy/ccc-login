@@ -113,6 +113,10 @@ public class Photo implements Serializable, BaseModel {
 		this.fileName = fileName;
 	}
 
+	public String getFileName() {
+		return fileName;
+	}
+
 	public String getFilePath() {
 		return this.filePath;
 	}
@@ -213,7 +217,7 @@ public class Photo implements Serializable, BaseModel {
 		return new String[]{"ImageID","ImageDate","FileName","FilePath","Species","DirectionOfTravel","Highlight","DeploymentID"};
 	}
 
-	public String getFileName() {
+	public String getDataImportFileName() {
 		return "Photos.csv";
 	}
 

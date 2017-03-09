@@ -73,7 +73,7 @@ public class LookupOption implements Serializable, BaseModel {
 
 	@Override
 	@JsonIgnore
-	public String getFileName() {
+	public String getDataImportFileName() {
 		return "LookupOptions.csv";
 	}
 
