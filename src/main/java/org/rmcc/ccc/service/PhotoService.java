@@ -156,7 +156,12 @@ public class PhotoService {
         if (photo.getHighlight() != null && photo.getHighlight() && photo.getImageDate() == null) {
             try {
                 InputStream inputStream = dropboxService.getInputStreamByPath(photo.getDropboxPath());
-                photo.setImageDate(imageUtils.getImageDate(inputStream));
+                if (inputStream != null) {
+                    photo.setImageDate(imageUtils.getImageDate(inputStream));
+                } else {
+                    LOGGER.warn("Could not retrieve photo input stream by path" + photo.getDropboxPath());
+                    return null;
+                }
             } catch (Exception e) {
                 LOGGER.error("Error occurred getting image date from input stream.", e);
             }

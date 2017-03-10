@@ -1,7 +1,9 @@
 package org.rmcc.ccc.controller;
 
 
+import org.apache.commons.io.IOUtils;
 import org.rmcc.ccc.annotations.Loggable;
+import org.rmcc.ccc.exception.InvalidImageTypeException;
 import org.rmcc.ccc.model.ErrorInfo;
 import org.rmcc.ccc.validator.ValidationError;
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +47,19 @@ public class BaseController {
     	List<FieldError> fieldErrors = result.getFieldErrors();
     	
     	return processFieldErrors(fieldErrors);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(InvalidImageTypeException.class)
+    @ResponseBody
+    public byte[] handleInvalidImageType(HttpServletRequest req, Exception ex) {
+        try {
+            String invalidImg = ((InvalidImageTypeException)ex).isThumb() ? "/static/img/invalidThumbImage.png" : "/static/img/invalidImage.png";
+            return IOUtils.toByteArray(getClass().getResourceAsStream(invalidImg));
+        } catch (IOException e) {
+            LOGGER.error("IOException occurred getting invalidImage.png");
+        }
+        return new byte[]{};
     }
     
     private ValidationError processFieldErrors(List<FieldError> fieldErrors) {

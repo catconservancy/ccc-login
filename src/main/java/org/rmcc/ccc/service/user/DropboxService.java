@@ -106,11 +106,21 @@ public class DropboxService {
 	}
 
     public InputStream getInputStreamByPath(String path) throws DbxException, IOException {
-        return client.files.download(path).getInputStream();
+        try {
+            return client.files.download(path).getInputStream();
+        } catch (Exception e) {
+            LOGGER.warn("Exception occurred getting photo input stream by path: " + path);
+            return null;
+        }
     }
 
     public InputStream getThumbnailInputStreamByPath(String path) throws DbxException, IOException {
-        return client.files.getThumbnail(path).getInputStream();
+        try {
+            return client.files.getThumbnail(path).getInputStream();
+        } catch (Exception e) {
+            LOGGER.warn("Exception occurred getting thumbnail input stream by path: " + path);
+            return null;
+        }
     }
 
     private boolean checkPathError(LookupError le) {
@@ -127,7 +137,7 @@ public class DropboxService {
 		client.files.delete(path);
 	}
 
-	public void moveFile(String fromPath, String toPath) throws DbxException {
-		client.files.move(fromPath, toPath);
+	public Metadata moveFile(String fromPath, String toPath) throws DbxException {
+		return client.files.move(fromPath, toPath);
 	}
 }
