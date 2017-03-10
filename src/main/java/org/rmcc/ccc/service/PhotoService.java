@@ -282,7 +282,7 @@ public class PhotoService {
         try {
             return df.parse(startDateString.replaceAll("Z$", "+0000"));
         } catch (ParseException e) {
-            LOGGER.warn("ParseException occurred converting string to date: " + startDateString, e);
+            LOGGER.warn("ParseException occurred converting string to date: " + startDateString);
             try {
                 return new Date(Long.valueOf(startDateString));
             } catch (NumberFormatException e1) {

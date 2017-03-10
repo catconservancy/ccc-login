@@ -91,7 +91,9 @@ public class PhotoController {
 		if (m != null) {
 			LOGGER.info("photo with id: " + photoId + " successfully moved to " + m.getPathLower());
 			photo.setDropboxPath(m.getPathLower());
-		}
+        } else {
+            LOGGER.error("failed to move file from path: " + photo.getDropboxPath() + ", to path: " + archivedPath);
+        }
 
 		return photoRepository.save(photo);
 	}
