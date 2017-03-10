@@ -1,0 +1,1 @@
+web: java -jar -Dspring.profiles.active=heroku -Dserver.port=$PORT target/ccc-login-0.0.1-SNAPSHOT.jar

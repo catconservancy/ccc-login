@@ -1,23 +1,7 @@
 package org.rmcc.ccc;
 
-import org.rmcc.ccc.model.BaseModel;
-import org.rmcc.ccc.model.Deployment;
-import org.rmcc.ccc.model.Detection;
-import org.rmcc.ccc.model.DetectionDetail;
-import org.rmcc.ccc.model.LookupOption;
-import org.rmcc.ccc.model.Photo;
-import org.rmcc.ccc.model.Role;
-import org.rmcc.ccc.model.Species;
-import org.rmcc.ccc.model.StudyArea;
-import org.rmcc.ccc.model.User;
-import org.rmcc.ccc.model.UserCreateForm;
-import org.rmcc.ccc.repository.DeploymentRepository;
-import org.rmcc.ccc.repository.DetectionDetailRepository;
-import org.rmcc.ccc.repository.DetectionRepository;
-import org.rmcc.ccc.repository.LookupOptionRepository;
-import org.rmcc.ccc.repository.PhotoRepository;
-import org.rmcc.ccc.repository.SpeciesRepository;
-import org.rmcc.ccc.repository.StudyAreaRepository;
+import org.rmcc.ccc.model.*;
+import org.rmcc.ccc.repository.*;
 import org.rmcc.ccc.service.user.UserService;
 import org.rmcc.ccc.utils.CsvFileReader;
 import org.slf4j.Logger;
@@ -31,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Profile({"development"})
+@Profile({"development", "heroku"})
 public class ApplicationStartup implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationStartup.class);

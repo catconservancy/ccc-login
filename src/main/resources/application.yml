@@ -65,6 +65,21 @@ spring:
     driverClassName: org.postgresql.Driver
 ---
 spring:
+  profiles: heroku
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    platform: postgres
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  database:
+    driverClassName: org.postgresql.Driver
+---
+spring:
   profiles: production
   jpa:
     database: POSTGRESQL

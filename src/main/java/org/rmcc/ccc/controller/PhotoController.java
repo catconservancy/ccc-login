@@ -1,6 +1,7 @@
 package org.rmcc.ccc.controller;
 
 import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.files.Metadata;
 import org.rmcc.ccc.model.Photo;
 import org.rmcc.ccc.repository.PhotoRepository;
 import org.rmcc.ccc.service.PhotoService;
@@ -85,9 +86,12 @@ public class PhotoController extends BaseController {
 	public Photo archive(@PathVariable Integer photoId, @RequestParam Map<String,String> params) throws DbxException {
 		Photo photo = photoRepository.findOne(photoId);
 		LOGGER.info("archive called for path: " + photo.getDropboxPath());
-		String archivedPath = photoService.convertToArchivedPath(photo) + photo.getFileName();
-		dropboxService.moveFile(photo.getDropboxPath(),archivedPath);
-		photo.setDropboxPath(archivedPath);
+		String archivedPath = photoService.convertToArchivedPath(photo);
+		Metadata m = dropboxService.moveFile(photo.getDropboxPath(),archivedPath);
+		if (m != null) {
+			LOGGER.info("photo with id: " + photoId + " successfully moved to " + m.getPathLower());
+			photo.setDropboxPath(m.getPathLower());
+		}
 
 		return photoRepository.save(photo);
 	}
