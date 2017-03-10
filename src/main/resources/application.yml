@@ -25,7 +25,8 @@ security:
 #    password: password
     
 logging:
-  level: 
+  level:
+    org.rmcc.ccc: DEBUG
     org.springframework.security: INFO
     org.springframework.boot.autoconfigure: DEBUG
     org.springframework.boot.actuate.audit.listener.AuditListener: DEBUG

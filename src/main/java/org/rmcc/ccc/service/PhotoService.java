@@ -108,7 +108,7 @@ public class PhotoService {
     }
 
     public List<Photo> getDropboxPhotos(String path) throws InvalidPathException, IOException, DbxException {
-
+        LOGGER.debug("Called getDropboxPhotos for path: " + path);
         List<Photo> photos = new ArrayList<>();
 
         List<com.dropbox.core.v2.files.Metadata> dropboxMetadata;
@@ -165,16 +165,20 @@ public class PhotoService {
     }
 
     private boolean isValidPath(String path) {
+        LOGGER.debug("checking isValidPath for: " + path);
         String pathSubstr = path.substring(path.indexOf(UNCATALOGED_ROOT) + UNCATALOGED_ROOT.length() + 1);
         String[] pathElements = pathSubstr.split("/");
         boolean isValid = pathElements.length > 2;
         if (getStudyAreaByPath(path).size() > 0) {
+            LOGGER.debug("has study area");
             isValid = true;
         } else {
             if (getDeploymentsByPath(path).size() > 0) {
+                LOGGER.debug("has deployments");
                 isValid = true;
             }
         }
+        LOGGER.debug("isValidPath: " + isValid + ", for path: " + path);
         return isValid;
     }
 
