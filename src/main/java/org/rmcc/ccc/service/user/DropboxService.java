@@ -3,7 +3,14 @@ package org.rmcc.ccc.service.user;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.*;
+import com.dropbox.core.v2.files.DeletedMetadata;
+import com.dropbox.core.v2.files.FolderMetadata;
+import com.dropbox.core.v2.files.ListFolderContinueErrorException;
+import com.dropbox.core.v2.files.ListFolderErrorException;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.LookupError;
+import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.files.RelocationErrorException;
 import com.dropbox.core.v2.users.FullAccount;
 import org.rmcc.ccc.model.CccMetadata;
 import org.slf4j.Logger;
@@ -132,6 +139,11 @@ static final String ACCESS_TOKEN = "8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5Ehb
 	}
 
 	public Metadata moveFile(String fromPath, String toPath) throws DbxException {
-		return client.files.move(fromPath, toPath);
-	}
+        try {
+            return client.files.move(fromPath, toPath);
+        } catch (RelocationErrorException e) {
+            LOGGER.error("failed to move file from path: " + fromPath + ", to path: " + toPath);
+            return null;
+        }
+    }
 }

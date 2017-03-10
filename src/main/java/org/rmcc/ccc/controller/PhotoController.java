@@ -87,7 +87,8 @@ public class PhotoController {
 		Photo photo = photoRepository.findOne(photoId);
 		LOGGER.info("archive called for path: " + photo.getDropboxPath());
 		String archivedPath = photoService.convertToArchivedPath(photo);
-		Metadata m = dropboxService.moveFile(photo.getDropboxPath(),archivedPath);
+        LOGGER.debug("attempting to move file from path: " + photo.getDropboxPath() + ", to path: " + archivedPath);
+        Metadata m = dropboxService.moveFile(photo.getDropboxPath(),archivedPath);
 		if (m != null) {
 			LOGGER.info("photo with id: " + photoId + " successfully moved to " + m.getPathLower());
 			photo.setDropboxPath(m.getPathLower());
