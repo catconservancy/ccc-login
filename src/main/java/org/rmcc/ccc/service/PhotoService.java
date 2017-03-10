@@ -233,7 +233,7 @@ public class PhotoService {
                 cal.setTimeInMillis(timestamp);
                 int imageYear = cal.get(Calendar.YEAR);
 
-                archivedPath = highlightPath + imageYear + "/";
+                archivedPath = highlightPath + imageYear + "/" + photo.getFileName();
             }
         }
         return archivedPath;
