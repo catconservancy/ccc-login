@@ -3,7 +3,6 @@ package org.rmcc.ccc.controller;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.files.Metadata;
 import org.apache.commons.io.IOUtils;
-import org.apache.tika.Tika;
 import org.rmcc.ccc.exception.InvalidImageTypeException;
 import org.rmcc.ccc.service.user.DropboxService;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
