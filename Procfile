@@ -1,1 +1,1 @@
-web: java -jar -Dspring.profiles.active=development target/ccc-login-0.0.1-SNAPSHOT.jar
+web: java -jar -Dspring.profiles.active=heroku target/ccc-login-0.0.1-SNAPSHOT.jar
