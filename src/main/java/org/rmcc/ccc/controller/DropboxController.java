@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.rmcc.ccc.controller.PhotoController.UNCATALOGED_ROOT;
 
 @RestController
-@RequestMapping("/api/dropbox")
+@RequestMapping("/api/dpbx")
 public class DropboxController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CurrentUserControllerAdvice.class);

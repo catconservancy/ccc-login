@@ -45,7 +45,8 @@
 	                	ng-class="{'selected': photo.selected, 'tagged' : photo.detections[0].hasOwnProperty('id')}"
 	                	style="position:relative">
 	                  <a id="carousel-selector-{{$index}}" ng-click="idPhotosCtrl.selectThumb($index)">
-	                    <img src="http://localhost:8080/ccc/api/dropbox/thumb?path={{photo.metadata.pathLower}}" class="img-responsive">
+                          <img src="http://localhost:8080/ccc/api/dpbx/thumb?path={{photo.metadata.pathLower}}"
+                               class="img-responsive">
 	                  </a>
 	                  <i class="fa fa-tag" 
 	                  	 style="position:absolute; right: 5px; bottom:5px; color:#00a65a; font-size:1.5em"
@@ -175,7 +176,8 @@
 		                           ng-class="idPhotosCtrl.thumbClass(photo)" 
 		                           class="item" 
 		                           data-slide-number="{{$index}}">
-		                        <img src="http://localhost:8080/ccc/api/dropbox/image?path={{photo.metadata.pathLower}}" class="img-responsive">
+                                  <img src="http://localhost:8080/ccc/api/dpbx/image?path={{photo.metadata.pathLower}}"
+                                       class="img-responsive">
 		                        <h2>
 		                        	<span ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections">
 		                        		{{detection.species.commonName}} <i class="small" style="color:white">({{detection.species.latinName}})</i> - {{detection.detectionDetail.detailText}} &nbsp;&nbsp;<br/>

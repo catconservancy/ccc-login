@@ -5,7 +5,7 @@
     Dropbox.$inject = ['$resource'];
 
     function Dropbox($resource) {
-        return $resource('/ccc/api/dropbox/:id', { id: '@_id' }, {
+        return $resource('/ccc/api/dpbx/:id', {id: '@_id'}, {
         	update: {
         		method: 'PUT'
         	},
