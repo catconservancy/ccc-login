@@ -142,7 +142,7 @@ static final String ACCESS_TOKEN = "8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5Ehb
         try {
             return client.files.move(fromPath, toPath);
         } catch (RelocationErrorException e) {
-            LOGGER.error("failed to move file from path: " + fromPath + ", to path: " + toPath);
+            LOGGER.error("failed to move file from path: " + fromPath + ", to path: " + toPath, e);
             return null;
         }
     }
