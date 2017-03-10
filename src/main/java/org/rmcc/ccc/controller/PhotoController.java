@@ -24,9 +24,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/photos")
-public class PhotoController extends BaseController {
-	
-	public static final String UNCATALOGED_ROOT = "/ccc camera study project/uncataloged camera study area photos";
+public class PhotoController {
+
+    public static final String UNCATALOGED_ROOT = "/ccc camera study project/uncataloged camera study area photos";
 	public static final String ARCHIVED_ROOT = "/ccc camera study project/archived photos";
     private static final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
     private PhotoRepository photoRepository;
