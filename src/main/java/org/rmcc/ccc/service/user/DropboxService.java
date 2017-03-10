@@ -3,13 +3,7 @@ package org.rmcc.ccc.service.user;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.DeletedMetadata;
-import com.dropbox.core.v2.files.FolderMetadata;
-import com.dropbox.core.v2.files.ListFolderContinueErrorException;
-import com.dropbox.core.v2.files.ListFolderErrorException;
-import com.dropbox.core.v2.files.ListFolderResult;
-import com.dropbox.core.v2.files.LookupError;
-import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.files.*;
 import com.dropbox.core.v2.users.FullAccount;
 import org.rmcc.ccc.model.CccMetadata;
 import org.slf4j.Logger;
@@ -28,8 +22,8 @@ public class DropboxService {
 	
 //	@Value("${ccc.dropbox.accessToken}")
 //    private String accessToken;
-//	static final String ACCESS_TOKEN = "8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5EhbWhDw5jA83Yw3RKkjCz0D"; //mine
-	static final String ACCESS_TOKEN = "0zSFsnWoJOUAAAAAAAEafHy4-QOqabrvGxliLU3rkk1XAu0GkpdWfLwzciXM_f6B"; //catconservancy
+static final String ACCESS_TOKEN = "8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5EhbWhDw5jA83Yw3RKkjCz0D"; //mine
+    //	static final String ACCESS_TOKEN = "0zSFsnWoJOUAAAAAAAEafHy4-QOqabrvGxliLU3rkk1XAu0GkpdWfLwzciXM_f6B"; //catconservancy
     private static final Logger LOGGER = LoggerFactory.getLogger(DropboxService.class);
     private DbxRequestConfig config;
     private DbxClientV2 client;

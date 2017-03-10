@@ -69,7 +69,7 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
   datasource:
     platform: postgres
     url: ${SPRING_DATASOURCE_URL}
