@@ -1,6 +1,10 @@
 package org.rmcc.ccc.model;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.csv.CSVRecord;
+import org.hibernate.validator.constraints.Email;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,13 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.apache.commons.csv.CSVRecord;
-import org.hibernate.validator.constraints.Email;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "registered_users")
@@ -67,8 +65,8 @@ public class User implements Serializable, BaseModel {
 		this.fullName = fullName;
 		this.email = email;
 		this.passwordHash = password;
-		this.enabled = active.equalsIgnoreCase("Y") ? true : false;
-	}
+        this.enabled = active.equalsIgnoreCase("Y");
+    }
 
 	public Long getId() {
 		return id;
@@ -139,8 +137,8 @@ public class User implements Serializable, BaseModel {
 	@Override
 	@JsonIgnore
 	public String getDataImportFileName() {
-		return "User.csv";
-	}
+        return "User";
+    }
 
 	@Override
 	@JsonIgnore
