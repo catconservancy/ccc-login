@@ -449,7 +449,7 @@ public class Deployment implements Serializable, BaseModel {
 
 	@Override
 	public String getDataImportFileName() {
-		return "Deployments_lory.csv";
+		return "Deployments";
 	}
 
 	@Override

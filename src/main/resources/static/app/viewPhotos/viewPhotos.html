@@ -18,9 +18,15 @@
       <div class="box" ng-class="{'box-fullscreen' : viewPhotosCtrl.fullscreen}">
         <div class="box-header with-border">
           <h3 class="box-title">View Photos</h3>
-          <div class="box-tools pull-right">
+          <div class="pull-right">
             <button type="button" class="btn btn-box-tool pull-right" ng-click="viewPhotosCtrl.fullscreen = !viewPhotosCtrl.fullscreen" title="Expand">
               <i class="glyphicon" ng-class="viewPhotosCtrl.fullscreen ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></i>
+            </button>
+            <button class="btn btn-danger pull-right" style="margin-left:10px;" mwl-confirm data-title="Confirm"
+                    message="Are you <b>sure</b> you want to send all archived photos to the uncatalogged directory?"
+                    placement="top" on-confirm="viewPhotosCtrl.deleteSelectedPhoto()" confirm-button-type="danger"
+                    cancel-button-type="default">
+              <i class="fa fa-dropbox"></i> Reset To Uncataloged
             </button>
           </div>
         </div>

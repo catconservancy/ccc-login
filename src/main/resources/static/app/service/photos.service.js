@@ -27,14 +27,21 @@
                     path: '@path'
         		}
         	},
-        	
-        	archive: {
-        		method: 'POST', 
-        		params: {
-        			id: '@id',
-        			index: '@index'
-        		}
-        	}
+
+            archive: {
+                method: 'POST',
+                params: {
+                    id: '@id',
+                    index: '@index'
+                }
+            },
+
+            reset: {
+                method: 'POST',
+                params: {
+                    id: 'reset'
+                }
+            }
         });
     }
 }());

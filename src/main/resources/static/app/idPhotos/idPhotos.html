@@ -19,7 +19,13 @@
         <div class="box-header with-border">
           	<h3 class="box-title">ID Photos</h3>
 	        <div class="pull-right">
-				<button class="btn btn-danger pull-right" mwl-confirm data-title="Confirm" message="Are you <b>sure</b> you want to delete the selected photo?"
+				<button type="button" class="btn btn-box-tool pull-right" style="margin-left:50px;"
+						ng-click="idPhotosCtrl.fullscreen = !idPhotosCtrl.fullscreen" title="Expand">
+					<i class="glyphicon"
+					   ng-class="idPhotosCtrl.fullscreen ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></i>
+				</button>
+				<button class="btn btn-danger pull-right" style="margin-left:10px;" mwl-confirm data-title="Confirm"
+						message="Are you <b>sure</b> you want to delete the selected photo?"
 						placement="top" on-confirm="idPhotosCtrl.deleteSelectedPhoto()" confirm-button-type="danger"
 						cancel-button-type="default"
 						ng-show="idPhotosCtrl.photos.length">
@@ -30,9 +36,6 @@
 	        			ng-show="idPhotosCtrl.photos.length">
 	        		<i class="fa fa-archive"></i> Archive Tagged
 	        	</button>
-	            <button type="button" class="btn btn-box-tool pull-right" ng-click="idPhotosCtrl.fullscreen = !idPhotosCtrl.fullscreen" title="Expand">
-					<i class="glyphicon" ng-class="idPhotosCtrl.fullscreen ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></i>
-				</button>	
           	</div>	
         </div>
         <div class="box-body">

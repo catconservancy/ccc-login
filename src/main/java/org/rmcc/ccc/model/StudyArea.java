@@ -1,7 +1,7 @@
 package org.rmcc.ccc.model;
 
-import java.io.Serializable;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.csv.CSVRecord;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,9 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.commons.csv.CSVRecord;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Entity implementation class for Entity: StudyArea
@@ -90,8 +89,8 @@ public class StudyArea implements Serializable, BaseModel {
 	@Override
 	@JsonIgnore
 	public String getDataImportFileName() {
-		return "StudyAreas_lory.csv";
-	}
+        return "StudyAreas";
+    }
 
 	@Override
 	@JsonIgnore

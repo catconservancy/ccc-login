@@ -9,6 +9,7 @@ import org.rmcc.ccc.service.user.DropboxService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,6 +31,8 @@ public class PhotoController {
     public static final String UNCATALOGED_ROOT = "/ccc camera study project/uncataloged camera study area photos";
 	public static final String ARCHIVED_ROOT = "/ccc camera study project/archived photos";
     private static final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
+    @Autowired
+    Environment env;
     private PhotoRepository photoRepository;
     private PhotoService photoService;
 	private DropboxService dropboxService;
@@ -98,4 +102,30 @@ public class PhotoController {
 
 		return photoRepository.save(photo);
 	}
+
+    @RequestMapping(value = "/reset", method = RequestMethod.POST)
+    public void resetDropboxPath() throws Exception {
+
+        String activeProfile = env.getActiveProfiles() != null && env.getActiveProfiles().length > 0 ? env.getActiveProfiles()[0] : null;
+        if (activeProfile.equalsIgnoreCase("heroku")) {
+            List<Photo> photos = new ArrayList<>();
+            photoRepository.findAll().forEach(photo -> {
+                Metadata m = null;
+                try {
+                    m = dropboxService.moveFile(photo.getDropboxPath(), photo.getOrigDropboxPath());
+                } catch (DbxException e) {
+                    LOGGER.error("Error occurred moving photo from: " + photo.getDropboxPath() + " to: " + photo.getOrigDropboxPath());
+                }
+                if (m != null) {
+                    LOGGER.info("photo with id: " + photo.getId() + " successfully moved to " + m.getPathLower());
+                    photo.setDropboxPath(m.getPathLower());
+                    photoRepository.save(photo);
+                } else {
+                    LOGGER.error("failed to move file from path: " + photo.getDropboxPath() + ", to path: " + photo.getOrigDropboxPath());
+                }
+            });
+        } else {
+            throw new Exception("You are not authorized to reset dropbox path");
+        }
+    }
 }

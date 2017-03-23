@@ -37,6 +37,7 @@
         vm.updateResults = updateResults;
         vm.startDateOpen = startDateOpen;
         vm.endDateOpen = endDateOpen;
+        vm.resetPhotos = resetPhotos;
 
         Deployments.query(function(data) {
             SpinnerService.hide('viewPhotosSpinner');
@@ -159,6 +160,10 @@
                 ids.push(list[i].id);
             }
             return ids.join(",");
+        }
+
+        function resetPhotos() {
+            PhotosService.resetPhotos();
         }
     }
 }());

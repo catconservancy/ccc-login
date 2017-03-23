@@ -127,6 +127,7 @@ public class PhotoService {
             Photo photo = optPhoto.isPresent() ? optPhoto.get() : new Photo();
             photo.setMetadata(metadata);
             photo.setDropboxPath(metadata.getPathLower());
+            photo.setOrigDropboxPath(metadata.getPathLower());
             photo.setFileName(metadata.getName());
             if (!metadata.isDir()) {
                 photo.setDeployment(!getDeploymentsByPath(path).isEmpty() ? getDeploymentsByPath(path).get(0) : null);

@@ -58,6 +58,9 @@ public class Photo implements Serializable, BaseModel {
 	@Column(name = "dropbox_path", length = 4000)
 	private String dropboxPath;
 
+	@Column(name = "orig_dropbox_path", length = 4000)
+	private String origDropboxPath;
+
 	@Column(name = "highlight")
 	private Boolean highlight;
 
@@ -90,6 +93,7 @@ public class Photo implements Serializable, BaseModel {
 		this.imageDate = imageDate != null && !"".equalsIgnoreCase(imageDate) ? convertToTimestamp(imageDate) : null;
 		this.fileName = fileName;
 		this.filePath = filePath;
+		this.origDropboxPath = convertToDropboxPath(filePath) + fileName;
 		this.dropboxPath = convertToDropboxPath(filePath) + fileName;
 		this.directionOfTravel = directionOfTravel;
 		this.highlight = highlight != null && !"".equalsIgnoreCase(highlight) ? Boolean.valueOf(highlight) : null;
@@ -149,6 +153,14 @@ public class Photo implements Serializable, BaseModel {
 
 	public void setDropboxPath(String dropboxPath) {
 		this.dropboxPath = dropboxPath;
+	}
+
+	public String getOrigDropboxPath() {
+		return origDropboxPath;
+	}
+
+	public void setOrigDropboxPath(String origDropboxPath) {
+		this.origDropboxPath = origDropboxPath;
 	}
 
 	public Boolean getHighlight() {
