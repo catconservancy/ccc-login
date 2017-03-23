@@ -36,7 +36,7 @@
                 }
             },
 
-            reset: {
+            resetPhotos: {
                 method: 'POST',
                 params: {
                     id: 'reset'
