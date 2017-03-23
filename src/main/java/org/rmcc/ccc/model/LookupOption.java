@@ -1,6 +1,7 @@
 package org.rmcc.ccc.model;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.csv.CSVRecord;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,10 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import org.apache.commons.csv.CSVRecord;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 
 @Entity
 @Table(name="lookup_options")
@@ -74,8 +72,8 @@ public class LookupOption implements Serializable, BaseModel {
 	@Override
 	@JsonIgnore
 	public String getDataImportFileName() {
-		return "LookupOptions.csv";
-	}
+        return "LookupOptions";
+    }
 
 	@Override
 	@JsonIgnore
