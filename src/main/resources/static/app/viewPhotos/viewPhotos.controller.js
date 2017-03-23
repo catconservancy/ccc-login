@@ -163,7 +163,9 @@
         }
 
         function resetPhotos() {
-            PhotosService.resetPhotos();
+            PhotosService.resetPhotos(function () {
+                updateResults();
+            });
         }
     }
 }());
