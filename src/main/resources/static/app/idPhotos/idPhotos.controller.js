@@ -108,7 +108,9 @@
                 for (var i = indexesToRemove.length - 1; i >= 0; i--) {
                     vm.photos.splice(indexesToRemove[i], 1);
                 }
-                vm.selectedPhoto = vm.photos ? vm.photos[0] : {};
+                if (vm.photos && vm.photos.length) {
+                    setSelectedPhotoByIndex(0);
+                }
         	});
         }
 
