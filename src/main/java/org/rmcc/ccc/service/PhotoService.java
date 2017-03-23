@@ -154,7 +154,7 @@ public class PhotoService {
                 d.getDetectionDetail().addDetection(d);
             }
         }
-        if (photo.getHighlight() != null && photo.getHighlight() && photo.getImageDate() == null) {
+        if (photo.getImageDate() == null) {
             try {
                 InputStream inputStream = dropboxService.getInputStreamByPath(photo.getDropboxPath());
                 if (inputStream != null) {
