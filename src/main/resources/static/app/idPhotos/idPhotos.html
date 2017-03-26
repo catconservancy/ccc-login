@@ -66,12 +66,11 @@
 			<div class="col-md-2">
 				<div class="box box-info">
 					<div class="box-header">
-						<h3 class="box-title">Search Filters</h3>
+						<h3 class="box-title">Location Folders</h3>
 					</div>
 					<div class="box-body">
-						<label>Location Folders</label>
 						<spinner name="folderSpinner" show="true" img-src="/ccc/img/loading.gif"></spinner>
-						<div style="max-height:250px; overflow-y:scroll">
+						<div style="max-height:250px; overflow-y:auto; padding-left:10px;">
 							<div ng-repeat="folder in idPhotosCtrl.treeData"
 								 style="padding-left: 5px; padding-bottom:2px">
 								<a ng-click="idPhotosCtrl.selectFolder(folder)">
@@ -79,6 +78,12 @@
 								</a>
 							</div>
 						</div>
+						<span ng-show="idPhotosCtrl.breadCrumbList.length > 0 && idPhotosCtrl.treeData.length === 0">
+							<a ng-click="idPhotosCtrl.selectFolder(idPhotosCtrl.breadCrumbList[idPhotosCtrl.breadCrumbList.length -2])">
+								<i class="fa fa-folder-open"></i>
+								Parent Folder
+							</a>
+						</span>
 					</div>
 					<!-- end loading -->
 				</div>
@@ -111,7 +116,12 @@
 				  	<div class="alert alert-warning alert-dismissible">
 		                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 		                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
-		                No photos found for the selected Search Filters.
+						<span ng-hide="idPhotosCtrl.selectedFolder.path">
+							Start by selecting a Location Folder.
+						</span>
+						<span ng-show="idPhotosCtrl.selectedFolder.path">
+							No photos found for the selected Location Folder.
+						</span>
 		            </div>
 				  </div>
 				  <div ng-show="idPhotosCtrl.photoQueryError">
@@ -132,11 +142,25 @@
 									</ui-select>
 								</div>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-1">
 								<div class="form-group">
 									<button class="btn btn-primary"
 											style="margin: 25px -20px 0px;"
-											ng-click="idPhotosCtrl.saveSelectedStudyArea()"><i class="fa fa-save"></i></button>
+											ng-click="idPhotosCtrl.saveSelectedStudyArea()"><i class="fa fa-save"></i>
+									</button>
+								</div>
+							</div>
+							<div class="col-sm-1">
+								<div class="form-group">
+									<label>OR</label>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-group">
+									<button class="btn btn-primary"
+											style="margin: 25px -20px 0px;"
+											ui-sref="studyAreas">Add New Study Area
+									</button>
 								</div>
 							</div>
 						</div>
@@ -204,9 +228,10 @@
             <div class="col-md-3">
            	  <div class="box box-info">
 	            <div class="box-header">
-	              <h3 class="box-title">Detections</h3>
+					<h3 class="box-title">Detections</h3>
 	            </div>
 	            <div class="box-body">
+					<spinner name="savingSpinner" show="true" img-src="/ccc/img/loading_sm.gif">Saving...</spinner>
 	            	<!-- species search bar -->
 		            <div class="row" ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections" style="margin-top:5px">
 		            	
@@ -253,7 +278,9 @@
 			            </div>
 		            	<div class="row" style="padding: 5px 7px">
 			              <div class="col-md-12" style="margin-top:-5px">
-			              	<div class="pull-right">			              		
+							  <div class="pull-right">
+								  <span ng-show="detection.id && detection.id > 0"><i
+										  class="fa fa-tag"></i> Saved</span>
 								<button class="btn btn-primary" ng-click="idPhotosCtrl.saveSelectedPhoto()"><i class="fa fa-save"></i></button>
 								<button class="btn btn-danger" mwl-confirm data-title="Confirm" message="Are you <b>sure</b> you want to delete this detection?"
 								        placement="top" on-confirm="idPhotosCtrl.removeDetection(detection)" confirm-button-type="danger"

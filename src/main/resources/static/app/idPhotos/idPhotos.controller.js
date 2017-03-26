@@ -55,6 +55,7 @@
         	}
 			vm.treeDataLoaded = vm.treeData && vm.treeData.length > 0 ? {} : {notFound: true};
             SpinnerService.hide('folderSpinner');
+            SpinnerService.hide('savingSpinner');
         	$log.debug("vm.fileList", vm.fileList);
 
         	$('#filterDropdown .dropdown-menu').on({
@@ -64,7 +65,6 @@
         	});
         	initializeCarousel();
         });
-
 
         Deployments.query(function(data) {
             vm.deployments = data;
@@ -108,7 +108,7 @@
                 for (var i = indexesToRemove.length - 1; i >= 0; i--) {
                     vm.photos.splice(indexesToRemove[i], 1);
                 }
-                vm.selectedPhoto = {};
+                vm.selectedPhoto = vm.photos.length ? vm.photos[0] : {};
         	});
         }
 
@@ -146,8 +146,9 @@
             	if (vm.photos.length) {
 	                vm.photos[0].selected = true;
 	                vm.selectedPhoto = vm.photos[0];
-	                if (!vm.selectedPhoto.detections)
-	                	vm.selectedPhoto.detections = [{}];
+                    if (!vm.selectedPhoto.detections) {
+                        vm.selectedPhoto.detections = [{}];
+                    }
             	}
     			vm.treeDataLoaded = vm.treeData && vm.treeData.length > 0 ? {} : {notFound: true};
                 SpinnerService.hide('folderSpinner');
@@ -214,10 +215,8 @@
         }
         
         function saveSelectedPhoto() {
-//        	PhotosService.save(vm.selectedPhoto, function(data) {
-//        		vm.selectedPhoto = data;
-//        	});
         	$log.debug("called saveSelectedPhoto");
+            SpinnerService.show('savingSpinner');
         	if (!vm.selectedPhoto.id) {
                 return PhotosService.save(vm.selectedPhoto, function(data) {
                     $log.debug('save success', data);
@@ -236,6 +235,7 @@
         			vm.entry.highlight = vm.selectedPhoto.highlight;
         			vm.entry.$update(function(photo) {
         				$log.debug('update success');
+                        SpinnerService.hide('savingSpinner');
         				PhotosService.get({id:photo.id}, function(data) {
         					vm.selectedPhoto = data;
         					var photoIndex = -1;

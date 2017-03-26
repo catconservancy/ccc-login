@@ -12,12 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,21 +102,23 @@ public class PhotoController {
     public void resetDropboxPath() throws Exception {
 
         String activeProfile = env.getActiveProfiles() != null && env.getActiveProfiles().length > 0 ? env.getActiveProfiles()[0] : null;
-        if (activeProfile.equalsIgnoreCase("heroku")) {
+        if (activeProfile.equalsIgnoreCase("heroku") || activeProfile.equalsIgnoreCase("development")) {
             List<Photo> photos = new ArrayList<>();
             photoRepository.findAll().forEach(photo -> {
                 Metadata m = null;
+                String toPath = photo.getOrigDropboxPath();
                 try {
-                    m = dropboxService.moveFile(photo.getDropboxPath(), photo.getOrigDropboxPath());
+                    toPath = toPath.substring(0, toPath.indexOf(photo.getFileName().toLowerCase()));
+                    m = dropboxService.moveFile(photo.getDropboxPath(), toPath);
                 } catch (DbxException e) {
-                    LOGGER.error("Error occurred moving photo from: " + photo.getDropboxPath() + " to: " + photo.getOrigDropboxPath());
+                    LOGGER.error("Error occurred moving photo from: " + photo.getDropboxPath() + " to: " + toPath);
                 }
                 if (m != null) {
                     LOGGER.info("photo with id: " + photo.getId() + " successfully moved to " + m.getPathLower());
                     photo.setDropboxPath(m.getPathLower());
                     photoRepository.save(photo);
                 } else {
-                    LOGGER.error("failed to move file from path: " + photo.getDropboxPath() + ", to path: " + photo.getOrigDropboxPath());
+                    LOGGER.error("failed to move file from path: " + photo.getDropboxPath() + ", to path: " + toPath);
                 }
             });
         } else {

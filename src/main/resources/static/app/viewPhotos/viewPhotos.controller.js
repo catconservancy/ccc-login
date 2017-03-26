@@ -2,10 +2,10 @@
     angular.module('CCC')
         .controller('ViewPhotosController', ViewPhotosController);
 
-    ViewPhotosController.$inject = ['$scope','$timeout','$stateParams',
+    ViewPhotosController.$inject = ['$scope', '$timeout', '$stateParams', '$filter',
         'PhotosService','Deployments','StudyAreas','Species','SpinnerService'];
 
-    function ViewPhotosController($scope, $timeout, $stateParams, 
+    function ViewPhotosController($scope, $timeout, $stateParams, $filter,
                                   PhotosService, Deployments, StudyAreas, Species, SpinnerService) {
         var vm = this;
         vm.selectedPhoto = {};
@@ -15,6 +15,7 @@
         vm.treeData = [];
         vm.studyAreas = [];
         vm.deployments = [];
+        vm.allDeployments = [];
         vm.currPage = 0;
         vm.photoQueryError = null;
         vm.fullscreen = false;
@@ -38,9 +39,22 @@
         vm.startDateOpen = startDateOpen;
         vm.endDateOpen = endDateOpen;
         vm.resetPhotos = resetPhotos;
+        vm.onSelectedStudyArea = onSelectedStudyArea;
+
+        function onSelectedStudyArea(studyArea) {
+            var filteredDeployments = [];
+            vm.deployments = angular.copy(vm.allDeployments);
+            $filter('filter')(vm.deployments, function (d) {
+                if (studyArea.id === d.studyArea.id) {
+                    filteredDeployments.push(d);
+                }
+            });
+            vm.deployments = angular.copy(filteredDeployments);
+        }
 
         Deployments.query(function(data) {
             SpinnerService.hide('viewPhotosSpinner');
+            vm.allDeployments = data;
             vm.deployments = data;
             if ($stateParams.deploymentId) {
                 for (var i = 0; i < data.length; i++) {

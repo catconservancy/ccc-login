@@ -22,7 +22,8 @@
             <button type="button" class="btn btn-box-tool pull-right" ng-click="viewPhotosCtrl.fullscreen = !viewPhotosCtrl.fullscreen" title="Expand">
               <i class="glyphicon" ng-class="viewPhotosCtrl.fullscreen ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></i>
             </button>
-            <button class="btn btn-danger pull-right" style="margin-left:10px;" mwl-confirm data-title="Confirm"
+            <button class="btn btn-danger pull-right" style="margin-left:10px;" mwl-confirm placement="bottom"
+                    data-title="Confirm"
                     message="Are you <b>sure</b> you want to send all archived photos to the uncatalogged directory?"
                     placement="top" on-confirm="viewPhotosCtrl.resetPhotos()" confirm-button-type="danger"
                     cancel-button-type="default">
@@ -91,8 +92,10 @@
                   <div class="form-group">
                     <label>Study Area</label>
                     <ui-select id="studyAreasSelect" autofocus="false" ng-model="viewPhotosCtrl.selectedStudyArea"
-                               theme="bootstrap" style="width: 100%">
-                      <ui-select-match placeholder="Select a Study Area">{{$select.selected.name}}</ui-select-match>
+                               theme="bootstrap" style="width: 100%"
+                               on-select="viewPhotosCtrl.onSelectedStudyArea($item)">
+                      <ui-select-match allow-clear="true" placeholder="Select a Study Area">{{$select.selected.name}}
+                      </ui-select-match>
                       <ui-select-choices repeat="sa in viewPhotosCtrl.studyAreas | propsFilter: {name: $select.search}">
                         <div ng-bind-html="sa.name | highlight: $select.search"></div>
                       </ui-select-choices>
@@ -104,7 +107,9 @@
                     <label>Deployment Location</label>
                     <ui-select id="deploymentsSelect" autofocus="true" ng-model="viewPhotosCtrl.selectedDeployment"
                                theme="bootstrap">
-                      <ui-select-match placeholder="Select one...">{{$select.selected.studyArea.name}}: {{$select.selected.locationID}}</ui-select-match>
+                      <ui-select-match allow-clear="true" placeholder="Select one...">
+                        {{$select.selected.studyArea.name}}: {{$select.selected.locationID}}
+                      </ui-select-match>
                       <ui-select-choices repeat="deployment in viewPhotosCtrl.deployments | propsFilter: {studyAreaName: $select.search, locationID: $select.search}">
                         <div ng-bind-html="deployment.studyArea.name | highlight: $select.search"></div>
                         <small>
