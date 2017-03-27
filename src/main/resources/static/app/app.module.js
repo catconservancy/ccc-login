@@ -31,7 +31,7 @@
     	$log.debug('in run');
 
         $rootScope.isAdmin = false;
-        Users.query({id: 0}, function (user) {
+        Users.get({id: 0}, function (user) {
             $rootScope.isAdmin = user.role === 'ADMIN';
         });
 
