@@ -232,10 +232,11 @@
 	            </div>
 	            <div class="box-body">
 					<spinner name="savingSpinner" show="true" img-src="/ccc/img/loading_sm.gif">Saving...</spinner>
-                    <button class="btn btn-default pull-right" autofocus="true"
+                    <button class="btn btn-default pull-right" style="margin:-10px -10px 10px 0px" tabindex="0"
                             ng-click="idPhotosCtrl.usePreviousDetections()"
-                            ng-show="idPhotosCtrl.previousDetections.length"
+                            ng-show="idPhotosCtrl.previousDetections.length && idPhotosCtrl.previousDetections !== idPhotosCtrl.selectedPhoto.detections"
                             ng-focus="idPhotosCtrl.showPreviousDetections = true"
+                            ng-mouseover="idPhotosCtrl.showPreviousDetections = true"
                             ng-blur="idPhotosCtrl.showPreviousDetections = false">
                         <i class="fa fa-archive"></i> Add Previous Detection(s)
                     </button>
@@ -297,7 +298,8 @@
 			            </div>
 		            </div>
                     <!-- Preview view of last used detections -->
-                    <div class="row" ng-repeat="detection in idPhotosCtrl.previousDetections" style="margin-top:5px"
+                    <div class="row dimmed" ng-repeat="detection in idPhotosCtrl.previousDetections"
+                         style="margin-top:5px"
                          ng-show="idPhotosCtrl.showPreviousDetections">
                         <div class="row" style="padding: 5px 0px">
                             <div class="col-md-3"><label style="margin-left:15px">Species</label></div>
