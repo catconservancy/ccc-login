@@ -25,10 +25,15 @@
 	    });
     }
 
-    run.$inject = ['$rootScope', '$log', '$filter', 'SpinnerService'];
+    run.$inject = ['$rootScope', '$log', '$filter', 'SpinnerService', 'Users'];
 
-    function run($rootScope, $log, $filter, SpinnerService) {
+    function run($rootScope, $log, $filter, SpinnerService, Users) {
     	$log.debug('in run');
+
+        $rootScope.isAdmin = false;
+        Users.query({id: 0}, function (user) {
+            $rootScope.isAdmin = user.role === 'ADMIN';
+        });
 
         $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
             SpinnerService._unregisterAll();
