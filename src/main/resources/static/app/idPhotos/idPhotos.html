@@ -236,8 +236,9 @@
                             ng-click="idPhotosCtrl.usePreviousDetections()"
                             ng-show="idPhotosCtrl.previousDetections.length && idPhotosCtrl.previousDetections !== idPhotosCtrl.selectedPhoto.detections"
                             ng-focus="idPhotosCtrl.showPreviousDetections = true"
+                            ng-blur="idPhotosCtrl.showPreviousDetections = false"
                             ng-mouseover="idPhotosCtrl.showPreviousDetections = true"
-                            ng-blur="idPhotosCtrl.showPreviousDetections = false">
+                            ng-mouseleave="idPhotosCtrl.showPreviousDetections = false">
                         <i class="fa fa-archive"></i> Add Previous Detection(s)
                     </button>
 		            <div class="row" ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections" style="margin-top:5px">
