@@ -40,11 +40,12 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
             <!-- Messages: style can be found in dropdown.less-->
-            <li sec:authorize="hasRole('ROLE_ADMIN')"
-                ng-controller="UserNotificationsController as userCtrl"
+            <sec:authorize access="hasRole('admin')">
+                <li ng-controller="UserNotificationsController as userCtrl"
                 ng-include="'app/users/userNotifications.html'"
                 class="dropdown messages-menu">
             </li>
+            </sec:authorize>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
