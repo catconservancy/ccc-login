@@ -232,10 +232,10 @@
 	            </div>
 	            <div class="box-body">
 					<spinner name="savingSpinner" show="true" img-src="/ccc/img/loading_sm.gif">Saving...</spinner>
-                    <button class="btn btn-default pull-right"
+                    <button class="btn btn-default pull-right" autofocus="true"
                             ng-click="idPhotosCtrl.usePreviousDetections()"
                             ng-show="idPhotosCtrl.previousDetections.length"
-                            ng-focus="idPhotosCtrl.showPreviousDetections"
+                            ng-focus="idPhotosCtrl.showPreviousDetections = true"
                             ng-blur="idPhotosCtrl.showPreviousDetections = false">
                         <i class="fa fa-archive"></i> Add Previous Detection(s)
                     </button>
@@ -302,7 +302,7 @@
                         <div class="row" style="padding: 5px 0px">
                             <div class="col-md-3"><label style="margin-left:15px">Species</label></div>
                             <div class="col-md-9">
-                                <ui-select id="speciesSelect_{{$index}}" autofocus="true" ng-model="detection.species"
+                                <ui-select id="speciesSelect_{{$index}}" ng-model="detection.species"
                                            theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px"
                                            on-select="idPhotosCtrl.onSelectSpeciesCallback($item, $model)">
                                     <ui-select-match placeholder="Select species">{{$select.selected.commonName}} &lt;{{$select.selected.latinName}}&gt;</ui-select-match>
