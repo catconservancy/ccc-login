@@ -40,7 +40,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
             <!-- Messages: style can be found in dropdown.less-->
-            <li sec:authorize="hasRole('ADMIN')"
+            <li sec:authorize="hasRole('ROLE_ADMIN')"
                 ng-controller="UserNotificationsController as userCtrl"
                 ng-include="'app/users/userNotifications.html'"
                 class="dropdown messages-menu">
