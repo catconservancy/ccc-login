@@ -220,6 +220,9 @@
         function usePreviousDetections() {
             if (vm.previousDetections && vm.previousDetections.length > 0) {
                 vm.selectedPhoto.detections = angular.copy(vm.previousDetections);
+                for (var i = 0; i < vm.selectedPhoto.detections.length; i++) {
+                    vm.selectedPhoto.detections[i].id = null;
+                }
                 saveSelectedPhoto();
             }
         }
