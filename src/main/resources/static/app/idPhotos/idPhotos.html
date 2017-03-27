@@ -241,7 +241,8 @@
                             ng-mouseleave="idPhotosCtrl.showPreviousDetections = false">
                         <i class="fa fa-archive"></i> Add Previous Detection(s)
                     </button>
-		            <div class="row" ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections" style="margin-top:5px">
+                    <div class="row" ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections"
+                         style="margin-top:5px" ng-show="!idPhotosCtrl.showPreviousDetections">
 			            <div class="row" style="padding: 5px 0px">
                             <div class="col-md-3"><label style="margin-left:15px">Species</label></div>
 			              <div class="col-md-9">
@@ -302,6 +303,7 @@
                     <div class="row dimmed" ng-repeat="detection in idPhotosCtrl.previousDetections"
                          style="margin-top:5px"
                          ng-show="idPhotosCtrl.showPreviousDetections">
+                        <label>Previous Detections</label>
                         <div class="row" style="padding: 5px 0px">
                             <div class="col-md-3"><label style="margin-left:15px">Species</label></div>
                             <div class="col-md-9">

@@ -204,8 +204,7 @@ a {
 .dimmed {
     position: relative;
     margin-top: 5px;
-    display: block !important;
-    border: dashed rgba(255, 255, 255, 0.3);
+    border: dashed rgba(0, 0, 0, 0.3);
     padding: 10px;
 }
 
