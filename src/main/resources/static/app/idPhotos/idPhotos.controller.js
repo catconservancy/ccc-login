@@ -19,8 +19,10 @@
         vm.treeData = [];
         vm.studyAreas = [];
         vm.deployments = [];
+        vm.previousDetections = [];
         vm.fullscreen = false;
         vm.showFilters = true;
+        vm.showPreviousDetections = false;
         vm.treeDataLoaded = {};
         vm.photoQueryError = null;
         vm.selectedStudyArea = null;
@@ -39,6 +41,7 @@
         vm.archiveTaggedPhotos = archiveTaggedPhotos;
         vm.saveSelectedStudyArea = saveSelectedStudyArea;
         vm.saveSelectedDeployment = saveSelectedDeployment;
+        vm.usePreviousDetections = usePreviousDetections;
 
         PhotosService.query($stateParams.dropboxPath ? {path:$stateParams.dropboxPath} : {},function(data) {
         	for (i = 0; i < data.length; i++) {
@@ -213,11 +216,18 @@
 	            }
         	});
         }
+
+        function usePreviousDetections() {
+            if (vm.previousDetections && vm.previousDetections.length > 0) {
+                vm.selectedPhoto.detections = angular.copy(vm.previousDetections);
+                saveSelectedPhoto();
+            }
+        }
         
         function saveSelectedPhoto() {
         	$log.debug("called saveSelectedPhoto");
             SpinnerService.show('savingSpinner');
-        	if (!vm.selectedPhoto.id) {
+            if (!vm.selectedPhoto.id) {
                 return PhotosService.save(vm.selectedPhoto, function(data) {
                     $log.debug('save success', data);
                     vm.selectedPhoto = data;
@@ -245,6 +255,7 @@
         						}
         					});
         					vm.photos[photoIndex].detections = data.detections; // updated to update flagged value in UI
+                            vm.previousDetections = data.detections;
         				});
         			});
         		});

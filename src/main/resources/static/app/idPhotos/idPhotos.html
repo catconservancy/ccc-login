@@ -232,11 +232,16 @@
 	            </div>
 	            <div class="box-body">
 					<spinner name="savingSpinner" show="true" img-src="/ccc/img/loading_sm.gif">Saving...</spinner>
-	            	<!-- species search bar -->
+                    <button class="btn btn-default pull-right"
+                            ng-click="idPhotosCtrl.usePreviousDetections()"
+                            ng-show="idPhotosCtrl.previousDetections.length"
+                            ng-focus="idPhotosCtrl.showPreviousDetections"
+                            ng-blur="idPhotosCtrl.showPreviousDetections = false">
+                        <i class="fa fa-archive"></i> Add Previous Detection(s)
+                    </button>
 		            <div class="row" ng-repeat="detection in idPhotosCtrl.selectedPhoto.detections" style="margin-top:5px">
-		            	
 			            <div class="row" style="padding: 5px 0px">
-			              <div class="col-md-3"><label for="speciesSelect" style="margin-left:15px">Species</label></div>
+                            <div class="col-md-3"><label style="margin-left:15px">Species</label></div>
 			              <div class="col-md-9">
 			                <ui-select id="speciesSelect_{{$index}}" autofocus="true" ng-model="detection.species" 
 			                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px"
@@ -253,7 +258,7 @@
 			              </div>
 			            </div>
 		            	<div class="row" style="padding: 5px 0px">
-			              <div class="col-md-3"><label for="detectionSelect" style="margin-left:15px">Detail</label></div>
+                            <div class="col-md-3"><label style="margin-left:15px">Detail</label></div>
 			              <div class="col-md-9">
 			                <ui-select id="detectionSelect" ng-model="detection.detectionDetail" 
 			                			theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px">
@@ -265,13 +270,13 @@
 			              </div>
 			            </div>
 		            	<div class="row" style="padding: 5px 0px">
-			              <div class="col-md-3"><label for="individuals" style="margin-left:15px">Individuals</label></div>
+                            <div class="col-md-3"><label style="margin-left:15px">Individuals</label></div>
 			              <div class="col-md-9">
 							<input type="number" style="width: 97%; margin-left:0px" name="individuals" ng-model="detection.individuals" min="0" max="99" required>
 			              </div>
 			            </div>
 		            	<div class="row" style="padding: 5px 0px">
-			              <div class="col-md-3"><label for="comments" style="margin-left:15px">Comments</label></div>
+                            <div class="col-md-3"><label style="margin-left:15px">Comments</label></div>
 			              <div class="col-md-9">
 			                <input type="textarea" style="width: 97%; margin-left:0px" name="comments" ng-model="detection.comments" ng-trim="false">
 			              </div>
@@ -291,10 +296,62 @@
 			              </div>
 			            </div>
 		            </div>
+                    <!-- Preview view of last used detections -->
+                    <div class="row" ng-repeat="detection in idPhotosCtrl.previousDetections" style="margin-top:5px"
+                         ng-show="idPhotosCtrl.showPreviousDetections">
+                        <div class="row" style="padding: 5px 0px">
+                            <div class="col-md-3"><label style="margin-left:15px">Species</label></div>
+                            <div class="col-md-9">
+                                <ui-select id="speciesSelect_{{$index}}" autofocus="true" ng-model="detection.species"
+                                           theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px"
+                                           on-select="idPhotosCtrl.onSelectSpeciesCallback($item, $model)">
+                                    <ui-select-match placeholder="Select species">{{$select.selected.commonName}} &lt;{{$select.selected.latinName}}&gt;</ui-select-match>
+                                    <ui-select-choices
+                                            repeat="species in idPhotosCtrl.speciesList | propsFilter: {commonName: $select.search, latinName: $select.search}">
+                                        <div ng-bind-html="species.commonName | highlight: $select.search"></div>
+                                        <small>
+                                            commonName: {{species.commonName}}
+                                            latinName: <span
+                                                ng-bind-html="''+species.latinName | highlight: $select.search"></span>
+                                        </small>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="row" style="padding: 5px 0px">
+                            <div class="col-md-3"><label style="margin-left:15px">Detail</label></div>
+                            <div class="col-md-9">
+                                <ui-select id="detectionSelect" ng-model="detection.detectionDetail"
+                                           theme="select2" ng-disabled="disabled" style="width: 97%; margin-left:0px">
+                                    <ui-select-match placeholder="Select detection details">
+                                        {{$select.selected.detailText}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            repeat="detectionDetail in detection.species.detectionDetailsList | propsFilter: {detailText: $select.search}">
+                                        <div ng-bind-html="detectionDetail.detailText | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="row" style="padding: 5px 0px">
+                            <div class="col-md-3"><label style="margin-left:15px">Individuals</label></div>
+                            <div class="col-md-9">
+                                <input type="number" style="width: 97%; margin-left:0px" name="individuals"
+                                       ng-model="detection.individuals" min="0" max="99" required>
+                            </div>
+                        </div>
+                        <div class="row" style="padding: 5px 0px">
+                            <div class="col-md-3"><label style="margin-left:15px">Comments</label></div>
+                            <div class="col-md-9">
+                                <input type="textarea" style="width: 97%; margin-left:0px" name="comments"
+                                       ng-model="detection.comments" ng-trim="false">
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Preview view of last used detections -->
 	            	<div class="row" style="padding: 5px 7px">
 	          			<button class="btn btn-default pull-right" ng-click="idPhotosCtrl.addDetection()" ng-show="idPhotosCtrl.photos.length"><i class="fa fa-plus-square-o"></i> Add Detection</button>
 	            	</div>
-		            <!--/species search bar -->
 		      </div>
 		    </div>
             </div>
