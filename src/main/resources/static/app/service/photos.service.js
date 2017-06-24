@@ -36,12 +36,12 @@
                 }
             },
 
-            resetPhotos: {
+            /*resetPhotos: {
                 method: 'POST',
                 params: {
                     id: 'reset'
                 }
-            }
+             }*/
         });
     }
 }());

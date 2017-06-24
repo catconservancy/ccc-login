@@ -38,7 +38,7 @@
         vm.updateResults = updateResults;
         vm.startDateOpen = startDateOpen;
         vm.endDateOpen = endDateOpen;
-        vm.resetPhotos = resetPhotos;
+        /*vm.resetPhotos = resetPhotos;*/
         vm.onSelectedStudyArea = onSelectedStudyArea;
 
         function onSelectedStudyArea(studyArea) {
@@ -176,10 +176,10 @@
             return ids.join(",");
         }
 
-        function resetPhotos() {
+        /*function resetPhotos() {
             PhotosService.resetPhotos(function () {
                 updateResults();
             });
-        }
+         }*/
     }
 }());
