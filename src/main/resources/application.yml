@@ -33,7 +33,7 @@ logging:
 
 ccc: 
   dropbox:
-    accessToken: 8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5EhbWhDw5jA83Yw3RKkjCz0D
+    accessToken: 0zSFsnWoJOUAAAAAAAEafHy4-QOqabrvGxliLU3rkk1XAu0GkpdWfLwzciXM_f6B
 
 ---
 spring:
@@ -47,6 +47,10 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+
+ccc:
+  dropbox:
+    accessToken: 8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5EhbWhDw5jA83Yw3RKkjCz0D
 ---
 spring:
   profiles: local
@@ -70,7 +74,7 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
   datasource:
     platform: postgres
     url: ${SPRING_DATASOURCE_URL}
