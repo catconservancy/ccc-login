@@ -74,7 +74,7 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   datasource:
     platform: postgres
     url: ${SPRING_DATASOURCE_URL}
