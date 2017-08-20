@@ -15,6 +15,10 @@ a {
     overflow: auto;
 }
 
+.popover {
+    z-index: 10000;
+}
+
 #idPhotos .list-inline, #viewPhotos .list-inline {
     white-space: nowrap;
     overflow-x: scroll;

@@ -135,40 +135,38 @@
                   </div>
                 </div>
                 <div class="row" ng-hide="viewPhotosCtrl.cannedQuery">
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label>Image Start Date</label>
-                      <p class="input-group">
-                        <input type="text"
-                               class="form-control"
-                               uib-datepicker-popup="MM/dd/yyyy"
-                               ng-model="viewPhotosCtrl.selectedImageStartDate"
-                               is-open="viewPhotosCtrl.startDatePopup.opened"
-                               datepicker-options="viewPhotosCtrl.dateOptions"
-                               ng-required="false"
-                               close-text="Close" />
-                        <span class="input-group-btn">
-				            <button type="button" class="btn btn-default" ng-click="viewPhotosCtrl.startDateOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
-				          </span>
-                      </p>
-                    </div>
+                  <div class="form-group">
+                    <label>Image Start Date</label>
+                    <p class="input-group">
+                      <input type="text"
+                             class="form-control"
+                             uib-datepicker-popup="MM/dd/yyyy"
+                             ng-model="viewPhotosCtrl.selectedImageStartDate"
+                             is-open="viewPhotosCtrl.startDatePopup.opened"
+                             datepicker-options="viewPhotosCtrl.dateOptions"
+                             ng-required="false"
+                             close-text="Close"/>
+                      <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="viewPhotosCtrl.startDateOpen()"><i
+                                  class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
                   </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label>Image End Date</label>
-                      <p class="input-group">
-                        <input type="text" class="form-control"
-                               uib-datepicker-popup="MM/dd/yyyy"
-                               ng-model="viewPhotosCtrl.selectedImageEndDate"
-                               is-open="viewPhotosCtrl.endDatePopup.opened"
-                               datepicker-options="viewPhotosCtrl.dateOptions"
-                               ng-required="false"
-                               close-text="Close" />
-                        <span class="input-group-btn">
-				            <button type="button" class="btn btn-default" ng-click="viewPhotosCtrl.endDateOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
-				          </span>
-                      </p>
-                    </div>
+                  <div class="form-group">
+                    <label>Image End Date</label>
+                    <p class="input-group">
+                      <input type="text" class="form-control"
+                             uib-datepicker-popup="MM/dd/yyyy"
+                             ng-model="viewPhotosCtrl.selectedImageEndDate"
+                             is-open="viewPhotosCtrl.endDatePopup.opened"
+                             datepicker-options="viewPhotosCtrl.dateOptions"
+                             ng-required="false"
+                             close-text="Close"/>
+                      <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="viewPhotosCtrl.endDateOpen()"><i
+                                  class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
                   </div>
                 </div>
                 <div class="row" ng-hide="viewPhotosCtrl.cannedQuery">

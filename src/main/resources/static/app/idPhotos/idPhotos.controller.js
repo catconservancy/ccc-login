@@ -44,6 +44,8 @@
         vm.usePreviousDetections = usePreviousDetections;
 
         PhotosService.query($stateParams.dropboxPath ? {path:$stateParams.dropboxPath} : {},function(data) {
+            SpinnerService.hide('archivingSpinner');
+            SpinnerService.hide('deletingSpinner');
         	for (i = 0; i < data.length; i++) {
         		if (data[i].metadata.dir) {
         			vm.treeData.push({
@@ -82,16 +84,20 @@
         });
         
         function deleteSelectedPhoto() {
+            SpinnerService.show('deletingSpinner');
         	PhotosService.delete({ path: vm.selectedPhoto.metadata.pathLower }, function() {
         		var photoIdx = vm.photos.indexOf(vm.selectedPhoto);
             	if (photoIdx > - 1) {
             		vm.photos.splice(photoIdx, 1);
             		vm.selectedPhoto = vm.photos[0];
+                    vm.selectedPhoto.selected = true;
             	}
+                SpinnerService.hide('deletingSpinner');
         	});
         }
         
         function archiveTaggedPhotos() {
+            SpinnerService.show('archivingSpinner');
         	var indexesToRemove = [];
         	var loopPromises = [];
         	angular.forEach(vm.photos, function(photo, index) {
@@ -112,6 +118,8 @@
                     vm.photos.splice(indexesToRemove[i], 1);
                 }
                 vm.selectedPhoto = vm.photos.length ? vm.photos[0] : {};
+                vm.selectedPhoto.selected = true;
+                SpinnerService.hide('archivingSpinner');
         	});
         }
 
@@ -147,8 +155,8 @@
             	}
             	
             	if (vm.photos.length) {
-	                vm.photos[0].selected = true;
-	                vm.selectedPhoto = vm.photos[0];
+                    vm.photos[0].selected = true;
+                    vm.selectedPhoto = vm.photos[0];
                     if (!vm.selectedPhoto.detections) {
                         vm.selectedPhoto.detections = [{}];
                     }

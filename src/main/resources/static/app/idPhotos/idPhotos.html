@@ -26,16 +26,20 @@
 				</button>
 				<button class="btn btn-danger pull-right" style="margin-left:10px;" mwl-confirm data-title="Confirm"
 						message="Are you <b>sure</b> you want to delete the selected photo?"
-						placement="top" on-confirm="idPhotosCtrl.deleteSelectedPhoto()" confirm-button-type="danger"
+						placement="bottom" on-confirm="idPhotosCtrl.deleteSelectedPhoto()" confirm-button-type="danger"
 						cancel-button-type="default"
 						ng-show="idPhotosCtrl.photos.length">
 					<i class="fa fa-trash-o"></i> Delete Selected
 				</button>
-	        	<button class="btn btn-default pull-right" 
-	        			ng-click="idPhotosCtrl.archiveTaggedPhotos()" 
-	        			ng-show="idPhotosCtrl.photos.length">
-	        		<i class="fa fa-archive"></i> Archive Tagged
-	        	</button>
+				<button class="btn btn-default pull-right" style="margin-left:10px;" mwl-confirm data-title="Confirm"
+						message="Are you <b>sure</b> you want to archive the tagged photos?"
+						placement="bottom" on-confirm="idPhotosCtrl.archiveTaggedPhotos()" confirm-button-type="primary"
+						cancel-button-type="default"
+						ng-show="idPhotosCtrl.photos.length">
+					<i class="fa fa-archive"></i> Archive Tagged
+				</button>
+				<spinner name="archivingSpinner" show="true" img-src="/ccc/img/loading_sm.gif">Archiving...</spinner>
+				<spinner name="deletingSpinner" show="true" img-src="/ccc/img/loading_sm.gif">Deleting...</spinner>
           	</div>	
         </div>
         <div class="box-body">
@@ -294,10 +298,10 @@
                                   <button class="btn btn-primary" ng-click="idPhotosCtrl.saveSelectedPhoto()"><i
                                           class="fa fa-save"></i></button>
                                   <button class="btn btn-danger" mwl-confirm data-title="Confirm"
-                                          message="Are you <b>sure</b> you want to delete this detection?"
-                                          placement="top" on-confirm="idPhotosCtrl.removeDetection(detection)"
-                                          confirm-button-type="danger"
-                                          cancel-button-type="default">
+										  message="Are you <b>sure</b> you want to delete this detection?"
+										  placement="bottom" on-confirm="idPhotosCtrl.removeDetection(detection)"
+										  confirm-button-type="danger"
+										  cancel-button-type="default">
                                       <i class="fa fa-trash-o"></i>
                                   </button>
                               </div>
