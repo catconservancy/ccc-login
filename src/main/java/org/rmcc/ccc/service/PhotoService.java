@@ -3,11 +3,7 @@ package org.rmcc.ccc.service;
 import com.dropbox.core.DbxException;
 import com.mysema.query.types.expr.BooleanExpression;
 import org.rmcc.ccc.exception.InvalidPathException;
-import org.rmcc.ccc.model.CccMetadata;
-import org.rmcc.ccc.model.Deployment;
-import org.rmcc.ccc.model.Detection;
-import org.rmcc.ccc.model.Photo;
-import org.rmcc.ccc.model.StudyArea;
+import org.rmcc.ccc.model.*;
 import org.rmcc.ccc.repository.DeploymentRepository;
 import org.rmcc.ccc.repository.PhotoPredicatesBuilder;
 import org.rmcc.ccc.repository.PhotoRepository;
@@ -27,12 +23,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.rmcc.ccc.controller.PhotoController.ARCHIVED_ROOT;
 import static org.rmcc.ccc.controller.PhotoController.UNCATALOGED_ROOT;
@@ -135,6 +126,19 @@ public class PhotoService {
             }
             photos.add(photo);
         }
+
+        Collections.sort(photos, new Comparator<Photo>() {
+            DateFormat f = new SimpleDateFormat("MM.dd.yyyy");
+
+            @Override
+            public int compare(Photo o1, Photo o2) {
+                try {
+                    return f.parse(o2.getFileName()).compareTo(f.parse(o1.getFileName()));
+                } catch (ParseException e) {
+                    return -1;
+                }
+            }
+        });
 
         return photos;
     }
