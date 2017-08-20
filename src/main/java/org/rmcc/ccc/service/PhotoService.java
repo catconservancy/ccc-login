@@ -135,7 +135,7 @@ public class PhotoService {
                 try {
                     return f.parse(o2.getFileName()).compareTo(f.parse(o1.getFileName()));
                 } catch (ParseException e) {
-                    return -1;
+                    return o1.getFileName().compareTo(o2.getFileName());
                 }
             }
         });
