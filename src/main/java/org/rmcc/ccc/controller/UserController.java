@@ -37,13 +37,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	//TODO: should be an app email sender address TBD
-	private static final String EMAIL_SENDER = "aaron.g.jones@gmail.com";
+	private static final String EMAIL_SENDER = "catconservancy@gmail.com";
 	//TODO: should be a list of admin users or TBD
-	private static final String ADMIN_EMAIL = "aaron.g.jones@gmail.com"; 
+	private static final String ADMIN_EMAIL = "catconservancy@gmail.com";
     private final UserService userService;
     private final UserCreateFormValidator userCreateFormValidator;
     private UserRepository userRepository;
@@ -52,13 +52,13 @@ public class UserController {
     @Autowired
     public UserController(UserRepository userRepository,
 			JavaMailSender javaMailSender,
-			UserService userService, 
+			UserService userService,
 			UserCreateFormValidator userCreateFormValidator) {
 		this.userRepository = userRepository;
 		this.javaMailSender = javaMailSender;
 		this.userService = userService;
         this.userCreateFormValidator = userCreateFormValidator;
-	}	
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
     public List<User> search(@RequestParam Map<String,String> params) throws Exception {
