@@ -3,6 +3,7 @@ package org.rmcc.ccc.service.user;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.rmcc.ccc.model.Role;
 import org.rmcc.ccc.model.User;
 import org.rmcc.ccc.model.UserCreateForm;
 import org.rmcc.ccc.repository.UserRepository;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Collection<User> getAllAdmins() {
         LOGGER.debug("Getting all administrator users");
-        return (Collection<User>) userRepository.findAllByRole("ADMIN");
+        return (Collection<User>) userRepository.findAllByRole(Role.ADMIN);
     }
 
     @Override
