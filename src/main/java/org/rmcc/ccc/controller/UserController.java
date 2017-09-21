@@ -171,13 +171,23 @@ public class UserController {
         String subject = "CCC User Created";
         Email to = new Email(ADMIN_EMAIL);
         Content content = new Content("text/plain", "A new user has registered and requested access to the CCC Database: " + user.getFullName() + ": " + user.getEmail());
-        Mail mail = new Mail(from, subject, to, content);
+        //Mail mail = new Mail(from, subject, to, content);
+				Mail mail = new Mail();
 
 				List<User> adminsList = (List<User>) userRepository.findAllByRole(Role.ADMIN);
 
+				mail.setFrom(from);
+			  mail.setSubject(subject);
+
+			  Personalization personalization = new Personalization();
+			  personalization.addTo(to);
+
 				adminsList.forEach((admin) -> {
-					mail.addTo(new Email(admin.getEmail()));
+					personalization.addTo(new Email(admin.getEmail()));
 				});
+
+			  mail.addPersonalization(personalization);
+			  mail.addContent(content);
 
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
         Request request = new Request();
