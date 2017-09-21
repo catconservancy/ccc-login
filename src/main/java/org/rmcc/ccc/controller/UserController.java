@@ -62,10 +62,13 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.GET)
     public List<User> search(@RequestParam Map<String,String> params) throws Exception {
-		if (params.get("enabled") != null) {
-            return userRepository.findByEnabled(Boolean.valueOf(params.get("enabled")));
-        }
-        return (List<User>) userRepository.findAll();
+			if (params.get("enabled") != null) {
+      	return userRepository.findByEnabled(Boolean.valueOf(params.get("enabled")));
+      } else if(params.get("admin") != null) {
+				return userRepository.findAllByRole("ADMIN");
+			} else {
+				return (List<User>) userRepository.findAll();
+			}
     }
 
     @Loggable
@@ -136,7 +139,7 @@ public class UserController {
 //        } finally {}
 //        javaMailSender.send(mail);
 
-        Email from = new Email(ADMIN_EMAIL);
+        Email from = new Email(EMAIL_SENDER);
         String subject = "CCC User Access Granted";
         Email to = new Email(user.getEmail());
         Content content = new Content("text/plain", "Your access request has been granted.  You may now login to the application.");

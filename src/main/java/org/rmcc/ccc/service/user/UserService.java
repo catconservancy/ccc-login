@@ -14,6 +14,8 @@ public interface UserService {
 
     Collection<User> getAllUsers();
 
+    Collection<User> getAllAdmins();
+
     User create(UserCreateForm form);
 
 }

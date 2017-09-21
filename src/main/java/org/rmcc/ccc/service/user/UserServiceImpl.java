@@ -42,6 +42,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Collection<User> getAllAdmins() {
+        LOGGER.debug("Getting all administrator users");
+        return (Collection<User>) userRepository.findAllByRole("ADMIN");
+    }
+
+    @Override
     public User create(UserCreateForm form) {
         User user = new User();
         user.setEmail(form.getEmail());

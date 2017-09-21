@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
-	
+
 	Optional<User> findOneByEmail(String email);
 
 	List<User> findByEnabled(Boolean valueOf);
+
+	List<User> findAllByRole(String role);
 
 }
