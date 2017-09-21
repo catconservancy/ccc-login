@@ -44,7 +44,7 @@ public class UserController {
 	//TODO: should be an app email sender address TBD
 	private static final String EMAIL_SENDER = "catconservancy@gmail.com";
 	//TODO: should be a list of admin users or TBD
-	private static final String ADMIN_EMAIL = "catconservancy@gmail.com,michaeizl@gmail.com";
+	private static final String ADMIN_EMAIL = "catconservancy@gmail.com";
     private final UserService userService;
     private final UserCreateFormValidator userCreateFormValidator;
     private UserRepository userRepository;
@@ -172,6 +172,12 @@ public class UserController {
         Email to = new Email(ADMIN_EMAIL);
         Content content = new Content("text/plain", "A new user has registered and requested access to the CCC Database: " + user.getFullName() + ": " + user.getEmail());
         Mail mail = new Mail(from, subject, to, content);
+
+				List<User> adminsList = (List<User>) userRepository.findAllByRole(Role.ADMIN);
+
+				adminsList.forEach((admin) -> {
+					mail.addTo(new Email(admin.getEmail()));
+				});
 
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
         Request request = new Request();
