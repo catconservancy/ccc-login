@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.rmcc.ccc.model.User;
+import org.rmcc.ccc.model.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
 	List<User> findByEnabled(Boolean valueOf);
 
-	List<User> findAllByRole(String role);
+	List<User> findAllByRole(Role role);
 
 }

@@ -8,6 +8,7 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import org.rmcc.ccc.annotations.Loggable;
+import org.rmcc.ccc.model.Role;
 import org.rmcc.ccc.model.User;
 import org.rmcc.ccc.model.UserCreateForm;
 import org.rmcc.ccc.model.validator.UserCreateFormValidator;
@@ -65,7 +66,7 @@ public class UserController {
 			if (params.get("enabled") != null) {
       	return userRepository.findByEnabled(Boolean.valueOf(params.get("enabled")));
       } else if(params.get("admin") != null) {
-				return userRepository.findAllByRole("ADMIN");
+				return userRepository.findAllByRole(Role.ADMIN);
 			} else {
 				return (List<User>) userRepository.findAll();
 			}
