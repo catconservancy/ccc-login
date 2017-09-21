@@ -66,7 +66,7 @@ public class UserController {
 			if (params.get("enabled") != null) {
       	return userRepository.findByEnabled(Boolean.valueOf(params.get("enabled")));
       } else if(params.get("admin") != null) {
-				return userService.getAllAdmins();
+				return (List<User>) userRepository.findAllByRole(Role.ADMIN);
 			} else {
 				return (List<User>) userRepository.findAll();
 			}
