@@ -43,7 +43,7 @@ public class UserController {
 	//TODO: should be an app email sender address TBD
 	private static final String EMAIL_SENDER = "catconservancy@gmail.com";
 	//TODO: should be a list of admin users or TBD
-	private static final String ADMIN_EMAIL = "catconservancy@gmail.com";
+	private static final String ADMIN_EMAIL = "catconservancy@gmail.com,michaeizl@gmail.com";
     private final UserService userService;
     private final UserCreateFormValidator userCreateFormValidator;
     private UserRepository userRepository;
