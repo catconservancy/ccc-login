@@ -56,7 +56,7 @@ public class PhotoService {
 
     public List<Photo> getDbPhotos(Map<String, String> params, Pageable pageable) {
 
-        Sort sort = pageable.getSort() != null ? pageable.getSort() : new Sort(Sort.Direction.ASC,"imageDate");
+        Sort sort = pageable.getSort() != null ? pageable.getSort() : new Sort(Sort.Direction.ASC, "imageDate");
 
         List<Photo> photos = new ArrayList<Photo>();
 
@@ -308,11 +308,11 @@ public class PhotoService {
         return endDate;
     }
 
-    private Integer getInteger(Map<String,String> params, String param) {
+    private Integer getInteger(Map<String, String> params, String param) {
         return params.get(param) != null ? Integer.parseInt(params.get(param)) : null;
     }
 
-    private Boolean getBoolean(Map<String,String> params, String param) {
+    private Boolean getBoolean(Map<String, String> params, String param) {
         return params.get(param) != null ? Boolean.valueOf(params.get(param)) : null;
     }
 }
