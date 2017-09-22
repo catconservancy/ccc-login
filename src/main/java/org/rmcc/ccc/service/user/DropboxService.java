@@ -19,11 +19,6 @@ import java.util.TreeMap;
 
 @Service
 public class DropboxService {
-	
-//	@Value("${ccc.dropbox.accessToken}")
-//    private String accessToken;
-//static final String ACCESS_TOKEN = "8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5EhbWhDw5jA83Yw3RKkjCz0D"; //mine
-static final String ACCESS_TOKEN = "0zSFsnWoJOUAAAAAAAEafHy4-QOqabrvGxliLU3rkk1XAu0GkpdWfLwzciXM_f6B"; //catconservancy
     private static final Logger LOGGER = LoggerFactory.getLogger(DropboxService.class);
     private DbxRequestConfig config;
     private DbxClientV2 client;
@@ -32,7 +27,7 @@ static final String ACCESS_TOKEN = "0zSFsnWoJOUAAAAAAAEafHy4-QOqabrvGxliLU3rkk1X
 	public DropboxService() throws DbxException, IOException {
 		// Create Dropbox client
 		config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
-		client = new DbxClientV2(config, ACCESS_TOKEN);
+		client = new DbxClientV2(config, System.getenv("DROPBOX_API_KEY"));
 
 //        // Get current account info
 //        try {
