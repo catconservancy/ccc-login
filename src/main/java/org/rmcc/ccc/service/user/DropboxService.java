@@ -23,22 +23,14 @@ public class DropboxService {
     private DbxRequestConfig config;
     private DbxClientV2 client;
     private FullAccount account;
-	
-	public DropboxService() throws DbxException, IOException {
-		// Create Dropbox client
-		config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
-		client = new DbxClientV2(config, System.getenv("DROPBOX_API_KEY"));
 
-//        // Get current account info
-//        try {
-//            account = client.users.getCurrentAccount();
-//        } catch (DbxException e) {
-//            LOGGER.error("Can't connect to dropbox.");
-//        }
+    public DropboxService() throws DbxException, IOException {
+        // Create Dropbox client
+        config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        client = new DbxClientV2(config, System.getenv("DROPBOX_API_KEY"));
+    }
 
-	}
-
-	public List<Metadata> getFolderContentsByPath(String path) throws DbxException, IOException {
+    public List<Metadata> getFolderContentsByPath(String path) throws DbxException, IOException {
 
         List<Metadata> encodedPaths = new ArrayList<>();
 
@@ -51,7 +43,7 @@ public class DropboxService {
                 result = client.files.listFolder(path);
             } catch (ListFolderErrorException ex) {
                 if (ex.errorValue.isPath()) {
-                	LOGGER.error("Dropbox error", ex);
+                    LOGGER.error("Dropbox error", ex);
                     if (checkPathError(ex.errorValue.getPathValue())) return null;
                 }
                 throw ex;
@@ -70,29 +62,27 @@ public class DropboxService {
 
                 try {
                     result = client.files.listFolderContinue(result.getCursor());
-                }
-                catch (ListFolderContinueErrorException ex) {
+                } catch (ListFolderContinueErrorException ex) {
                     if (ex.errorValue.isPath()) {
-                    	LOGGER.error("Dropbox error", ex);
+                        LOGGER.error("Dropbox error", ex);
                         if (checkPathError(ex.errorValue.getPathValue())) break;
                     }
                     throw ex;
                 }
             }
-        }
-        catch (DbxException ex) {
-        	LOGGER.error("Dropbox error", ex);
+        } catch (DbxException ex) {
+            LOGGER.error("Dropbox error", ex);
             throw ex;
         }
-        
+
         for (Metadata child : children.values()) {
-        	boolean isDir = (child instanceof FolderMetadata);
-    		CccMetadata cccMetadata = new CccMetadata(child, isDir);
-			encodedPaths.add(cccMetadata);
+            boolean isDir = (child instanceof FolderMetadata);
+            CccMetadata cccMetadata = new CccMetadata(child, isDir);
+            encodedPaths.add(cccMetadata);
         }
-        
-		return encodedPaths;
-	}
+
+        return encodedPaths;
+    }
 
     public InputStream getInputStreamByPath(String path) throws DbxException, IOException {
         try {
@@ -116,17 +106,17 @@ public class DropboxService {
         switch (le.tag()) {
             case NOT_FOUND:
             case NOT_FOLDER:
-            	LOGGER.error("Path doesn't exist on Dropbox:");
+                LOGGER.error("Path doesn't exist on Dropbox:");
                 return true;
         }
         return false;
     }
 
-	public void deleteFile(String path) throws DbxException {
-		client.files.delete(path);
-	}
+    public void deleteFile(String path) throws DbxException {
+        client.files.delete(path);
+    }
 
-	public Metadata moveFile(String fromPath, String toPath) throws DbxException {
+    public Metadata moveFile(String fromPath, String toPath) throws DbxException {
         try {
             return client.files.move(fromPath, toPath);
         } catch (RelocationErrorException e) {
