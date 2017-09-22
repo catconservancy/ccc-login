@@ -40,12 +40,11 @@ import java.util.Map;
 @RequestMapping("/api/users")
 public class UserController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-	//TODO: should be an app email sender address TBD
-	private static final String EMAIL_SENDER = "catconservancy@gmail.com";
-	//TODO: should be a list of admin users or TBD
-	private static final String ADMIN_EMAIL = "catconservancy@gmail.com";
+    private static final String EMAIL_SENDER = "catconservancy@gmail.com";
+    private static final String ADMIN_EMAIL = "catconservancy@gmail.com";
+
     private final UserService userService;
     private final UserCreateFormValidator userCreateFormValidator;
     private UserRepository userRepository;
@@ -53,24 +52,24 @@ public class UserController {
 
     @Autowired
     public UserController(UserRepository userRepository,
-			JavaMailSender javaMailSender,
-			UserService userService,
-			UserCreateFormValidator userCreateFormValidator) {
-		this.userRepository = userRepository;
-		this.javaMailSender = javaMailSender;
-		this.userService = userService;
+                          JavaMailSender javaMailSender,
+                          UserService userService,
+                          UserCreateFormValidator userCreateFormValidator) {
+        this.userRepository = userRepository;
+        this.javaMailSender = javaMailSender;
+        this.userService = userService;
         this.userCreateFormValidator = userCreateFormValidator;
-	}
+    }
 
-	@RequestMapping(method = RequestMethod.GET)
-    public List<User> search(@RequestParam Map<String,String> params) throws Exception {
-			if (params.get("enabled") != null) {
-      	return userRepository.findByEnabled(Boolean.valueOf(params.get("enabled")));
-      } else if(params.get("admin") != null) {
-				return (List<User>) userRepository.findAllByRole(Role.ADMIN);
-			} else {
-				return (List<User>) userRepository.findAll();
-			}
+    @RequestMapping(method = RequestMethod.GET)
+    public List<User> search(@RequestParam Map<String, String> params) throws Exception {
+        if (params.get("enabled") != null) {
+            return userRepository.findByEnabled(Boolean.valueOf(params.get("enabled")));
+        } else if (params.get("admin") != null) {
+            return (List<User>) userRepository.findAllByRole(Role.ADMIN);
+        } else {
+            return (List<User>) userRepository.findAll();
+        }
     }
 
     @Loggable
@@ -83,39 +82,39 @@ public class UserController {
         }
     }
 
-//  @PreAuthorize("hasAuthority('ADMIN')")
-	@Loggable
+    //  @PreAuthorize("hasAuthority('ADMIN')")
+    @Loggable
     @RequestMapping(method = RequestMethod.PUT)
-	@ResponseBody
+    @ResponseBody
     public User updateEnabled(@RequestBody User user) {
         User dbUser = userRepository.findOne(user.getId());
         if (!dbUser.isEnabled() && user.isEnabled()) {
-        	dbUser.setEnabled(user.isEnabled());
-        	sendUserActivatedEmail(dbUser);
+            dbUser.setEnabled(user.isEnabled());
+            sendUserActivatedEmail(dbUser);
         }
         dbUser.setFullName(user.getFullName());
         return userRepository.save(dbUser);
     }
 
-//  @PreAuthorize("hasAuthority('ADMIN')")
-	@Loggable
-	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
-	public void delete(@PathVariable Long userId) {
-		userRepository.delete(userId);
-	}
+    //  @PreAuthorize("hasAuthority('ADMIN')")
+    @Loggable
+    @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long userId) {
+        userRepository.delete(userId);
+    }
 
-//    @PreAuthorize("hasAuthority('ADMIN')")
-	@Loggable
-	@RequestMapping(method = RequestMethod.POST)
-	@ResponseBody
+    //    @PreAuthorize("hasAuthority('ADMIN')")
+    @Loggable
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
     public User handleUserCreateForm(@Valid @RequestBody UserCreateForm form, BindingResult bindingResult) throws MethodArgumentNotValidException {
         LOGGER.debug("Processing user create form={}, bindingResult={}", form, bindingResult);
         userCreateFormValidator.validate(form, bindingResult);
         if (bindingResult.hasErrors()) {
-        	throw new MethodArgumentNotValidException(null, bindingResult);
+            throw new MethodArgumentNotValidException(null, bindingResult);
         }
         try {
-        	sendUserCreationEmail(form);
+            sendUserCreationEmail(form);
             return userService.create(form);
         } catch (DataIntegrityViolationException e) {
             // probably email already exists - very rare case when multiple admins are adding same user
@@ -126,21 +125,8 @@ public class UserController {
         }
     }
 
-	// send a user activated email to user
+    // send a user activated email to user
     private void sendUserActivatedEmail(User user) {
-//        MimeMessage mail = javaMailSender.createMimeMessage();
-//        try {
-//            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-//            helper.setTo(user.getEmail());
-//            helper.setReplyTo(ADMIN_EMAIL);
-//            helper.setFrom(ADMIN_EMAIL);
-//            helper.setSubject("CCC User Access Granted");
-//            helper.setText("Your access request has been granted.  You may now login to the application.");
-//        } catch (MessagingException e) {
-//            LOGGER.error("MessagingException occurred sending user activated email.", e);
-//        } finally {}
-//        javaMailSender.send(mail);
-
         Email from = new Email(EMAIL_SENDER);
         String subject = "CCC User Access Granted";
         Email to = new Email(user.getEmail());
@@ -154,41 +140,26 @@ public class UserController {
 
     // send a user creation email to admin
     private void sendUserCreationEmail(UserCreateForm user) {
-//        MimeMessage mail = javaMailSender.createMimeMessage();
-//        try {
-//            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-//            helper.setTo(ADMIN_EMAIL);
-//            helper.setReplyTo(ADMIN_EMAIL);
-//            helper.setFrom(EMAIL_SENDER);
-//            helper.setSubject("CCC User Created");
-//            helper.setText("A new user has registered and requested access to the CCC Database: " + user.getFullName() + ": " + user.getEmail());
-//        } catch (MessagingException e) {
-//            LOGGER.error("MessagingException occurred sending user registration email.", e);
-//        } finally {}
-//        javaMailSender.send(mail);
-
-
+        Mail mail = new Mail();
         Email from = new Email(EMAIL_SENDER);
         String subject = "CCC User Created";
         Email to = new Email(ADMIN_EMAIL);
         Content content = new Content("text/plain", "A new user has registered and requested access to the CCC Database: " + user.getFullName() + ": " + user.getEmail());
-        //Mail mail = new Mail(from, subject, to, content);
-				Mail mail = new Mail();
 
-				List<User> adminsList = (List<User>) userRepository.findAllByRole(Role.ADMIN);
+        List<User> adminsList = (List<User>) userRepository.findAllByRole(Role.ADMIN);
 
-				mail.setFrom(from);
-			  mail.setSubject(subject);
+        mail.setFrom(from);
+        mail.setSubject(subject);
 
-			  Personalization personalization = new Personalization();
-			  personalization.addTo(to);
+        Personalization personalization = new Personalization();
+        personalization.addTo(to);
 
-				adminsList.forEach((admin) -> {
-					personalization.addTo(new Email(admin.getEmail()));
-				});
+        adminsList.forEach((admin) -> {
+            personalization.addTo(new Email(admin.getEmail()));
+        });
 
-			  mail.addPersonalization(personalization);
-			  mail.addContent(content);
+        mail.addPersonalization(personalization);
+        mail.addContent(content);
 
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
         Request request = new Request();
