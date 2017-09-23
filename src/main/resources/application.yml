@@ -30,11 +30,6 @@ logging:
     org.springframework.security: INFO
     org.springframework.boot.autoconfigure: DEBUG
     org.springframework.boot.actuate.audit.listener.AuditListener: DEBUG
-
-ccc: 
-  dropbox:
-    accessToken: 0zSFsnWoJOUAAAAAAAEafHy4-QOqabrvGxliLU3rkk1XAu0GkpdWfLwzciXM_f6B
-
 ---
 spring:
   profiles: development
@@ -47,10 +42,6 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
-
-ccc:
-  dropbox:
-    accessToken: 8pUCurIPXlUAAAAAAAAIGeOLExI8YLErAizpTMiV5EhbWhDw5jA83Yw3RKkjCz0D
 ---
 spring:
   profiles: local
@@ -80,20 +71,5 @@ spring:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
-  database:
-    driverClassName: org.postgresql.Driver
----
-spring:
-  profiles: production
-  jpa:
-    database: POSTGRESQL
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-  datasource:
-    platform: postgres
-    url: jdbc:postgresql://db01.fort-techs.com:5432/ccc
-    username: aaron
-    password: pw4AARON!
   database:
     driverClassName: org.postgresql.Driver
