@@ -88,7 +88,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public User updateEnabled(@RequestBody User user, HttpServletRequest request) {
-        LOGGER.debug("Update request={}, user={}", request, request.getRemoteUser());
+        LOGGER.debug("Update isAdmin={}, user={}", request.isUserInRole("ADMIN"), request.getRemoteUser());
 
         User dbUser = userRepository.findOne(user.getId());
         if (!dbUser.isEnabled() && user.isEnabled()) {
