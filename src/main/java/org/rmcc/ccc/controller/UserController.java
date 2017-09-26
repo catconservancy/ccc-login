@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -86,7 +87,9 @@ public class UserController {
     @Loggable
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public User updateEnabled(@RequestBody User user) {
+    public User updateEnabled(@RequestBody User user, HttpServletRequest request) {
+        LOGGER.debug("Update request={}, user={}", request, request.getRemoteUser());
+
         User dbUser = userRepository.findOne(user.getId());
         if (!dbUser.isEnabled() && user.isEnabled()) {
             dbUser.setEnabled(user.isEnabled());
