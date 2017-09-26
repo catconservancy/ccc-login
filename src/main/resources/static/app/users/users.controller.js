@@ -22,7 +22,6 @@
 		});
 
         function saveUser(user) {
-            console.log("saveUser:", user);
             Users.update(user,function(){
                 $log.debug("saved user", user);
                 Users.query(function(data) {
