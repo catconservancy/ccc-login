@@ -34,6 +34,7 @@
 		                <th>ID</th>
 		                <th>Full Name</th>
                         <th>Email</th>
+                        <th>Role</th>
                         <th>Enabled</th>
                         <th>Delete</th>
 		            </tr>
@@ -43,6 +44,7 @@
 		                <td>{{user.id}}</td>
 		                <td>{{user.fullName}}</td>
                         <td>{{user.email}}</td>
+                        <td>{{user.role}}</td>
                         <td>
                             <input id="enabledSwitch" type="checkbox" class="/*toggle-switch*/" ng-model="user.enabled" ng-change="userCtrl.saveUser(user)">
                             <label for="enabledSwitch">{{user.enabled}}</label>
