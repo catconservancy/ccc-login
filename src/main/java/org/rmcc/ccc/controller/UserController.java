@@ -92,6 +92,7 @@ public class UserController {
             dbUser.setEnabled(user.isEnabled());
             sendUserActivatedEmail(dbUser);
         }
+        dbUser.setRole(user.getRole());
         dbUser.setFullName(user.getFullName());
         return userRepository.save(dbUser);
     }
