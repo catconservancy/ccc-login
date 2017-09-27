@@ -94,6 +94,8 @@ public class UserController {
         if (!dbUser.isEnabled() && user.isEnabled()) {
             dbUser.setEnabled(user.isEnabled());
             sendUserActivatedEmail(dbUser);
+        } else if(dbUser.isEnabled() && !user.isEnabled()) {
+            dbUser.setEnabled(user.isEnabled());
         }
         dbUser.setRole(user.getRole());
         dbUser.setFullName(user.getFullName());
