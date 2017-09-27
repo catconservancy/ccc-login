@@ -94,7 +94,7 @@ public class UserController {
         if (!dbUser.isEnabled() && user.isEnabled()) {
             dbUser.setEnabled(user.isEnabled());
             sendUserActivatedEmail(dbUser);
-        } else if(dbUser.isEnabled() && !user.isEnabled()) {
+        } else if (dbUser.isEnabled() && !user.isEnabled()) {
             dbUser.setEnabled(user.isEnabled());
         }
         dbUser.setRole(user.getRole());
@@ -136,7 +136,10 @@ public class UserController {
         Email from = new Email(EMAIL_SENDER);
         String subject = "CCC User Access Granted";
         Email to = new Email(user.getEmail());
-        Content content = new Content("text/plain", "Your access request has been granted.  You may now login to the application.");
+        Content content = new Content(
+                "text/plain",
+                "Your access request has been granted.  You may now login to the application."
+        );
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
@@ -150,7 +153,11 @@ public class UserController {
         Email from = new Email(EMAIL_SENDER);
         String subject = "CCC User Created";
         Email to = new Email(ADMIN_EMAIL);
-        Content content = new Content("text/plain", "A new user has registered and requested access to the CCC Database: " + user.getFullName() + ": " + user.getEmail());
+        Content content = new Content(
+                "text/plain",
+                "A new user has registered and requested access to the CCC Database: "
+                        + user.getFullName() + ": " + user.getEmail()
+        );
 
         List<User> adminsList = (List<User>) userRepository.findAllByRole(Role.ADMIN);
 
